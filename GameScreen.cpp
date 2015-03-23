@@ -4,6 +4,7 @@
 // Include SDL functions and datatypes
 #include "SDL/SDL.h"
 #include <string>
+#include <iostream> //for error checking
 using namespace std;
 
 // Declare screen attributes as constant
@@ -11,6 +12,11 @@ const int WIDTH = 700;
 const int HEIGHT = 530;
 const int BPP = 32;
 
+// SDL_Surfaces/Images
+SDL_Surface* background = NULL; // declare a pointer for background image
+SDL_Surface* screen = screen; // what is visible on the screen
+
+SDL_Event event;
 // In order to have an optimized image/faster speed
 // Function based on lazy-foo tutorial lesson 02
 SDL_Surface *load_image(string file)
@@ -30,29 +36,47 @@ SDL_Surface *load_image(string file)
      // free old 24 bit image
      SDL_FreeSurface(loadedImage);
   }
-
   return optimized;
 
 }
-int main() 
+bool init() //initialize function from lesson 4
 {
-  // Images
-  SDL_Surface* background = NULL; // declare a pointer for background image
-  SDL_Surface* screen = screen; // what is visible on the screen
-
   // Start SDL and error handle
-  if( SDL_Init(SDL_INIT_EVERYTHING) == -1) return 1;
+  if( SDL_Init(SDL_INIT_EVERYTHING) == -1) return false;
   
   // setting up the screen
   screen = SDL_SetVideoMode(WIDTH,HEIGHT,BPP,SDL_SWSURFACE);
   // if error occurred
-  if(screen==NULL) return 1;
+  if(screen==NULL) return false;
 
   // set window caption
   SDL_WM_SetCaption("Pokemon Game", NULL); // from Lazy-Foo Lesson02
+  return true;
+}
 
-  // Load the optimized images
+bool load_files()//load files from lesson 4
+{
   background = load_image("Pokemon_town.bmp");
+  if(background==NULL) return false;
+  return true;
+
+}
+void clean()
+{
+// free background
+  SDL_FreeSurface(background);
+// quit SDL-frees screen 
+  SDL_Quit();
+
+}
+int main(int argc, char* args[]) 
+{
+  bool quit = false; // continue until the user quits
+
+  if(init()==false) return 1; // if fail to initialize
+
+  // Load the file
+  if(load_files()==false) return 1;
 
   // apply image to screen
   SDL_BlitSurface(background, NULL, screen, NULL);
@@ -60,15 +84,16 @@ int main()
   //update the screen and error check
   if( SDL_Flip(screen) == -1) return 1;
 
+
+  while(quit==false){
+    // while there is an event
+    while(SDL_PollEvent(&event)){
+      if(event.type==SDL_QUIT) quit = true;
+    }
+  }
   // Pause 3 seconds in order to show screen
-  SDL_Delay(3000);
+ // SDL_Delay(3000);
 
-  // Free background
-  SDL_FreeSurface(background);
-  // Quit - frees the screen
-  SDL_Quit();
-
+  clean(); // quit SDL
   return 0;
-
-
 }
