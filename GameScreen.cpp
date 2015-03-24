@@ -39,6 +39,17 @@ SDL_Surface *load_image(string file)
   return optimized;
 
 }
+// apply surface function
+// Allows to offset an image. the ability to clip to use sprites
+void apply_Surface(int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip=NULL)
+{
+  SDL_Rect offset; //hold offset
+  offset.x=x;
+  offset.y=y; // get offsets
+  //Blit
+  SDL_BlitSurface(source,clip,destination,&offset);
+
+}
 bool init() //initialize function from lesson 4
 {
   // Start SDL and error handle
@@ -69,6 +80,7 @@ void clean()
   SDL_Quit();
 
 }
+
 int main(int argc, char* args[]) 
 {
   bool quit = false; // continue until the user quits
@@ -79,7 +91,8 @@ int main(int argc, char* args[])
   if(load_files()==false) return 1;
 
   // apply image to screen
-  SDL_BlitSurface(background, NULL, screen, NULL);
+ // SDL_BlitSurface(background, NULL, screen, NULL);
+  apply_Surface(0,0,background,screen);
 
   //update the screen and error check
   if( SDL_Flip(screen) == -1) return 1;
