@@ -35,7 +35,16 @@ SDL_Surface *load_image(string file)
      optimized = SDL_DisplayFormat(loadedImage);
      // free old 24 bit image
      SDL_FreeSurface(loadedImage);
+/*     //Adding Color key to surface
+     if( optimized != NULL )
+     {
+	//Map the color key
+	Uint32 colorkey = SDL_MapRGB( optimized->format, 0, 0xFF, 0xFF );
+	//Set all pixels of color to be transparent
+	SDL_SetColorKey( optimized, SDL_SRCCOLORKEY, colorkey );
+     { */
   }
+  
   return optimized;
 
 }
@@ -80,6 +89,7 @@ void clean()
   SDL_Quit();
 
 }
+
 
 int main(int argc, char* args[]) 
 {
