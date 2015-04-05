@@ -36,6 +36,7 @@ class Pokemon{
 	int updateHP(int);//return a 0 if well, 1 if fainted
 	int getLevel();
 	void updateLevel(int);
+//	virtual void setType() = 0;
 /*	virtual void setBaseA() = 0;
  *	virtual void setBaseD() = 0;
  *	virtual void setBaseSpec() = 0;
@@ -44,7 +45,8 @@ class Pokemon{
  */
 	
   private:
-	string Name;
+//	string type;
+ 	string Name;
 	int base_A;// base stats are particular for the type of pokemon
 	int base_D;
 	int base_Speed;
