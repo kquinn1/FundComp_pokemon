@@ -39,28 +39,30 @@ class Pokemon{
 	int getHP();
 	int updateHP(int);//return a 0 if well, 1 if fainted
 	int getLevel();
+// should be implemented in other classes but private data?
+	string getType();
 	void updateLevel(int);
-	virtual void setType() = 0;
-	virtual void setBaseA() = 0;
- 	virtual void setBaseD() = 0;
- 	virtual void setBaseSpec() = 0;
- 	virtual void setBaseSpeed() = 0;
- 	virtual void setBaseHP() = 0; //implementation needs to be in pokemon species class
-	int base_A;
+	void setType(string);
+	void setBaseA(int);
+ 	void setBaseD(int);
+ 	void setBaseSpec(int);
+ 	void setBaseSpeed(int);
+ 	void setBaseHP(int);
+/*	int base_A;
 	int base_D;
 	int base_Speed;
 	int base_Spec;
 	int base_HP; 
-	string type;
+	string type;*/
 	
   private:
-//	string type;
+	string type;
  	string Name;
-//	int base_A;// base stats are particular for the type of pokemon
-//	int base_D;
-//	int base_Speed;
-//	int base_Spec;
-//	int base_HP;
+	int base_A;// base stats are particular for the type of pokemon
+	int base_D;
+	int base_Speed;
+	int base_Spec;
+	int base_HP;
 	int IV_A;//individualistic values
 	int IV_D;
 	int IV_Spec;

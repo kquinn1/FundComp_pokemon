@@ -10,9 +10,11 @@
 using namespace std;
 
 int main(){
-  Pikachu poke1("Pikachu",81);
+  Pikachu poke1("Pikachu",10);
   
   cout<< "The " << poke1.getName() << " has the following stats..." <<endl;
+  cout << "type: " << poke1.getType() << endl;
+  
   cout<< "Attack: " << poke1.getAttack() << endl;
   cout<< "Defense: " << poke1.getDefense() << endl;
   cout<< "Special Attack: " << poke1.getSpecA() << endl;
