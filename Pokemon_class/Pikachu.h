@@ -1,6 +1,8 @@
 //Katie Quinn
 //Pokemon species class
 //While the pokemon class and the type class are abstract, this class is concrete
+// Pikachu class
+
 #ifndef PIKACHU_H
 #define PIKACHU_H
 #include <string>
