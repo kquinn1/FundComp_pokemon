@@ -46,16 +46,21 @@ class Pokemon{
  	virtual void setBaseSpec() = 0;
  	virtual void setBaseSpeed() = 0;
  	virtual void setBaseHP() = 0; //implementation needs to be in pokemon species class
- 
-	
-  private:
-	string type;
- 	string Name;
-	int base_A;// base stats are particular for the type of pokemon
+	int base_A;
 	int base_D;
 	int base_Speed;
 	int base_Spec;
-	int base_HP;
+	int base_HP; 
+	string type;
+	
+  private:
+//	string type;
+ 	string Name;
+//	int base_A;// base stats are particular for the type of pokemon
+//	int base_D;
+//	int base_Speed;
+//	int base_Spec;
+//	int base_HP;
 	int IV_A;//individualistic values
 	int IV_D;
 	int IV_Spec;

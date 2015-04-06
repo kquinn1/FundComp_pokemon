@@ -19,7 +19,7 @@ class Water: public Pokemon{
 
 };
 
-void Fire::setType(){
+void Water::setType(){
   type="water";
 }
 

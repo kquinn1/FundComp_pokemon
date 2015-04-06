@@ -18,7 +18,7 @@ class Grass: public Pokemon{
 
 };
 
-void Fire::setType(){
+void Grass::setType(){
   type="grass";
 }
 

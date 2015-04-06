@@ -19,7 +19,7 @@ class Normal: public Pokemon{
 
 };
 
-void Fire::setType(){
+void Normal::setType(){
   type="normal";
 }
 
