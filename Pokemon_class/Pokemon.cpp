@@ -9,7 +9,7 @@
 #include <math.h> // sqrt
 using namespace std;
 
-Pokemon::Pokemon(string myName, int myLevel, int myB_HP, int myB_A, int myB_D,int myB_speed, int myB_Spec){
+/*Pokemon::Pokemon(string myName, int myLevel, int myB_HP, int myB_A, int myB_D,int myB_speed, int myB_Spec){
 
 // define the stats
   Name = myName;
@@ -32,7 +32,29 @@ Pokemon::Pokemon(string myName, int myLevel, int myB_HP, int myB_A, int myB_D,in
   set_spec_A();
   set_spec_D();
   setSpeed();
+}*/
+
+// updated constructor
+Pokemon::Pokemon(string myName, int myLevel){
+  Name = myName;
+  level = myLevel;
+  
+  //call to intialize EVs to 0
+  initEVs();
+
+  //set IVs
+  setIVs();
+
+  //set other dependent stats
+  
+  setHP(); //set HP initially
+  setAttack();
+  setDef();
+  set_spec_A();
+  set_spec_D();
+  setSpeed();
 }
+
 void Pokemon::initEVs(){
 
 // EVs start at 0
@@ -60,13 +82,25 @@ cout << "IV_Speed: " << IV_Speed << endl;
 //set IV_HP
   setIV_HP();
 }
-void Pokemon::updateEVs(int update){
+void Pokemon::updateEV_A(int update){
 //update experience
 //Check to see theres a formula
   EV_A += update;
+}
+
+void Pokemon::updateEV_D(int update){
   EV_D += update;
+}
+
+void Pokemon::updateEV_Spec(int update){
   EV_Spec += update;
+}
+
+void Pokemon::updateEV_Speed(int update){
   EV_Speed += update;
+}
+
+void Pokemon::updateEV_HP(int update){
   EV_HP += update;
 }
 void Pokemon::setIV_HP(){

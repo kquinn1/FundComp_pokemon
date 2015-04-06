@@ -12,11 +12,15 @@ using namespace std; //for string
 //#include "Attack.h"
 class Pokemon{
   public: 
-	Pokemon(string, int, int, int, int, int, int);
+//	Pokemon(string, int, int, int, int, int, int);
 // the constructor passes the name, level, and base stats
 // after adding inheritance the constructor should be:
-// 	Pokemon(string Name, int level) //base variables will be set in other classes
-	void updateEVs(int);
+	Pokemon(string Name, int level); //base variables will be set in other classes
+	void updateEV_A(int);
+	void updateEV_D(int);
+	void updateEV_Speed(int);
+	void updateEV_Spec(int);
+	void updateEV_HP(int);
  	void initEVs(); //set EVs to 0
 	void setIVs(); //set IVs
 	void setIV_HP();
@@ -36,16 +40,16 @@ class Pokemon{
 	int updateHP(int);//return a 0 if well, 1 if fainted
 	int getLevel();
 	void updateLevel(int);
-//	virtual void setType() = 0;
-/*	virtual void setBaseA() = 0;
- *	virtual void setBaseD() = 0;
- *	virtual void setBaseSpec() = 0;
- *	virtual void setBaseSpeed() = 0;
- *	virtual void setBaseHP() = 0; //implementation needs to be in pokemon species class
- */
+	virtual void setType() = 0;
+	virtual void setBaseA() = 0;
+ 	virtual void setBaseD() = 0;
+ 	virtual void setBaseSpec() = 0;
+ 	virtual void setBaseSpeed() = 0;
+ 	virtual void setBaseHP() = 0; //implementation needs to be in pokemon species class
+ 
 	
   private:
-//	string type;
+	string type;
  	string Name;
 	int base_A;// base stats are particular for the type of pokemon
 	int base_D;
