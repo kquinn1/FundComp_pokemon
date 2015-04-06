@@ -6,7 +6,21 @@ test.cpp opens a file that contains a background image.
 To compile g++ -lSDL test.cpp
 screen is the executable
 
-Pokemon_class: directory includes the Pokemon class. This will be a top level entity class for the pokemon hierarchy. It will be a virtual class. Types (e.g. Fire, water) classes will be added as will as different species of
-pokemon off of the types classes. Species classes will be able to be instantiated.
-This class also contains the attack class that will be used by composition by the Pokemon class.
-a.out represents a test file in order to make sure calculated statistics are right. Will check these statistics by hand.
+Pokemon_class: directory includes the Pokemon class. This will be a top level entity class for the pokemon hierarchy. It will be a virtual class.
+Derived off of the pokemon class are types classes. There are currently
+the type classes: electric, fire, water, grass and normal. The type classes
+should be abstract too. Derived from the type classes are specific pokemon
+species. Current implemented species are: Pikachu, Charmander, Squirtle, and 
+Bulbasaur. 
+The file maintest.cpp was compiled (a.out). This file instantiates different
+species of pokemon and lists their stats. Their stats need to be checked
+for accuracy.
+
+A player class (player.h) as well as an attack class (attack.h & attack.cpp)
+have been started. They have not been implemented yet.
+A pokemon should have different attacks. Perhaps the species of pokemon
+will set the pokemon attacks or the user can decide.
+
+The player class should have its x and y coordinates. The player should have
+six or so pokemon that belong to it (composition). Not sure if this should
+be preset or if the player should decide what pokemon it should have.
