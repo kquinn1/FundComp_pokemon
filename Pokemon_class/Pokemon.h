@@ -3,8 +3,6 @@
 //Base class for pokemon
 //
 // to do: add attacks
-// determine way to store base stats effectively
-// the base stats determine the differences between pokemon
 #ifndef POKEMON_H
 #define POKEMON_H
 #include <string>
@@ -12,9 +10,6 @@ using namespace std; //for string
 //#include "Attack.h"
 class Pokemon{
   public: 
-//	Pokemon(string, int, int, int, int, int, int);
-// the constructor passes the name, level, and base stats
-// after adding inheritance the constructor should be:
 	Pokemon(string Name, int level); //base variables will be set in other classes
 	void updateEV_A(int);
 	void updateEV_D(int);
@@ -48,12 +43,6 @@ class Pokemon{
  	void setBaseSpec(int);
  	void setBaseSpeed(int);
  	void setBaseHP(int);
-/*	int base_A;
-	int base_D;
-	int base_Speed;
-	int base_Spec;
-	int base_HP; 
-	string type;*/
 	
   private:
 	string type;
