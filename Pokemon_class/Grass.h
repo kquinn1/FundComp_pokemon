@@ -8,10 +8,11 @@ using namespace std;
 
 class Grass: public Pokemon{
   public:
-	Grass(string, int);
+	Grass(int);
+	virtual void print() = 0;
 };
 
-Grass::Grass(string myName, int myLevel): Pokemon(myName, myLevel){
+Grass::Grass(int myLevel): Pokemon(myLevel){
   Pokemon::setType("grass");
 }
 

@@ -16,9 +16,11 @@
 using namespace std;
 
 int main(){
-  Pikachu poke1("Pikachu",10);
+  Pikachu poke1(10);
   
-  cout<< "The " << poke1.getName() << " has the following stats..." <<endl;
+  cout<< "The " ;
+  poke1.print() ;
+  cout << " has the following stats..." <<endl;
   cout << "type: " << poke1.getType() << endl;
   
   cout<< "Attack: " << poke1.getAttack() << endl;
@@ -29,9 +31,12 @@ int main(){
   cout<< "Speed: " << poke1.getSpeed() << endl;
   cout<< "HP: " << poke1.getHP() << endl << endl << endl;
 
-  Charmander poke("Charmander",10);
+
+  Charmander poke(10);
   
-  cout<< "The " << poke.getName() << " has the following stats..." <<endl;
+  cout<< "The ";
+  poke.print();
+  cout << " has the following stats..." <<endl;
   cout << "type: " << poke.getType() << endl;
   
   cout<< "Attack: " << poke.getAttack() << endl;
@@ -42,9 +47,11 @@ int main(){
   cout<< "Speed: " << poke.getSpeed() << endl;
   cout<< "HP: " << poke.getHP() << endl << endl << endl;
 
-  Squirtle s("Squirtle",15);
+  Squirtle s(15);
   
-  cout<< "The " << s.getName() << " has the following stats..." <<endl;
+  cout<< "The ";
+  s.print() ;
+  cout<< " has the following stats..." <<endl;
   cout << "type: " << s.getType() << endl;
   
   cout<< "Attack: " << s.getAttack() << endl;
@@ -55,11 +62,12 @@ int main(){
   cout<< "Speed: " << s.getSpeed() << endl;
   cout<< "HP: " << s.getHP() << endl << endl << endl;
 
-  Bulbasaur  b("Bulbasaur",10);
+  Bulbasaur  b(10);
   
-  cout<< "The " << b.getName() << " has the following stats..." <<endl;
+  cout<< "The ";
+  b.print();
+  cout << " has the following stats..." <<endl;
   cout << "type: " << b.getType() << endl;
-  
   cout<< "Attack: " << b.getAttack() << endl;
   cout<< "Defense: " << b.getDefense() << endl;
   cout<< "Special Attack: " << b.getSpecA() << endl;
@@ -67,6 +75,6 @@ int main(){
   cout<< "Level: " << b.getLevel() << endl;
   cout<< "Speed: " << b.getSpeed() << endl;
   cout<< "HP: " << b.getHP() << endl;
-  return 0;
 
+  return 0;
 }

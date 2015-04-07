@@ -1,31 +1,30 @@
 //Katie Quinn
 //Pokemon species class
 //While the pokemon class and the type class are abstract, this class is concrete
-//Squirtle class
+//Staryu class
 
-#ifndef SQUIRTLE_H
-#define SQUIRTLE_H
+#ifndef STARYU_H
+#define STARYU_H
 #include <string>
 #include "Pokemon.h"
 #include "Water.h"
 #include <iostream>
 using namespace std;
 
-const int S_BASE_A = 48;
-const int S_BASE_D = 65;
-const int S_BASE_SPEED= 43;
-const int S_BASE_SPEC = 50;
-const int S_BASE_HP = 44; //base stats for bulbasaur
+const int S_BASE_A = 45;
+const int S_BASE_D = 55;
+const int S_BASE_SPEED= 85;
+const int S_BASE_SPEC = 70;
+const int S_BASE_HP = 30; //base stats for bulbasaur
 
-class Squirtle : public Water {
+class Staryu : public Water {
   public:
-	Squirtle(int); //need to set up constructor to call Pokemon constructor
-	void print();
+	Staryu(int); //need to set up constructor to call Pokemon constructor
 //should a private member contain the sprite?
 
 };
 
-Squirtle::Squirtle(int level) : Water(level){
+Staryu::Staryu(int level) : Water(level){
   Pokemon::setBaseA(S_BASE_A);
   Pokemon::setBaseD(S_BASE_D);
   Pokemon::setBaseSpec(S_BASE_SPEC);
@@ -41,7 +40,8 @@ Squirtle::Squirtle(int level) : Water(level){
   Pokemon::setSpeed();
 }
 
-void Squirtle::print(){
-  cout << "SQUIRTLE";
+void Staryu::print(){
+  cout << "STARYU";
 }
+
 #endif

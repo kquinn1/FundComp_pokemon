@@ -9,10 +9,11 @@ using namespace std;
 
 class Normal: public Pokemon{
   public:
-	Normal(string, int);
+	Normal(int);
+	virtual void print() = 0; //cannot instantiate this class
 };
 
-Normal::Normal(string myName, int myLevel) : Pokemon(myName, myLevel){
+Normal::Normal(int myLevel) : Pokemon(myLevel){
   Pokemon::setType("normal");
 }
 

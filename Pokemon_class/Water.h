@@ -9,10 +9,11 @@ using namespace std;
 
 class Water: public Pokemon{
   public:
-	Water(string, int);
+	Water(int);
+	virtual void print() = 0;
 };
 
-Water::Water(string myName, int myLevel): Pokemon(myName, myLevel){
+Water::Water(int myLevel): Pokemon(myLevel){
   Pokemon::setType("water");
 }
 

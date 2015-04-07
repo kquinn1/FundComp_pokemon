@@ -10,7 +10,7 @@ using namespace std; //for string
 //#include "Attack.h"
 class Pokemon{
   public: 
-	Pokemon(string Name, int level); //base variables will be set in other classes
+	Pokemon(int level); //base variables will be set in other classes
 	void updateEV_A(int);
 	void updateEV_D(int);
 	void updateEV_Speed(int);
@@ -25,7 +25,6 @@ class Pokemon{
 	void set_spec_D();
 	void setSpeed();
         void setHP(); // HP initially
-	string getName();
 	int getAttack();	
 	int getDefense();
 	int getSpecA();
@@ -43,10 +42,10 @@ class Pokemon{
  	void setBaseSpec(int);
  	void setBaseSpeed(int);
  	void setBaseHP(int);
+	virtual void print()= 0;
 	
   private:
 	string type;
- 	string Name;
 	int base_A;// base stats are particular for the type of pokemon
 	int base_D;
 	int base_Speed;

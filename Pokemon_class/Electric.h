@@ -9,12 +9,11 @@ using namespace std;
 
 class Electric: public Pokemon{
   public:
-	Electric(string myName, int myLevel);
-  private: // nothing is private?
-
+	Electric(int myLevel);
+	virtual void print() = 0;
 };
 
-Electric::Electric(string myName, int myLevel): Pokemon(myName, myLevel){
+Electric::Electric(int myLevel): Pokemon(myLevel){
   Pokemon::setType("electric");
 }
 

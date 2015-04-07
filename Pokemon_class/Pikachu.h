@@ -8,6 +8,8 @@
 #include <string>
 #include "Pokemon.h"
 #include "Electric.h"
+#include <iostream>
+using namespace std;
 
 const int PIK_BASE_A = 55;
 const int PIK_BASE_D = 30;
@@ -17,12 +19,13 @@ const int PIK_BASE_HP = 35; //base stats for pikachu
 
 class Pikachu : public Electric {
   public:
-	Pikachu(string, int); //need to set up constructor to call Pokemon constructor
+	Pikachu(int); //need to set up constructor to call Pokemon constructor
+	void print();
 //should a private member contain the sprite?
 
 };
 
-Pikachu::Pikachu(string myName, int level) : Electric(myName, level){
+Pikachu::Pikachu(int level) : Electric(level){
   Pokemon::setBaseA(PIK_BASE_A);
   Pokemon::setBaseD(PIK_BASE_D);
   Pokemon::setBaseSpec(PIK_BASE_SPEC);
@@ -36,6 +39,10 @@ Pikachu::Pikachu(string myName, int level) : Electric(myName, level){
   Pokemon::set_spec_A();
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
+}
+
+void Pikachu::print(){
+	cout << "PIKACHU";
 }
 
 #endif
