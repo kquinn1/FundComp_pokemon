@@ -6,15 +6,14 @@ test.cpp opens a file that contains a background image.
 To compile g++ -lSDL test.cpp
 screen is the executable
 
-Pokemon_class: directory includes the Pokemon class. This will be a top level entity class for the pokemon hierarchy. It will be a virtual class.
+Pokemon_class: directory includes the Pokemon class. This is a top level entity class for the pokemon hierarchy. It is a virtual class.
 Derived off of the pokemon class are types classes. There are currently
 the type classes: electric, fire, water, grass and normal. The type classes
-should be abstract too. Derived from the type classes are specific pokemon
+are abstract too. Derived from the type classes are specific pokemon
 species. Current implemented species are: Pikachu, Charmander, Squirtle, and 
 Bulbasaur. 
 The file maintest.cpp was compiled (a.out). This file instantiates different
-species of pokemon and lists their stats. Their stats need to be checked
-for accuracy.
+species of pokemon and lists their stats. Their stats have been checked for accuracy.
 
 A player class (player.h) as well as an attack class (attack.h & attack.cpp)
 have been started. They have not been implemented yet.
