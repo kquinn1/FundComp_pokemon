@@ -7,14 +7,15 @@
 #include <string>
 using namespace std;
 
-Attack::Attack(string myType; int myPower; int myPP; int myAcc){
+Attack::Attack(string myName, string myType, int myPower, int myPP, int myAcc){
 // constructor for Attack
+  name = myName;
   type = myType;
   power = myPower;
   pp = myPP;
   accuracy = myAcc;
 }
-
+string Attack::getName(){ return name; }
 string Attack::getType(){ return type; }
 
 int Attack::getPower(){ return power; }

@@ -9,6 +9,8 @@
 #include "Pokemon.h"
 #include "Electric.h"
 #include <iostream>
+#include "Attack.h"
+#include <vector> //create a vector of attacks
 using namespace std;
 
 const int PIK_BASE_A = 55;
@@ -21,8 +23,17 @@ class Pikachu : public Electric {
   public:
 	Pikachu(int); //need to set up constructor to call Pokemon constructor
 	void print();
+//	void setAttackPower(int);
+	void setAttacks();
+	Attack* getAttack(int i);
+// functions to handle attacks?
 //should a private member contain the sprite?
-
+  private:
+	vector<Attack*> attacks;
+/*	Attack a1;// should call non default constructors here
+	Attack a2;
+	Attack a3;
+	Attack a4; */
 };
 
 Pikachu::Pikachu(int level) : Electric(level){
@@ -39,10 +50,24 @@ Pikachu::Pikachu(int level) : Electric(level){
   Pokemon::set_spec_A();
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
+
+  setAttacks(); //set attacks for pikachu, does not allow the user to decide
 }
 
 void Pikachu::print(){
 	cout << "PIKACHU";
+}
+
+void Pikachu::setAttacks(){
+//simplification of attacks, starts out with four attacks
+ attacks.push_back(new Attack( "quick attack", "normal", 40,30, 100) );
+ attacks.push_back(new Attack("thunderbolt", "electric", 90, 15,100) );//learn by tm
+ attacks.push_back(new Attack("thundershock", "electric", 40,30 ,100) );
+ attacks.push_back(new Attack("mega punch","normal", 80, 20,85) );//learn by tm
+}
+
+Attack* Pikachu::getAttack(int i){
+  return attacks[i];
 }
 
 #endif

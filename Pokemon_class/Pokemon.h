@@ -25,7 +25,7 @@ class Pokemon{
 	void set_spec_D();
 	void setSpeed();
         void setHP(); // HP initially
-	int getAttack();	
+	int GetAttack();	
 	int getDefense();
 	int getSpecA();
 	int getSpecD();

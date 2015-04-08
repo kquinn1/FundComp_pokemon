@@ -8,6 +8,7 @@
 #include <string>
 #include "Pokemon.h"
 #include "Water.h"
+#include "Attack.h"
 #include <iostream>
 using namespace std;
 

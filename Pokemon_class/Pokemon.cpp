@@ -138,7 +138,7 @@ void Pokemon::setHP(){
 //determines the maximum health effectively
   HP  = ( ((IV_HP + base_HP + ( sqrt(EV_HP) / 8 ) + 50 )* level )/50 ) + 10;
 }
-int Pokemon::getAttack(){
+int Pokemon::GetAttack(){
   return attack;
 }
 
