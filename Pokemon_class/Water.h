@@ -12,9 +12,4 @@ class Water: public Pokemon{
 	Water(int);
 	virtual void print() = 0;
 };
-
-Water::Water(int myLevel): Pokemon(myLevel){
-  Pokemon::setType("water");
-}
-
 #endif

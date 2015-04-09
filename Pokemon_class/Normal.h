@@ -13,8 +13,4 @@ class Normal: public Pokemon{
 	virtual void print() = 0; //cannot instantiate this class
 };
 
-Normal::Normal(int myLevel) : Pokemon(myLevel){
-  Pokemon::setType("normal");
-}
-
 #endif

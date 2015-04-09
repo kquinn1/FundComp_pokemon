@@ -5,17 +5,12 @@
 #define FIRE_H
 #include <string>
 #include "Pokemon.h"
-using namespace std;
-
+using namespace std; //needed?
 class Fire: public Pokemon{
   public:
 	Fire(int); // constructor
 	virtual void print() = 0; //cannot instantiate this class
 
 };
-
-Fire::Fire(int myLevel): Pokemon(myLevel){
-  Pokemon::setType("fire");
-}
 
 #endif

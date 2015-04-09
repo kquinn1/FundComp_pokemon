@@ -11,9 +11,4 @@ class Grass: public Pokemon{
 	Grass(int);
 	virtual void print() = 0;
 };
-
-Grass::Grass(int myLevel): Pokemon(myLevel){
-  Pokemon::setType("grass");
-}
-
 #endif
