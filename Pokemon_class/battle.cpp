@@ -61,7 +61,7 @@ int Damage(int baseSpeed,int a_level, int a_attack, int d_defense, int attack_po
   crit = (baseSpeed/512) * 100;
   critNum = rand()%100; //generate a number 0 and 100
   
-  if(crit>=critNum) crit = 2; //it is a critical hit
+  if(crit>=critNum) {crit = 2; cout <<"Critical hit" <<endl; } //it is a critical hit
   else crit = 1;
 
   int damage;
@@ -88,6 +88,12 @@ int Damage(int baseSpeed,int a_level, int a_attack, int d_defense, int attack_po
 int main(){
   Pikachu one(15);
   Pikachu two(15);
+ 
+  cout << "level 15" <<endl;
+  cout << one.getAttack() << ": attack" << endl;
+  cout << "defense: " << two.getDef() << endl;
+  cout << one.getAttack(0)->getPower() << "attack power" << endl;
+  cout << "speed: " << one.getSpeed();
  
   int turn=0;
   int uChoice;

@@ -1,19 +1,19 @@
 //Katie Quinn
-//Goldeen.h
+//Starmie.h
 //Pokemon species class
 //While the pokemon class and the type class are abstract, this class is concrete
-//Goldeen class
+//Staryu class
 
-#ifndef GOLDEEN_H
-#define GOLDEEN_H
+#ifndef STARMIE_H
+#define STARMIE_H
 #include "Pokemon.h"
 #include "Water.h"
 #include "Attack.h"
 #include <vector>
 
-class Goldeen : public Water {
+class Starmie : public Water {
   public:
-	Goldeen(int); //need to set up constructor to call Pokemon constructor
+	Starmie(int); //need to set up constructor to call Pokemon constructor
 	void print();
 	void setAttacks();
 	Attack* getAttack(int);

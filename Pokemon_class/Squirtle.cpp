@@ -8,7 +8,7 @@ const int S_BASE_A = 48;
 const int S_BASE_D = 65;
 const int S_BASE_SPEED= 43;
 const int S_BASE_SPEC = 50;
-const int S_BASE_HP = 44; //base stats for bulbasaur
+const int S_BASE_HP = 44; //base stats for squirtle
 
 Squirtle::Squirtle(int level) : Water(level){
   Pokemon::setBaseA(S_BASE_A);
@@ -29,3 +29,16 @@ Squirtle::Squirtle(int level) : Water(level){
 void Squirtle::print(){
   cout << "SQUIRTLE";
 }
+
+void Squirtle::setAttacks(){
+//simplification of attacks, starts out with four attacks
+  attacks.push_back(new Attack( "bite", "normal", 60, 25, 100) );
+  attacks.push_back(new Attack("hydro pump", "water", 120, 5, 80) );
+  attacks.push_back(new Attack("water gun", "water", 40, 25 ,100) );
+  attacks.push_back(new Attack("skull bash","normal", 100, 15,100) );
+}
+
+Attack* Squirtle::getAttack(int i){
+  return attacks[i];
+}
+

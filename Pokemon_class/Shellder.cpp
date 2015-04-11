@@ -1,16 +1,16 @@
 //Katie Quinn
-//Staryu.cpp
-#include "Staryu.h"
+//Shellder.cpp
+#include "Shellder.h"
 #include <iostream>
 using namespace std;
 
-const int S_BASE_A = 45;
-const int S_BASE_D = 55;
-const int S_BASE_SPEED= 85;
-const int S_BASE_SPEC = 70;
-const int S_BASE_HP = 30; //base stats for bulbasaur
+const int S_BASE_HP = 30; //base stats for shellder
+const int S_BASE_A = 65;
+const int S_BASE_D = 100;
+const int S_BASE_SPEED= 40;
+const int S_BASE_SPEC = 45;
 
-Staryu::Staryu(int level) : Water(level){
+Shellder::Shellder(int level) : Water(level){
   Pokemon::setBaseA(S_BASE_A);
   Pokemon::setBaseD(S_BASE_D);
   Pokemon::setBaseSpec(S_BASE_SPEC);
@@ -26,19 +26,18 @@ Staryu::Staryu(int level) : Water(level){
   Pokemon::setSpeed();
 }
 
-void Staryu::print(){
-  cout << "STARYU";
+void Shellder::print(){
+  cout << "SHELLDER";
 }
 
-void Staryu::setAttacks(){
+void Shellder::setAttacks(){
 //simplification of attacks, starts out with four attacks
   attacks.push_back(new Attack( "tackle", "normal", 35, 35, 95) );
-  attacks.push_back(new Attack("water gun", "water", 40, 25,100) );
-  attacks.push_back(new Attack("hydro pump", "water", 120, 5, 80) );
-  attacks.push_back(new Attack("swift","normal", 60, 20,100) );//acc could be off
+  attacks.push_back(new Attack("clamp", "water", 35, 10, 75);
+  attacks.push_back(new Attack("ice beam", "water", 95, 10, 100) );//type=ice
+  attacks.push_back(new Attack("take down","normal", 90, 20, 85) );//learn by tm
 }
 
-Attack* Staryu::getAttack(int i){
+Attack* Shellder::getAttack(int i){
   return attacks[i];
 }
-

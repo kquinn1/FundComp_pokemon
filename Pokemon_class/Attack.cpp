@@ -13,6 +13,7 @@ Attack::Attack(string myName, string myType, int myPower, int myPP, int myAcc){
   type = myType;
   power = myPower;
   pp = myPP;
+  maxPP = pp; // set the max var to be used for healing
   accuracy = myAcc;
 }
 string Attack::getName(){ return name; }

@@ -14,9 +14,8 @@ class Pikachu : public Electric {
   public:
 	Pikachu(int); //need to set up constructor to call Pokemon constructor
 	void print();
-//	void setAttackPower(int);
 	void setAttacks();
-	Attack* getAttack(int i);
+	Attack* getAttack(int);
 // functions to handle attacks?
 //should a private member contain the sprite?
   private:

@@ -8,7 +8,7 @@ const int G_BASE_A = 67;
 const int G_BASE_D = 60;
 const int G_BASE_SPEED= 63;
 const int G_BASE_SPEC = 50;
-const int G_BASE_HP = 45; //base stats for bulbasaur
+const int G_BASE_HP = 45; //base stats for goldeen
 
 Goldeen::Goldeen(int level) : Water(level){
   Pokemon::setBaseA(G_BASE_A);
@@ -30,3 +30,14 @@ void Goldeen::print(){
   cout << "GOLDEEN";
 }
 
+void Goldeen::setAttacks(){
+//simplification of attacks, starts out with four attacks
+  attacks.push_back(new Attack( "horn attack", "normal", 65,25, 100) );
+  attacks.push_back(new Attack("fury attack", "normal", 15, 20,85) );//learn by tm
+  attacks.push_back(new Attack("waterfall", "water", 80,15 ,100) );
+  attacks.push_back(new Attack("bubblebeam","water", 65, 20,100) );//learn by tm
+}
+
+Attack* Goldeen::getAttack(int i){
+  return attacks[i];
+}

@@ -33,3 +33,14 @@ void Bulbasaur::print() {
  cout << "BULBASAUR";
 }
 
+void Bulbasaur::setAttacks(){
+//simplification of attacks, starts out with four attacks
+  attacks.push_back(new Attack( "tackle", "normal", 35,35, 95) );
+  attacks.push_back(new Attack("vine whip", "grass", 35, 10,100) );
+  attacks.push_back(new Attack("razor leaf", "grass", 55, 25 , 95) );
+  attacks.push_back(new Attack("solar beam","grass", 120, 10,100) );
+}
+
+Attack* Bulbasaur::getAttack(int i){
+  return attacks[i];
+}

@@ -20,6 +20,7 @@ class Attack{
 	string type;
 	int power;
 	int pp; //how many times the move can be used
+	int maxPP; // in order to reset after healing
 	int accuracy;
 
 };

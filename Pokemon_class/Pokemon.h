@@ -43,6 +43,7 @@ class Pokemon{
  	void setBaseSpeed(int);
  	void setBaseHP(int);
 	virtual void print()= 0;
+	void restoreHP(); //restore HP to maxHP
 	
   private:
 	string type;
@@ -68,12 +69,7 @@ class Pokemon{
 	int speed;
 	int level;
 	int HP; // health
-/*
-	Attack attack_one;// the attacks are stored as objects
-	Attack attack_two;
-	Attack attack_three;
-	Attack attack_four;
-*/
+	int maxHP; //max health, or the initial HP
 };
 
 #endif

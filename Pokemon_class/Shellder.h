@@ -1,19 +1,19 @@
 //Katie Quinn
-//Goldeen.h
+//Shellder.h
 //Pokemon species class
 //While the pokemon class and the type class are abstract, this class is concrete
-//Goldeen class
+//Shellder class
 
-#ifndef GOLDEEN_H
-#define GOLDEEN_H
+#ifndef SHELLDER_H
+#define SHELLDER_H
 #include "Pokemon.h"
 #include "Water.h"
 #include "Attack.h"
 #include <vector>
 
-class Goldeen : public Water {
+class Shellder : public Water {
   public:
-	Goldeen(int); //need to set up constructor to call Pokemon constructor
+	Shellder(int); //need to set up constructor to call Pokemon constructor
 	void print();
 	void setAttacks();
 	Attack* getAttack(int);

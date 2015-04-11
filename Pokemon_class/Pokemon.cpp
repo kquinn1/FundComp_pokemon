@@ -137,7 +137,14 @@ void Pokemon::setHP(){
 //determines the HP initially of a pokemon 
 //determines the maximum health effectively
   HP  = ( ((IV_HP + base_HP + ( sqrt(EV_HP) / 8 ) + 50 )* level )/50 ) + 10;
+  maxHP = HP; // to be used for healing
+//need a function to restore hp
 }
+
+void Pokemon::restoreHP(){
+  HP = maxHP; //function restores pokemon to full health
+}
+
 int Pokemon::GetAttack(){
   return attack;
 }

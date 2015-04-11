@@ -1,16 +1,16 @@
 //Katie Quinn
-//Staryu.cpp
-#include "Staryu.h"
+//Starmie.cpp
+#include "Starmie.h"
 #include <iostream>
 using namespace std;
 
-const int S_BASE_A = 45;
-const int S_BASE_D = 55;
-const int S_BASE_SPEED= 85;
-const int S_BASE_SPEC = 70;
-const int S_BASE_HP = 30; //base stats for bulbasaur
+const int S_BASE_HP = 60; //base stats for starmie
+const int S_BASE_A = 75;
+const int S_BASE_D = 85;
+const int S_BASE_SPEED= 115;
+const int S_BASE_SPEC = 100;
 
-Staryu::Staryu(int level) : Water(level){
+Starmie::Starmie(int level) : Water(level){
   Pokemon::setBaseA(S_BASE_A);
   Pokemon::setBaseD(S_BASE_D);
   Pokemon::setBaseSpec(S_BASE_SPEC);
@@ -26,19 +26,19 @@ Staryu::Staryu(int level) : Water(level){
   Pokemon::setSpeed();
 }
 
-void Staryu::print(){
-  cout << "STARYU";
+void Starmie::print(){
+  cout << "STARMIE";
 }
 
-void Staryu::setAttacks(){
+void Starmie::setAttacks(){
 //simplification of attacks, starts out with four attacks
-  attacks.push_back(new Attack( "tackle", "normal", 35, 35, 95) );
+  attacks.push_back(new Attack( "tackle", "normal", 35,35,95) );
   attacks.push_back(new Attack("water gun", "water", 40, 25,100) );
-  attacks.push_back(new Attack("hydro pump", "water", 120, 5, 80) );
-  attacks.push_back(new Attack("swift","normal", 60, 20,100) );//acc could be off
+  attacks.push_back(new Attack("double edge", "normal", 100, 15,100) );//by tm
+  attacks.push_back(new Attack("bubble beam","water", 65, 20,100) );//learn by tm
 }
 
-Attack* Staryu::getAttack(int i){
+Attack* Starmie::getAttack(int i){
   return attacks[i];
 }
 
