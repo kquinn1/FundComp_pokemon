@@ -192,3 +192,11 @@ void Pokemon::updateLevel(int update){
   set_spec_D();
   setSpeed();
 }
+
+Attack* Pokemon::getAttack(int i){
+  return attacks[i];
+}
+
+void Pokemon:: setMove(string myName, string myType, int myPower, int myPP, int myAcc){
+  attacks.push_back(new Attack(myName, myType, myPower, myPP, myAcc));
+}

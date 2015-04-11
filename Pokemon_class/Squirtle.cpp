@@ -24,6 +24,8 @@ Squirtle::Squirtle(int level) : Water(level){
   Pokemon::set_spec_A();
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
+
+  setAttacks();
 }
 
 void Squirtle::print(){
@@ -32,13 +34,8 @@ void Squirtle::print(){
 
 void Squirtle::setAttacks(){
 //simplification of attacks, starts out with four attacks
-  attacks.push_back(new Attack( "bite", "normal", 60, 25, 100) );
-  attacks.push_back(new Attack("hydro pump", "water", 120, 5, 80) );
-  attacks.push_back(new Attack("water gun", "water", 40, 25 ,100) );
-  attacks.push_back(new Attack("skull bash","normal", 100, 15,100) );
+  setMove( "bite", "normal", 60, 25, 100);
+  setMove("hydro pump", "water", 120, 5, 80);
+  setMove("water gun", "water", 40, 25 ,100);
+  setMove("skull bash","normal", 100, 15,100);
 }
-
-Attack* Squirtle::getAttack(int i){
-  return attacks[i];
-}
-

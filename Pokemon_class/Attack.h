@@ -8,7 +8,7 @@ using namespace std; //for string?
 
 class Attack{
   public:
-	Attack(string, string, int, int, int); //constructor
+	Attack(string&, string&, int&, int&, int&); //constructor
 	string getType();//get functions for data hiding
 	int getPower();
 	int getPP();

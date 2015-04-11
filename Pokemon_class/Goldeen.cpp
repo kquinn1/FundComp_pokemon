@@ -24,6 +24,8 @@ Goldeen::Goldeen(int level) : Water(level){
   Pokemon::set_spec_A();
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
+
+  setAttacks();
 }
 
 void Goldeen::print(){
@@ -32,12 +34,8 @@ void Goldeen::print(){
 
 void Goldeen::setAttacks(){
 //simplification of attacks, starts out with four attacks
-  attacks.push_back(new Attack( "horn attack", "normal", 65,25, 100) );
-  attacks.push_back(new Attack("fury attack", "normal", 15, 20,85) );//learn by tm
-  attacks.push_back(new Attack("waterfall", "water", 80,15 ,100) );
-  attacks.push_back(new Attack("bubblebeam","water", 65, 20,100) );//learn by tm
-}
-
-Attack* Goldeen::getAttack(int i){
-  return attacks[i];
+  setMove( "horn attack", "normal", 65,25, 100);
+  setMove("fury attack", "normal", 15, 20,85);//learn by tm
+  setMove("waterfall", "water", 80,15 ,100);
+  setMove("bubblebeam","water", 65, 20,100);//learn by tm
 }

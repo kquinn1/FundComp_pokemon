@@ -5,23 +5,25 @@
 
 #ifndef PLAYER_H
 #define PLAYER_H
+#include <vector>
 class Player{
   public:
 	Player(); // need a way to set the pokemon the player has 
-	int getX(); // return x coordinate
-	int getY(); //return y coordinate 
-	void updateX(int);
-	void updateY(int); // update the coordinates
-
+//	int getX(); // return x coordinate
+//	int getY(); //return y coordinate 
+//	void updateX(int);
+//	void updateY(int); // update the coordinates
+	void setPokemon(); //push_back different pokemon onto the player's available pokemon
+        void setCurrentPokemon( Pokemon* monster);
+	void addPokemon(Pokemon* monster, int level);
+        void deletePokemon(int i); //is this needed
+	int getMoney(){ return money; };
+	void setMoney(int i){ money+=i; };
   private:
 	int x;
 	int y; // player location
-	Pokemon p1;// should be different species of pokemon
-	Pokemon p2;// need a way to set the pokemon the player has
-	Pokemon p3;// should they decide or be pre set?
-	Pokemon p4;
-	Pokemon p5;
-	Pokemon p6;
+	int money;
+        vector<Pokemon*> myPoke;
 };
 
 int Player::getX(){ return x;}

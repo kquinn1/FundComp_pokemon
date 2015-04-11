@@ -43,43 +43,39 @@ float typeBonus(string attack_type,string  d_type){
 
 int Damage(int baseSpeed,int a_level, int a_attack, int d_defense, int attack_power, string attack_type, string a_type, string d_type, int acc_attack){
   srand( time(NULL) );//initialize random seed
-
-  int ifAttack;
-
+  
+  int ifAttack;//determine if there is an attack
   ifAttack = rand()%100;
 
-  if(ifAttack>acc_attack) return 0; //account for accuracy
-  
+  if(ifAttack>acc_attack){//account for probability there is an attack, based on attack accuracy
+   cout << "Attack missed!" << endl; 
+   return 0; 
+  }  
   int STAB;
   float type;
   float randomInt;
   float critNum;
   float Modifier;
-
-  //account for critical hit
+  //Determine if there is a critical hit
   float crit;
-  crit = (baseSpeed/512) * 100;
+  crit = ((double)baseSpeed/512) * 100;
   critNum = rand()%100; //generate a number 0 and 100
-  
   if(crit>=critNum) {crit = 2; cout <<"Critical hit" <<endl; } //it is a critical hit
   else crit = 1;
-
   int damage;
 //determine if STAB bonus applies
   if(attack_type == a_type) STAB = 1.5;
   else STAB = 1; //the pokemon and it's attack are different
-   
+//adjust the type variable based on the attack type and the type of defensive pokemon
   type = typeBonus(attack_type, d_type);
-//adjust type for formula used
-  type *= 10;
-  randomInt = 1;
- // randomInt=rand()%.15 + 0.85; //random number between 217 and 255
 
-  Modifier = STAB * type * crit * randomInt;
-
-  cout << "The random integer used was: " << randomInt << endl; //for testing
+//for the damage formula
+  randomInt=rand()%15 + 86; //random number between 85 and 100;
+  randomInt/=100;
   
-  damage = ( ( (2*a_level+10)/250 ) * (a_attack/d_defense) * attack_power + 2 ) * Modifier;
+  Modifier = STAB * type * crit * randomInt;
+//  cout << "The random integer used was: " << randomInt << endl; //for testing
+  damage = (((2*(double)a_level+10)/250) * ((double)a_attack/(double)d_defense) * attack_power + 2 ) * Modifier;
 
   cout << " The damage was : " << damage << endl; //for testing
 
@@ -90,8 +86,8 @@ int main(){
   Pikachu two(15);
  
   cout << "level 15" <<endl;
-  cout << one.getAttack() << ": attack" << endl;
-  cout << "defense: " << two.getDef() << endl;
+  cout << one.GetAttack() << ": attack" << endl;
+  cout << "defense: " << two.getDefense() << endl;
   cout << one.getAttack(0)->getPower() << "attack power" << endl;
   cout << "speed: " << one.getSpeed();
  
@@ -120,7 +116,6 @@ int main(){
 	result=two.updateHP(damageD);
 	if(result==1) break; //if pokemon fainted
 	cout << "Current opponenent HP: " << two.getHP() << endl;
-
 //update the amount of times you use an attack
 	one.getAttack(uChoice)->updatePP(); //decrease PP by 1
 

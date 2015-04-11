@@ -7,7 +7,7 @@
 #include <string>
 using namespace std;
 
-Attack::Attack(string myName, string myType, int myPower, int myPP, int myAcc){
+Attack::Attack(string& myName, string& myType, int& myPower, int& myPP, int& myAcc){
 // constructor for Attack
   name = myName;
   type = myType;

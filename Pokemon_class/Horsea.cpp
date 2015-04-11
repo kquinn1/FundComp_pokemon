@@ -24,6 +24,8 @@ Horsea::Horsea(int level) : Water(level){
   Pokemon::set_spec_A();
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
+
+  setAttacks();
 }
 void Horsea::print(){
   cout << "HORSEA" ; 
@@ -31,12 +33,8 @@ void Horsea::print(){
 
 void Horsea::setAttacks(){
 //simplification of attacks, starts out with four attacks
-  attacks.push_back(new Attack( "bubble", "water", 20,30, 100) );
-  attacks.push_back(new Attack("water gun", "water", 40, 25,100) );
-  attacks.push_back(new Attack("hydro pump", "water", 120,5 ,80) );
-  attacks.push_back(new Attack("take down","normal", 90, 20,85) );//learn by tm
-}
-
-Attack* Horsea::getAttack(int i){
-  return attacks[i];
+  setMove( "bubble", "water", 20,30, 100);
+  setMove("water gun", "water", 40, 25,100);
+  setMove("hydro pump", "water", 120,5 ,80);
+  setMove("take down","normal", 90, 20,85);//learn by tm
 }

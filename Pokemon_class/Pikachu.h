@@ -8,17 +8,12 @@
 #define PIKACHU_H
 #include "Pokemon.h"
 #include "Electric.h"
-#include "Attack.h"
-#include <vector> //create a vector of attacks
 class Pikachu : public Electric {
   public:
 	Pikachu(int); //need to set up constructor to call Pokemon constructor
 	void print();
 	void setAttacks();
-	Attack* getAttack(int);
-// functions to handle attacks?
 //should a private member contain the sprite?
   private:
-	vector<Attack*> attacks;
 };
 #endif

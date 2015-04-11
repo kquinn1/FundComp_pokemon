@@ -24,6 +24,8 @@ Charmander::Charmander(int level) : Fire(level){
   Pokemon::set_spec_A();
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
+
+  setAttacks(); 
 }
 
 void Charmander::print(){
@@ -32,12 +34,9 @@ void Charmander::print(){
 
 void Charmander::setAttacks(){
 //simplification of attacks, starts out with four attacks
- attacks.push_back(new Attack( "scratch", "normal", 40,35, 100) );
- attacks.push_back(new Attack("ember", "fire", 40, 25,100) );
-  attacks.push_back(new Attack("flamethrower", "fire", 95,15 ,70) );
-  attacks.push_back(new Attack("mega kick","normal", 120, 5,75) );//learn by tm
+ setMove( "scratch", "normal", 40,35, 100);
+ setMove("ember", "fire", 40, 25,100);
+ setMove("flamethrower", "fire", 95,15 ,70);
+ setMove("mega kick","normal", 120, 5,75);//learn by tm
 }
 
-Attack* Charmander::getAttack(int i){
-      return attacks[i];
-}

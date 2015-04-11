@@ -8,17 +8,13 @@
 #define BULBASAUR_H
 #include "Pokemon.h"
 #include "Grass.h"
-#include "Attack.h"
-#include <vector>
 
 class Bulbasaur : public Grass {
   public:
 	Bulbasaur(int); //need to set up constructor to call Pokemon constructor
 	void print();
 	void setAttacks();
-	Attack* getAttack(int);
 //should a private member contain the sprite?
   private:
-	vector<Attack*> attacks;
 };
 #endif

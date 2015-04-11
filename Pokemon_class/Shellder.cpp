@@ -24,6 +24,8 @@ Shellder::Shellder(int level) : Water(level){
   Pokemon::set_spec_A();
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
+
+  setAttacks();
 }
 
 void Shellder::print(){
@@ -32,12 +34,8 @@ void Shellder::print(){
 
 void Shellder::setAttacks(){
 //simplification of attacks, starts out with four attacks
-  attacks.push_back(new Attack( "tackle", "normal", 35, 35, 95) );
-  attacks.push_back(new Attack("clamp", "water", 35, 10, 75);
-  attacks.push_back(new Attack("ice beam", "water", 95, 10, 100) );//type=ice
-  attacks.push_back(new Attack("take down","normal", 90, 20, 85) );//learn by tm
-}
-
-Attack* Shellder::getAttack(int i){
-  return attacks[i];
+  setMove( "tackle", "normal", 35, 35, 95);
+  setMove("clamp", "water", 35, 10, 75);
+  setMove("ice beam", "water", 95, 10, 100);//type=ice
+  setMove("take down","normal", 90, 20, 85);//learn by tm
 }

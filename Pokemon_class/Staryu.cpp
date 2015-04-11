@@ -24,6 +24,8 @@ Staryu::Staryu(int level) : Water(level){
   Pokemon::set_spec_A();
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
+
+  setAttacks();
 }
 
 void Staryu::print(){
@@ -32,13 +34,8 @@ void Staryu::print(){
 
 void Staryu::setAttacks(){
 //simplification of attacks, starts out with four attacks
-  attacks.push_back(new Attack( "tackle", "normal", 35, 35, 95) );
-  attacks.push_back(new Attack("water gun", "water", 40, 25,100) );
-  attacks.push_back(new Attack("hydro pump", "water", 120, 5, 80) );
-  attacks.push_back(new Attack("swift","normal", 60, 20,100) );//acc could be off
+  setMove( "tackle", "normal", 35, 35, 95);
+  setMove("water gun", "water", 40, 25,100);
+  setMove("hydro pump", "water", 120, 5, 80);
+  setMove("swift","normal", 60, 20,100);//acc could be off
 }
-
-Attack* Staryu::getAttack(int i){
-  return attacks[i];
-}
-

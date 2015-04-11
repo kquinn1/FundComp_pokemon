@@ -35,13 +35,9 @@ void Pikachu::print(){
 
 void Pikachu::setAttacks(){
 //simplification of attacks, starts out with four attacks
- attacks.push_back(new Attack( "quick attack", "normal", 40,30, 100) );
- attacks.push_back(new Attack("thunderbolt", "electric", 90, 15,100) );//learn by tm
- attacks.push_back(new Attack("thundershock", "electric", 40,30 ,100) );
- attacks.push_back(new Attack("mega punch","normal", 80, 20,85) );//learn by tm
-}
-
-Attack* Pikachu::getAttack(int i){
-  return attacks[i];
+  setMove("quick attack", "normal", 40,30, 100);
+  setMove("thunderbolt", "electric", 90, 15,100);//learn by tm
+  setMove("thundershock", "electric", 40,30 ,100);
+  setMove("mega punch","normal", 80, 20,85);//learn by tm
 }
 

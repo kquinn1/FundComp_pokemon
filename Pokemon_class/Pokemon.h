@@ -5,9 +5,10 @@
 // to do: add attacks
 #ifndef POKEMON_H
 #define POKEMON_H
+#include "Attack.h"
+#include <vector>
 #include <string>
 using namespace std; //for string
-//#include "Attack.h"
 class Pokemon{
   public: 
 	Pokemon(int level); //base variables will be set in other classes
@@ -44,7 +45,8 @@ class Pokemon{
  	void setBaseHP(int);
 	virtual void print()= 0;
 	void restoreHP(); //restore HP to maxHP
-	
+	Attack* getAttack(int);
+	void setMove(string, string, int, int, int); //used in other pokemon to push back specific attacks
   private:
 	string type;
 	int base_A;// base stats are particular for the type of pokemon
@@ -70,6 +72,7 @@ class Pokemon{
 	int level;
 	int HP; // health
 	int maxHP; //max health, or the initial HP
+	vector<Attack*> attacks;
 };
 
 #endif

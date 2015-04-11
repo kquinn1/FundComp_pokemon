@@ -24,6 +24,8 @@ Psyduck::Psyduck(int level) : Water(level){
   Pokemon::set_spec_A();
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
+
+  setAttacks();
 }
 void Psyduck::print(){
   cout << "PSYDUCK" ; 
@@ -31,12 +33,8 @@ void Psyduck::print(){
 
 void Psyduck::setAttacks(){
 //simplification of attacks, starts out with four attacks
-  attacks.push_back(new Attack( "scratch", "normal", 40,35, 100) );
-  attacks.push_back(new Attack("hydro pump", "water", 120, 5,80) );
-  attacks.push_back(new Attack("fury swipes", "normal", 18,15,80) );
-  attacks.push_back(new Attack("mega punch","normal", 80, 20,85) );//learn by tm
-}
-
-Attack* Psyduck::getAttack(int i){
-  return attacks[i];
+  setMove( "scratch", "normal", 40,35, 100);
+  setMove("hydro pump", "water", 120, 5,80);
+  setMove("fury swipes", "normal", 18,15,80);
+  setMove("mega punch","normal", 80, 20,85);//learn by tm
 }

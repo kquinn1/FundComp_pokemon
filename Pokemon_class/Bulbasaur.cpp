@@ -25,22 +25,21 @@ Bulbasaur::Bulbasaur(int level) : Grass(level){
   Pokemon::set_spec_A();
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
+
+  setAttacks();
 }
 
 void Bulbasaur::print() {
 // such that type and pokemon are virual need a function definition
 // in the species class
- cout << "BULBASAUR";
+  cout << "BULBASAUR";
 }
 
 void Bulbasaur::setAttacks(){
 //simplification of attacks, starts out with four attacks
-  attacks.push_back(new Attack( "tackle", "normal", 35,35, 95) );
-  attacks.push_back(new Attack("vine whip", "grass", 35, 10,100) );
-  attacks.push_back(new Attack("razor leaf", "grass", 55, 25 , 95) );
-  attacks.push_back(new Attack("solar beam","grass", 120, 10,100) );
+  setMove( "tackle", "normal", 35,35, 95);
+  setMove("vine whip", "grass", 35, 10,100);
+  setMove("razor leaf", "grass", 55, 25 , 95);
+  setMove("solar beam","grass", 120, 10,100);
 }
 
-Attack* Bulbasaur::getAttack(int i){
-  return attacks[i];
-}
