@@ -5,29 +5,30 @@
 
 #ifndef PLAYER_H
 #define PLAYER_H
+#include "Pokemon.h"
+//need to include types and species headers?
 #include <vector>
 class Player{
   public:
-	Player(); // need a way to set the pokemon the player has 
-//	int getX(); // return x coordinate
-//	int getY(); //return y coordinate 
-//	void updateX(int);
-//	void updateY(int); // update the coordinates
+	Player(int, int); // need a way to set the pokemon the player has 
+	int getX(){ return X; }; // return x coordinate
+	int getY(){ return Y; }; //return y coordinate 
+	void updateX(int);;
+	void updateY(int); // update the coordinates
 	void setPokemon(); //push_back different pokemon onto the player's available pokemon
-        void setCurrentPokemon( Pokemon* monster);
-	void addPokemon(Pokemon* monster, int level);
-        void deletePokemon(int i); //is this needed
+        void setCurrentPokemon(Pokemon*);
+        Pokemon* getPokemon(int i);
+	Pokemon* getCurrentPokemon();
+	void addPokemon(Pokemon*, int level);
+        void deletePokemon(int); //is this needed
 	int getMoney(){ return money; };
 	void setMoney(int i){ money+=i; };
   private:
-	int x;
-	int y; // player location
+	int X;
+	int Y; // player location
 	int money;
         vector<Pokemon*> myPoke;
+	Pokemon* inAction; //set current pokemon
 };
-
-int Player::getX(){ return x;}
-
-int Player::getY(){return y;}
 #endif
 
