@@ -2,6 +2,11 @@
 //Player implementation file
 //
 #include "Player.h"
+#include "Pikachu.h"
+#include "Charmander.h"
+#include "Squirtle.h"
+#include "Bulbasaur.h"
+//will need to include all the pokemon classes
 
 Player::Player(int myX, int myY){
   X = myX;
