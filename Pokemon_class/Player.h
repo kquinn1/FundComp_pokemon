@@ -1,12 +1,13 @@
 // Katie Quinn
 // CSE 20212
 // This will be a player class
-// currently a non working draft of the player class
+//tested using playertest.cpp
 
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "Pokemon.h"
 //need to include types and species headers?
+//figure out what header files needed in each program
 #include <vector>
 class Player{
   public:
