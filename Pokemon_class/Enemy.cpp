@@ -14,7 +14,8 @@
 #include "Staryu.h"
 //will need to include all the pokemon classes
 
-Enemy::Enemy(int myX, int myY, int prize, string poke1,int poke1Level, string poke2, int poke2Level){
+Enemy::Enemy(string myName, int myX, int myY, int prize, string poke1,int poke1Level, string poke2, int poke2Level){
+  name = myName;
   X = myX;
   Y = myY; //set the first position
   prizeMoney = prize; //money that the enemy gives to player if defeated

@@ -24,6 +24,9 @@ Fight::Fight(Player* m_player, Enemy* m_enemy){//, Pokemon* m_poke, int isWild){
 
 void Fight::battle(){
 //enemy and player class battle
+//enemy greets player
+  cout << myEnemy->getName() << " wants to battle!!!!" << endl;
+
 //intialize turn variable
   int turn = 0;
  // int quit = 0;
@@ -62,9 +65,12 @@ void Fight::battle(){
 //Todo:
 //winner logic, if player wins gains experience, gains 
   if(myPlayer->isDefeated()==1){
-     cout << "The player has been defeated!" << endl;
+     cout << endl << "The player has been defeated!" << endl;
   }else if(myEnemy->isDefeated()==1){
-     cout << "The trainer has been defeated!" << endl;
+     cout << endl << "The trainer has been defeated!" << endl; 
+     cout << "You receive: " << myEnemy->getMoney() << " in cash!" << endl;
+     myPlayer->setMoney(myEnemy->getMoney() );
+     cout << "Cash total: " << myPlayer->getMoney() << endl;
   }else { cout << "ERROR!" << endl;}
 }
 
@@ -95,12 +101,9 @@ void Fight::playerTurn(){
 //	result = myEnemy->getCurrentPokemon()->updateHP(damage_inflicted);
 	if(result == 1){//set a new enemy pokemon only if the enemy is not defeated e.g. no pokemon remaining
 	   if(myEnemy->isDefeated()==0){
-		 myEnemy->getCurrentPokemon()->print();
-		 cout << " has fainted! " << endl;
+		 cout << myEnemy->getCurrentPokemon()->getName() << " has fainted! " << endl;
 		 setEnemyPoke();		
-  		 cout << "Enemy sent out " ;
-  		 myEnemy->getCurrentPokemon()->print();
-		 cout << endl;
+  		 cout << "Enemy sent out " << myEnemy->getCurrentPokemon()->getName() << endl;
 	   }
 
         }
@@ -144,12 +147,8 @@ void Fight::enemyTurn(){
   if(result == 1){//set a new enemy pokemon
 //only if the player is not defeated e.g. no pokemon remaining
     if(myPlayer->isDefeated()==0){
-        myPlayer->getCurrentPokemon()->print();
-	cout << " has fainted!" ;
+	cout << myPlayer->getCurrentPokemon()->getName()<< " has fainted!" << endl ;
 	choosePoke();
-/*	cout << "Go! ";
-        myPlayer->getCurrentPokemon()->print();
-	cout << endl;*/
      }
   }
 }
@@ -261,7 +260,7 @@ int Fight::Damage(string turn,int choice){
   int ifAttack;//determine if there is an attack
   ifAttack = rand()%100;
   if(ifAttack>acc_attack){//account for probability there is an attack, based on attack accuracy
-   cout << endl <<"Attack missed!" << endl;
+   cout << "Attack missed!" << endl;
    return 0;
   }
   int STAB;

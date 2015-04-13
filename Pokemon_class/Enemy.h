@@ -13,7 +13,7 @@ using namespace std;
 
 class Enemy{
   public:
-	Enemy(int, int, int, string, int, string, int); 
+	Enemy(string,int, int, int, string, int, string, int); 
         // need a way to set the pokemon the player has
         // current a max of 2 pokemon with their two levels 
 	int getX(){ return X; }; // return x coordinate
@@ -27,9 +27,11 @@ class Enemy{
         void deletePokemon(); //is this needed
 	int getMoney(){ return prizeMoney; };
         int isDefeated(); //return if defeated
-	int getNumPoke(){return numPoke; }
+	int getNumPoke(){return numPoke; };
+	string getName(){return name; };
 	//should a similar function be included in player?
   private:
+	string name;
 	int X;
 	int Y; // player location
 	int prizeMoney; // the number of coins they give to player if defeated
