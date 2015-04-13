@@ -41,14 +41,10 @@ void Fight::battle(){
   enemy--;
   myEnemy->setCurrentPokemon(myEnemy->getPokemon(enemy));
 
-  cout << "Enemy sent out " ;
-  myEnemy->getCurrentPokemon()->print();
-  cout << endl<< "Go! ";
-  myPlayer->getCurrentPokemon()->print();
-  cout << endl;
+  cout << "Enemy sent out " <<  myEnemy->getCurrentPokemon()->getName() << endl;
+  cout << "Go! " << myPlayer->getCurrentPokemon()->getName() << endl;
 
-
-  cout << "Enemy has " << myEnemy->getCurrentPokemon()->getHP() << " HP!" <<endl;
+  cout << myEnemy->getCurrentPokemon()->getName() << myEnemy->getCurrentPokemon()->getHP() << " HP!" <<endl;
 //determine who goes first e.g. who has the fastest speed
   if((myPlayer->getCurrentPokemon()->getSpeed())<(myEnemy->getCurrentPokemon()->getSpeed())) turn++;
   while(isWinner()==0){ // && quit == 0){
@@ -104,6 +100,7 @@ void Fight::playerTurn(){
 		 cout << myEnemy->getCurrentPokemon()->getName() << " has fainted! " << endl;
 		 setEnemyPoke();		
   		 cout << "Enemy sent out " << myEnemy->getCurrentPokemon()->getName() << endl;
+  		cout << myEnemy->getCurrentPokemon()->getName() << myEnemy->getCurrentPokemon()->getHP() << " HP!" <<endl;
 	   }
 
         }
@@ -129,11 +126,15 @@ void Fight::enemyTurn(){
   int randChoice;
   int damage_inflicted;
   int result; //whether or not the user needs to choose an enemy pokemon
- //set statistics needed to calculate the damage 
-  randChoice=rand()%4; //choose a random number in between 0 and 3
-//calculate the damage inflicted
-//use the attack on the pokemon
-//display the battle
+  int valid = 0; 
+//set statistics needed to calculate the damage 
+  while(valid==0){
+    randChoice=rand()%4; //choose a random number in between 0 and 3
+//rand Choice must have valid PP
+    if(myEnemy->getCurrentPokemon()->getAttack(randChoice)->getPP() > 0){
+       valid = 1; //the attack is valid
+    }
+   }
   cout << myEnemy->getCurrentPokemon()->getName() << " will use " << myEnemy->getCurrentPokemon()->getAttack(randChoice)->getName()<< "." << endl;
 //calculate the damage inflicted
 //damage_inflicted =Damage(speed, level, attack, player_defense, attack_power, attack_type, type, player_type, attack_acc);
@@ -168,8 +169,7 @@ void Fight::choosePoke(){
   //declare iterator
     size = myPlayer->getNumPoke();
     for(int i=0; i<size; i++){
-      cout << "Choice " << i << ": ";
-      myPlayer->getPokemon(i)->print();
+      cout << "Choice " << i << ": "<<myPlayer->getPokemon(i)->getName();
       cout <<"      Current HP: "<< myPlayer->getPokemon(i)->getHP() << endl;
     }  
     cout << "I choose..." ;
@@ -181,9 +181,7 @@ void Fight::choosePoke(){
     } else valid = 1;
   }
   myPlayer->setCurrentPokemon(myPlayer->getPokemon(uChoice));
-  cout << endl<< "Go! ";
-  myPlayer->getCurrentPokemon()->print();
-  cout << endl;
+  cout << "Go! " << myPlayer->getCurrentPokemon()->getName() << endl;
 }
 
 void Fight::battleMenu(){
