@@ -17,7 +17,8 @@ class Fight{
 	void wildBattle(); //fight if not enemt 
         int isWinner(); //determine who wins
         //will return a 1 if there is a winner, 0 if no winner
-	int Damage(int,int,int,int,int,string,string,string,int); //calculate the damage
+        int Damage(string, int);
+//	int Damage(int,int,int,int,int,string,string,string,int); //calculate the damage
 	float typeCalc(string, string); //calculate the type modifier
 	void choosePoke();//allows the user to choose which pokemon to battle with 
 	void battleMenu(); //displays a menu for the player to choose battle 
