@@ -25,6 +25,7 @@ Goldeen::Goldeen(int level) : Water(level){
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
 
+  Pokemon::setName("Goldeen");
   setAttacks();
 }
 

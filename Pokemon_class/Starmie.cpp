@@ -25,6 +25,7 @@ Starmie::Starmie(int level) : Water(level){
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
 
+  Pokemon::setName("Starmie");
   setAttacks();
 }
 

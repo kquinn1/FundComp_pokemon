@@ -25,6 +25,7 @@ Staryu::Staryu(int level) : Water(level){
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
 
+  Pokemon::setName("Staryu");
   setAttacks();
 }
 

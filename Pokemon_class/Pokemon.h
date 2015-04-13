@@ -26,6 +26,8 @@ class Pokemon{
 	void set_spec_D();
 	void setSpeed();
         void setHP(); // HP initially
+	void setName(string s){ name = s; } ;
+	string getName(){return name;};
 	int GetAttack();	
 	int getDefense();
 	int getSpecA();
@@ -49,6 +51,7 @@ class Pokemon{
 	void setMove(string, string, int, int, int); //used in other pokemon to push back specific attacks
   private:
 	string type;
+	string name;
 	int base_A;// base stats are particular for the type of pokemon
 	int base_D;
 	int base_Speed;

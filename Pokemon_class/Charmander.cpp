@@ -25,6 +25,7 @@ Charmander::Charmander(int level) : Fire(level){
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
 
+  Pokemon::setName("Charmander");
   setAttacks(); 
 }
 
