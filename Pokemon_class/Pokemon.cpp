@@ -176,9 +176,8 @@ int Pokemon::getHP(){
 int Pokemon::updateHP(int damage){
 //should this be changed?
   HP-=damage;
-  if(HP<0) damage = 0; //set HP to zero, can't be negative
+  if(HP<0) HP = 0; //set HP to zero, can't be negative
   if(HP==0){
-     cout << "Pokemon has fainted!"; 
      return 1;
   }
   else return 0;

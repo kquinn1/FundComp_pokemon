@@ -19,7 +19,8 @@ Enemy::Enemy(int myX, int myY, int prize, string poke1,int poke1Level, string po
   Y = myY; //set the first position
   prizeMoney = prize; //money that the enemy gives to player if defeated
 
- //initalzie the current pokemon using strings
+  numPoke = 0; 
+//initalzie the current pokemon using strings
  if (poke1 != "") setPokemon(poke1,poke1Level); 
  if (poke2 != "") setPokemon(poke2,poke2Level); 
 }
