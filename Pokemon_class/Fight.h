@@ -11,14 +11,20 @@
 
 class Fight{
   public:
-	Fight(Player*, Enemy*, Pokemon*, int); //constructor
-        void Battle(); //fight
+	Fight(Player*, Enemy*);
+//	Fight(Player*, Enemy*, Pokemon*, int); //constructor
+        void battle(); //fight
 	void wildBattle(); //fight if not enemt 
         int isWinner(); //determine who wins
-        //will return a 1 if player wins, a 0 if the enemy wins
-	int calcDamage(int,int,int,int,int,string,string,string,int); //calculate the damage
-	float typeCalc(string, string); //calculate the type 
- 
+        //will return a 1 if there is a winner, 0 if no winner
+	int Damage(int,int,int,int,int,string,string,string,int); //calculate the damage
+	float typeCalc(string, string); //calculate the type modifier
+	void choosePoke();//allows the user to choose which pokemon to battle with 
+	void battleMenu(); //displays a menu for the player to choose battle 
+	int showAttacks(); //show attacks & choose an attack
+	void setEnemyPoke(); //set enemy pokemon at start of battle, if fainted:
+	void playerTurn();
+	void enemyTurn(); //the player turn or the enemy turn functions
   private:
 	Player* myPlayer;
 	Enemy* myEnemy;

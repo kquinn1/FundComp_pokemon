@@ -24,9 +24,10 @@ class Enemy{
         void setCurrentPokemon(Pokemon*);
         Pokemon* getPokemon(int i);
 	Pokemon* getCurrentPokemon();
-        void deletePokemon(int); //is this needed
+        void deletePokemon(); //is this needed
 	int getMoney(){ return prizeMoney; };
         int isDefeated(); //return if defeated
+	int getNumPoke(){return numPoke; }
 	//should a similar function be included in player?
   private:
 	int X;
@@ -34,6 +35,8 @@ class Enemy{
 	int prizeMoney; // the number of coins they give to player if defeated
         vector<Pokemon*> myPoke;
 	Pokemon* inAction; //set current pokemon
+	int numPoke;
+
 };
 #endif
 

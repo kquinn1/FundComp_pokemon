@@ -39,6 +39,8 @@ void Player::setPokemon(){
   myPoke.push_back(new Charmander(10) );
   myPoke.push_back(new Bulbasaur(10) );
   myPoke.push_back(new Squirtle(10) );
+
+  numPoke = 4;
 }
 
 void Player::setCurrentPokemon(Pokemon* poke){
@@ -65,4 +67,11 @@ void Player::deletePokemon(int i){
   myPoke.erase(myPoke.begin()+ i); //cannot do erase(i)?
 }
 
-
+int Player::isDefeated(){
+//returns a 1 if defeated
+//returns a 0 if not
+  for(int i = 0; i<numPoke; i++){
+      if(getPokemon(i)->getHP() > 0 ) return 0;
+  }
+  return 1; //all pokemon have HP of 0 or less, player is defeated
+}

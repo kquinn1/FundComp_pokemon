@@ -23,12 +23,15 @@ class Player{
 	void addPokemon(Pokemon*, int level);
         void deletePokemon(int); //is this needed
 	int getMoney(){ return money; };
+	int getNumPoke(){return numPoke;}
+	int isDefeated(); //determine if defeated
 	void setMoney(int i){ money+=i; };
   private:
 	int X;
 	int Y; // player location
 	int money;
         vector<Pokemon*> myPoke;
+	int numPoke;
 	Pokemon* inAction; //set current pokemon
 };
 #endif

@@ -13,20 +13,6 @@
 #include "Starmie.h"
 #include "Staryu.h"
 //will need to include all the pokemon classes
-/*
-//used if want to use a switch statement, c++ can't use strings in case statement
-enum string_code{
-  bulbasaur,
-  charamander,
-  goldeen,
-  horsea,
-  pikachu,
-  psyduck,
-  shellder,
-  squirtle,
-  sharmie,
-  staryu
-};*/
 
 Enemy::Enemy(int myX, int myY, int prize, string poke1,int poke1Level, string poke2, int poke2Level){
   X = myX;
@@ -45,33 +31,43 @@ void Enemy::setPokemon(string poke, int myLevel){
 //very ugly function
   if(poke == "Bulbasaur"){
     myPoke.push_back(new Bulbasaur(myLevel) ); 
+    numPoke++;
   }
   else if(poke == "Charmander"){ 
     myPoke.push_back(new Charmander(myLevel) ); 
+    numPoke++;
   } 
   else if(poke == "Goldeen"){ 
     myPoke.push_back(new Goldeen(myLevel) ); 
+    numPoke++;
   } 
   else if(poke == "Horsea"){ 
     myPoke.push_back(new Horsea(myLevel) ); 
+    numPoke++;
   } 
   else if(poke == "Pikachu"){ 
     myPoke.push_back(new Pikachu(myLevel) ); 
+    numPoke++;
   }
   else if(poke == "Psyduck"){ 
     myPoke.push_back(new Psyduck(myLevel) ); 
+    numPoke++;
   } 
   else if(poke == "Shellder"){ 
     myPoke.push_back(new Shellder(myLevel) );
+    numPoke++;
   } 
   else if(poke == "Squirtle"){ 
     myPoke.push_back(new Squirtle(myLevel) ); 
+    numPoke++;
   } 
   else if(poke == "Starmie"){ 
-     myPoke.push_back(new Starmie(myLevel) ); 
+    myPoke.push_back(new Starmie(myLevel) ); 
+    numPoke++;
   } 
   else if(poke == "Staryu"){ 
     myPoke.push_back(new Staryu(myLevel) );
+    numPoke++;
   } 
 }
 
@@ -90,9 +86,10 @@ Pokemon* Enemy::getCurrentPokemon(){
   return inAction;
 }
 
-void Enemy::deletePokemon(int i){
+void Enemy::deletePokemon(){
 // will use: erase a pokemon that is defeated?
-  myPoke.erase(myPoke.begin()+ i); //cannot do erase(i)?
+  myPoke.pop_back(); 
+  numPoke--;
 }
 
 int Enemy::isDefeated(){
@@ -103,7 +100,9 @@ int Enemy::isDefeated(){
   for(it=myPoke.begin(); it != myPoke.end(); ++it){
     if(*it->getHP > 0){return 0;};  
   }*/
-
-  return 0; //all pokemon have HP of 0, the enemy is defeated
+  for(int i = 0; i<numPoke; i++){
+      if(getPokemon(i)->getHP() > 0) return 0;
+   }
+  return 1; //all pokemon have HP of 0, the enemy is defeated
 }
 

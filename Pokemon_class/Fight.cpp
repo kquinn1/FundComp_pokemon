@@ -4,17 +4,19 @@
 #include <stdio.h> //NULL
 #include <stdlib.h> //srand, rand
 #include <time.h> // time
-//#include <iostream>
-Fight::Fight(Player* m_player, Enemy* m_enemy, Pokemon* m_poke, int isWild){
+#include <iostream>
+using namespace std;
+
+Fight::Fight(Player* m_player, Enemy* m_enemy){//, Pokemon* m_poke, int isWild){
   myPlayer= m_player;
   //if statement
-  if(isWild==1){// a wild pokemon battle
-   myWild = m_poke;  
-   wildBattle();
-  }else{ // an enemy pokemon battle
+//  if(isWild==1){// a wild pokemon battle
+ //  myWild = m_poke;  
+ //  wildBattle();
+ // }else{ // an enemy pokemon battle
    myEnemy = m_enemy;
    battle();
-  }
+ // }
 }
 
 //should there be a deconstructor?
@@ -22,15 +24,216 @@ Fight::Fight(Player* m_player, Enemy* m_enemy, Pokemon* m_poke, int isWild){
 
 void Fight::battle(){
 //enemy and player class battle
+//intialize turn variable
+  int turn = 0;
+ // int quit = 0;
+  int enemy;
+//the player should choose the current pokemon to use
+  choosePoke();
+//simplification: usually is the first pokemon available, then has options to switch later on
 
+//the enemy will use the last pokemon available to use in vector
+//as the pokemon when fainted will be pop_back'd
+  enemy = myEnemy->getNumPoke();
+  enemy--;
+  myEnemy->setCurrentPokemon(myEnemy->getPokemon(enemy));
 
+  cout << "Enemy sent out " ;
+  myEnemy->getCurrentPokemon->print();
+  cout << "Go! ";
+  myPlayer->getCurrentPokemon->print();
+  
+//determine who goes first e.g. who has the fastest speed
+  if((myPlayer->getCurrentPokemon()->getSpeed())<(myEnemy->getCurrentPokemon()->getSpeed())) turn++;
+  while(isWinner()!=1){ // && quit == 0){
+// while there is not a winner
+    if((turn%2 + 1) %2){//Player's turn
+   	playerTurn(); //should pass an int denoting a wild pokemon or not
+      }
+
+    else{//the enemy's turn	
+        enemyTurn();
+    } 
+    turn++; //increment the turn in order to change turns 
+  }  
+//Todo:
+//winner logic, if player wins gains experience, gains 
+  if(myPlayer->isDefeated==1){
+     cout << "The player has been defeated!" << endl;
+  } else{
+     cout << "The trainer has been defeated!" << endl;
+  }
+}
+
+void Fight::playerTurn(){
+//function represents a player's turn
+  int damage_inflicted;
+  int result; //store the result of updating the HP should change
+  int uChoice;
+//set statistics needed for damage
+  int speed
+  int level;
+  int attack;
+  int enemy_defense;
+  int attack_power;
+  string attack_type;
+  string type;
+  string enemy_type;
+  int attack_acc;
+//option to change pokemon, run, or fight, item implemented later
+  battleMenu(); //display options on a turn
+  cin >> uChoice;
+  switch(uChoice){
+     case 1://Fight 
+//show attacks & decide on the attack
+	uChoice = showAttacks();
+//set the variables to pass to damage function
+        speed = myPlayer->getCurrentPokemon()->getSpeed();
+	level = myPlayer->getCurrentPokemon()->getLevel();
+	attack = myPlayer->getCurrentPokemon()->GetAttack();
+	enemy_defense = myEnemy->getCurrentPokemon()->getDefense();
+//don't account for special attacks ackkkk
+	attack_power = myPlayer->getCurrentPokemon()->getAttack(uChoice)->getPower();
+	attack_type = myPlayer->getCurrentPokemon()->getAttack(uChoice)->getType();
+	type = myPlayer->getCurrentPokemon()->getType();
+	enemy_type = myEnemy->getCurrentPokemon()->getType();
+	attack_acc = myPlayer->getCurrentPokemon()->getAttack(uChoice)->getAcc;
+//use the attack on the pokemon
+//calculate the damage inflicted
+	damage_inflicted =Damage(speed, level, attack, enemy_defense, attack_power, attack_type, type, enemy_type, attack_acc);
+//set the PP on the attack used
+	myPlayer->getCurrentPokemon()->getAttack(uChoice)->updatePP();
+//check to see if enemy pokemon fainted: set new pokemon
+	result = myEnemy->getCurrentPokemon()->updateHP(damage_inflicted);
+	if(result == 1){//set a new enemy pokemon
+//only if the enemy is not defeated e.g. no pokemon remaining
+	   if(myEnemy->isDefeated()==0){
+		 setEnemyPoke();		
+  		 cout << "Enemy sent out " ;
+  		 myEnemy->getCurrentPokemon->print();
+	   }
+        }
+        break;
+     case 2://Change Pokemon
+	choosePoke();
+	break;
+     case 3://Run
+	cout << "Cannot run away from a trainer!" << endl;
+	//can run away from a wild pokemon
+	//fix player turn to accomadate both types of battles
+        break;
+     default:
+        cout << "Invalid option. You fail." << endl;
+	break;
+     }
+}
+
+void Fight::enemyTurn(){
+//function represents an enemy's turn
+//choose an attack randomly
+  srand( time(NULL) );//initialize random seed
+  int randChoice;
+  int damage_inflicted;
+  int result; //whether or not the user needs to choose an enemy pokemon
+ //set statistics needed to calculate the damage 
+  int speed
+  int level;
+  int attack;
+  int player_defense;
+  int attack_power;
+  string attack_type;
+  string type;
+  string player_type;
+  int attack_acc;
+  randChoice=rand()%4; //choose a random number in between 0 and 3
+//calculate the damage inflicted
+  speed = myEnemy->getCurrentPokemon()->getSpeed();
+  level = myEnemy->getCurrentPokemon()->getLevel();
+  attack = myEnemy->getCurrentPokemon()->GetAttack();
+  player_defense = myPlayer->getCurrentPokemon()->getDefense();
+//don't account for special attacks ackkkk
+  attack_power = myEnemy->getCurrentPokemon()->getAttack(uChoice)->getPower();
+  attack_type = myEnemy->getCurrentPokemon()->getAttack(uChoice)->getType();
+  type = myEnemy->getCurrentPokemon()->getType();
+  player_type = myPlayer->getCurrentPokemon()->getType(); 
+  attack_acc = myEnemy->getCurrentPokemon()->getAttack(uChoice)->getAcc;
+//use the attack on the pokemon
+//calculate the damage inflicted
+  damage_inflicted =Damage(speed, level, attack, player_defense, attack_power, attack_type, type, player_type, attack_acc);
+//set the PP on the attack used
+  myEnemy->getCurrentPokemon()->getAttack(randChoice)->updatePP();
+//check to see if enemy pokemon fainted: set new pokemon
+  result = myPlayer->getCurrentPokemon()->updateHP(damage_inflicted);
+  if(result == 1){//set a new enemy pokemon
+//only if the player is not defeated e.g. no pokemon remaining
+    if(myPlayer->isDefeated()==0){
+        choosePoke();
+	cout << "Go! ";
+        myPlayer->getCurrentPokemon->print();
+     }
+  }
 }
 
 void Fight::wildBattle(){
 //the player and a wild pokemon battle
-
+//the player should choose the current pokemon to use
 }
 
+void Fight::choosePoke(){
+//this function allows the user to choose which pokemon to use
+  int size;
+  int uChoice;
+  int valid = 0;
+  while( valid == 0 ){
+    cout << "Pick the pokemon you will use: " << endl;  
+  //declare iterator
+    size = myPlayer->getNumPoke();
+    for(i=0; i<size; i++){
+      cout << "Choice " << i << ": ";
+      myPlayer->getPokemon(i)->print();
+      cout <<"Current HP: "<< myPlayer->getPokemon(i)->getHP() << endl;
+    }  
+    cout << "I choose..." 
+    cin >> uChoice;
+//set the current Pokemon
+    if(myPlayer->getPokemon(uChoice)->getHP()==0){
+//can't use a fainted pokemon
+      cout <<"This pokemon has fainted!" << endl;
+    }
+    else valid = 1;
+  }
+  myPlayer->setCurrentPokemon(myPlayer->getPokemon(uChoice));
+}
+
+void Fight::battleMenu(){
+  cout << "Choose an option: " << endl;
+  cout << "1. Fight " << endl;
+  cout << "2. Change Pokemon " << endl;
+  cout << "3. Run " << endl;
+//cout << "4. Item " << endl;
+  cout << "Your choice: " ;
+}
+
+int Fight::showAttacks(){
+  int valid = 0; //in order to check for a valid attack
+  int uChoice;
+  while(valid == 0){
+    cout << "Choose an attack...." << endl;
+    for(int i = 0; i<4; i++){
+        cout << i << ". ";
+        cout << myPlayer->getCurrentPokemon()->getAttack(i)->getName() <<endl;
+        cout << "Type: " ;
+        cout << myPlayer->getCurrentPokemon()->getAttack(i)->getType() << endl;
+        cout << "PP: " ;
+        cout << myPlayer->getCurrentPokemon()->getAttack(i)->getPP() << endl;
+    }
+    cin >> uChoice;
+    if(myPlayer->getCurrentPokemon()->getAttack(uChoice)->getPP() == 0 ){
+      cout << "This attack is not valid! " <<endl;
+    } else {valid = 1; }
+  }
+  return uChoice;
+}
 //calculate the damage a pokemon does
 int Fight::Damage(int baseSpeed,int a_level, int a_attack, int d_defense, int attack_power, string attack_type, string a_type, string d_type, int acc_attack){
   srand( time(NULL) );//initialize random seed
@@ -95,4 +298,20 @@ float Fight::typeCalc(string attack_type,string d_type){
      else type = 1;
   } 
   return type;
+}
+
+int Fight::intWinner(){
+//if there is a winner
+  if(myEnemy->isDefeated()==0 && myPlayer->isDefeated()==0) return 1;
+  return 0; //there is no winner
+}
+
+void Fight::setEnemyPoke(){
+  int enemy;
+//delete the first in the vector though not ideal
+  myEnemy->deletePokemon(); 
+  enemy = myEnemy->getNumPoke();
+  enemy--;
+  myEnemy->setCurrentPokemon(myEnemy->getPokemon(enemy));
+//the enemy will use the last pokemon available to use in vector
 }
