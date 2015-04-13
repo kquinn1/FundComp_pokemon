@@ -147,9 +147,9 @@ void Fight::enemyTurn(){
         myPlayer->getCurrentPokemon()->print();
 	cout << " has fainted!" ;
 	choosePoke();
-	cout << "Go! ";
+/*	cout << "Go! ";
         myPlayer->getCurrentPokemon()->print();
-	cout << endl;
+	cout << endl;*/
      }
   }
 }
@@ -182,6 +182,9 @@ void Fight::choosePoke(){
     } else valid = 1;
   }
   myPlayer->setCurrentPokemon(myPlayer->getPokemon(uChoice));
+  cout << endl<< "Go! ";
+  myPlayer->getCurrentPokemon()->print();
+  cout << endl;
 }
 
 void Fight::battleMenu(){
@@ -231,27 +234,27 @@ int Fight::Damage(string turn,int choice){
 
   if(turn=="Player"){
 //set the variables to pass to damage function
-        speed = myPlayer->getCurrentPokemon()->getSpeed();
-	level = myPlayer->getCurrentPokemon()->getLevel();
-	attack = myPlayer->getCurrentPokemon()->GetAttack();
-	enemy_defense = myEnemy->getCurrentPokemon()->getDefense();
+        baseSpeed = myPlayer->getCurrentPokemon()->getSpeed();
+	a_level = myPlayer->getCurrentPokemon()->getLevel();
+	a_attack = myPlayer->getCurrentPokemon()->GetAttack();
+	d_defense = myEnemy->getCurrentPokemon()->getDefense();
 //don't account for special attacks ackkkk
 	attack_power = myPlayer->getCurrentPokemon()->getAttack(choice)->getPower();
 	attack_type = myPlayer->getCurrentPokemon()->getAttack(choice)->getType();
-	type = myPlayer->getCurrentPokemon()->getType();
-	enemy_type = myEnemy->getCurrentPokemon()->getType();
-	attack_acc = myPlayer->getCurrentPokemon()->getAttack(choice)->getAcc();
+	a_type = myPlayer->getCurrentPokemon()->getType();
+	d_type = myEnemy->getCurrentPokemon()->getType();
+	acc_attack = myPlayer->getCurrentPokemon()->getAttack(choice)->getAcc();
   }else{//enemy turn
-	speed = myEnemy->getCurrentPokemon()->getSpeed();
-	level = myEnemy->getCurrentPokemon()->getLevel();
-  	attack = myEnemy->getCurrentPokemon()->GetAttack();
- 	 player_defense = myPlayer->getCurrentPokemon()->getDefense();
+	baseSpeed = myEnemy->getCurrentPokemon()->getSpeed();
+	a_level = myEnemy->getCurrentPokemon()->getLevel();
+  	a_attack = myEnemy->getCurrentPokemon()->GetAttack();
+ 	d_defense = myPlayer->getCurrentPokemon()->getDefense();
 //don't account for special attacks ackkkk
   	attack_power = myEnemy->getCurrentPokemon()->getAttack(choice)->getPower();
   	attack_type = myEnemy->getCurrentPokemon()->getAttack(choice)->getType();
-  	type = myEnemy->getCurrentPokemon()->getType();
-  	player_type = myPlayer->getCurrentPokemon()->getType(); 
-  	attack_acc = myEnemy->getCurrentPokemon()->getAttack(choice)->getAcc();
+  	a_type = myEnemy->getCurrentPokemon()->getType();
+  	d_type = myPlayer->getCurrentPokemon()->getType(); 
+  	acc_attack = myEnemy->getCurrentPokemon()->getAttack(choice)->getAcc();
   }
 
   srand( time(NULL) );//initialize random seed
