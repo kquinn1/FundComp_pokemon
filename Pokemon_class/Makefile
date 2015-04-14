@@ -1,7 +1,7 @@
 #Object files:
-OBJ = gym.o Attack.o Bulbasaur.o Charmander.o Electric.o Enemy.o Fight.o Fire.o Goldeen.o Grass.o Heal.o Horsea.o Pikachu.o Player.o Pokemon.o Psyduck.o Shellder.o Squirtle.o Starmie.o Water.o Staryu.o
+OBJ = gym.o Attack.o Bulbasaur.o Charmander.o Electric.o Enemy.o Fight.o Fire.o Goldeen.o Grass.o Heal.o Horsea.o Pikachu.o Player.o Pokemon.o Psyduck.o Shellder.o Squirtle.o Starmie.o Water.o Staryu.o Item.o
 #Header files:
-HDR =  Attack.h Bulbasaur.h Charmander.h Electric.h Enemy.h Fight.h Fire.h Goldeen.h Grass.h Heal.h Horsea.h Pikachu.h Player.h Pokemon.h Psyduck.h Shellder.h Squirtle.h Starmie.h Water.h Staryu.h 
+HDR =  Attack.h Bulbasaur.h Charmander.h Electric.h Enemy.h Fight.h Fire.h Goldeen.h Grass.h Heal.h Horsea.h Pikachu.h Player.h Pokemon.h Psyduck.h Shellder.h Squirtle.h Starmie.h Water.h Staryu.h Item.h
 #Libraries (further on)
 #LiBS = `pkg-config -- `
 

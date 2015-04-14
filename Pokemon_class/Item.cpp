@@ -2,7 +2,7 @@
 //Item implementation file
 // Item class stores a name, a description, the image (stored as a string)
 // as well as an integer representing the price
-#include "Itrem.h"
+#include "Item.h"
 #include <string>
 
 Item::Item(string myName, string myDescrip, string myImg, int myPrice){

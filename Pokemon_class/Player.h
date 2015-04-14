@@ -6,6 +6,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "Pokemon.h"
+#include "Item.h"
 //need to include types and species headers?
 //figure out what header files needed in each program
 #include <vector>
@@ -23,6 +24,8 @@ class Player{
         void setCurrentPokemon(Pokemon*);
         Pokemon* getPokemon(int i);
 	Pokemon* getCurrentPokemon();
+	Item* getItem(int);
+	void deleteItem(int);
 	void addPokemon(Pokemon*, int level);
         void deletePokemon(int); //is this needed
 	int getMoney(){ return money; };
@@ -34,6 +37,7 @@ class Player{
 	int X;
 	int Y; // player location
 	int money;
+ 	vector<Item*> myItem;
         vector<Pokemon*> myPoke;
 	int numPoke;
 	Pokemon* inAction; //set current pokemon

@@ -9,7 +9,7 @@
 #include "Fight.h"
 #include "Enemy.h"
 #include "Player.h" //not sure if these two are needed
-#include "Heal.h"
+//#include "Heal.h" if you need to heal pokemon mid game
 #include <iostream>
 #include <string>
 using namespace std;
@@ -33,13 +33,12 @@ int main(){
   myplay = &Ash;
 
 // need to change the pokemon the player can instantiate
-// the fights the player encounter
-// need to add experience, and can have pokemon level up after each round
+// need to have pokemon level up after each round
 // need to add items
 // need to allow people to switch pokemon in between defeating
 // eventually: fights implemented when the player intersects their line of sight  
   Fight myfight(myplay , first );
-  Heal healing(myplay);
+// if need to heal  Heal healing(myplay);
   Fight myfight2(myplay, second);
   Fight myfight3(myplay, third);
 

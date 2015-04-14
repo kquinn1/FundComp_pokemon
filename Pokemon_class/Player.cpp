@@ -75,6 +75,16 @@ void Player::deletePokemon(int i){
   myPoke.erase(myPoke.begin()+ i); //cannot do erase(i)?
 }
 
+void Player::deleteItem(int i){
+  myItem.erase(myItem.begin() + i); //check to see if this works
+}
+
+Item* Player::getItem(int i){
+//need a function to use? then delete
+  return myItem[i];
+}
+
+
 int Player::isDefeated(){
 //returns a 1 if defeated
 //returns a 0 if not
