@@ -7,7 +7,7 @@ using namespace std;
 
 const int PIK_BASE_A = 55;
 const int PIK_BASE_D = 30;
-const int PIK_BASE_SPEED= 90;
+const int PIK_BASE_SPEED = 90;
 const int PIK_BASE_SPEC = 50;
 const int PIK_BASE_HP = 35; //base stats for pikachu
 
@@ -22,12 +22,13 @@ Pikachu::Pikachu(int level) : Electric(level){
   Pokemon::setHP(); //set HP initially
   Pokemon::setAttack();
   Pokemon::setDef();
-  Pokemon::set_spec_A();
-  Pokemon::set_spec_D();
+  Pokemon::setSpecial();
   Pokemon::setSpeed();
 
   Pokemon::setName("PIKACHU");
   setAttacks(); //set attacks for pikachu, does not allow the user to decide
+
+  Pokemon::setEXPtype("MF");
 }
 
 void Pikachu::print(){

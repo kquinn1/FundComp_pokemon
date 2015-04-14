@@ -14,6 +14,7 @@ class Attack{
 	int getPP();
 	int getAcc();
 	string getName();
+	void resetPP();
 	void updatePP(); //decrease pp if move used
   private:
 	string name;

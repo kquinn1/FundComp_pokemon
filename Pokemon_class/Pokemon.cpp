@@ -19,6 +19,8 @@ Pokemon::Pokemon(int myLevel){
   //set IVs
   setIVs();
 
+  //initialize EXP to 0
+  EXP = 0; 
   //set other dependent stats in species and type classes
 }
 
@@ -115,15 +117,9 @@ void Pokemon::setDef(){
 }
 
 
-void Pokemon::set_spec_A(){
-//determines the special attack of a pokemon
-specAttack = ( ((IV_Spec + base_Spec + ( sqrt(EV_Spec) / 8 )) * level )/50 ) + 5;
-}
-
-
-void Pokemon::set_spec_D(){
-//determines the special defense of a pokemon
-specDefense =( ((IV_Spec + base_Spec + ( sqrt(EV_Spec) / 8 ))* level )/50 ) + 5;
+void Pokemon::setSpecial(){
+//determines the special attack/defense of a pokemon
+special = ( ((IV_Spec + base_Spec + ( sqrt(EV_Spec) / 8 )) * level )/50 ) + 5;
 }
 
 
@@ -153,12 +149,8 @@ int Pokemon::getDefense(){
   return defense;
 }
 
-int Pokemon::getSpecA(){
-  return specAttack;
-}
-
-int Pokemon::getSpecD(){
-  return specDefense;
+int Pokemon::getSpecial(){
+  return special;
 }
 
 int Pokemon::getSpeed(){
@@ -184,13 +176,13 @@ int Pokemon::updateHP(int damage){
 }
 
 void Pokemon::updateLevel(int update){
+//this will be called if enough EXP points
   level+=update;
   cout << "New level: " << level << endl;
 // set the other dependant stats 
   setAttack();
   setDef();
-  set_spec_A();
-  set_spec_D();
+  setSpecial();
   setSpeed();
 }
 
@@ -201,3 +193,30 @@ Attack* Pokemon::getAttack(int i){
 void Pokemon:: setMove(string myName, string myType, int myPower, int myPP, int myAcc){
   attacks.push_back(new Attack(myName, myType, myPower, myPP, myAcc));
 }
+
+void Pokemon::calcEXP(int enemy_level){
+//will calculate the experience to award given a specific pokemon type
+  int exp2add; 
+  if(EXPtype=="F"){//currently have no fast pokemon but implemented for future
+//calculate experience for fast pokemon
+     exp2add = ( 4 * pow(enemy_level,3) ) / 5;
+  }else if(EXPtype=="MF"){
+//calculate experience for medium fast pokemon
+     exp2add = pow(enemy_level,3);
+  }else if(EXPtype=="MS"){
+//calculate experience for medium slow pokemon
+     exp2add = ((float)(1.2)* pow(enemy_level, 3) ) - (15 * pow(enemy_level,2)) +(100 * enemy_level) - 140;
+	//check this one!
+  }else if(EXPtype=="S"){
+//want to make sure that the last case is right
+     exp2add = ( 5 * pow(enemy_level,3) ) / 4;
+  }
+//display message
+  cout << name << " has gained " << exp2add << " EXP!" << endl;
+// add experience to the pokemon
+  EXP+=exp2add;
+
+  cout << "Current experience: " << EXP << endl;
+//need fucntion to check to see to level up
+}
+

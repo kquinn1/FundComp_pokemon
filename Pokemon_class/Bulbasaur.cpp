@@ -12,6 +12,7 @@ const int B_BASE_SPEC = 65;
 const int B_BASE_HP = 45; //base stats for bulbasaur
 
 Bulbasaur::Bulbasaur(int level) : Grass(level){
+//set base stats to calculate stats
   Pokemon::setBaseA(B_BASE_A);
   Pokemon::setBaseD(B_BASE_D);
   Pokemon::setBaseSpec(B_BASE_SPEC);
@@ -22,12 +23,14 @@ Bulbasaur::Bulbasaur(int level) : Grass(level){
   Pokemon::setHP(); //set HP initially
   Pokemon::setAttack();
   Pokemon::setDef();
-  Pokemon::set_spec_A();
-  Pokemon::set_spec_D();
+  Pokemon::setSpecial();
   Pokemon::setSpeed();
 
   Pokemon::setName("BULBASAUR");
   setAttacks();
+//set up experience type for leveling up
+  Pokemon::setEXPtype("MS"); //will allow for accurate calculations
+
 }
 
 void Bulbasaur::print() {

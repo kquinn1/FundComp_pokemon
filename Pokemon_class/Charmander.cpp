@@ -11,6 +11,7 @@ const int C_BASE_SPEC = 50;
 const int C_BASE_HP = 39; //base stats for charmander
 
 Charmander::Charmander(int level) : Fire(level){
+//set base stats
   Pokemon::setBaseA(C_BASE_A);
   Pokemon::setBaseD(C_BASE_D);
   Pokemon::setBaseSpec(C_BASE_SPEC);
@@ -21,12 +22,14 @@ Charmander::Charmander(int level) : Fire(level){
   Pokemon::setHP(); //set HP initially
   Pokemon::setAttack();
   Pokemon::setDef();
-  Pokemon::set_spec_A();
-  Pokemon::set_spec_D();
+  Pokemon::setSpecial();
   Pokemon::setSpeed();
 
   Pokemon::setName("CHARMANDER");
   setAttacks(); 
+
+//set exp type for experience calculations
+  Pokemon::setEXPtype("MS");
 }
 
 void Charmander::print(){

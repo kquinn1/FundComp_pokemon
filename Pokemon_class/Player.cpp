@@ -6,9 +6,17 @@
 #include "Charmander.h"
 #include "Squirtle.h"
 #include "Bulbasaur.h"
+#include <iostream>
+//using namespace std;
 //will need to include all the pokemon classes
 
 Player::Player(int myX, int myY){
+//ask the user for their name
+  cout << "Enter in your name: " ;
+  cin >> name;
+
+ cout << "Hello " << name << endl << "Welcome to the Pokemon Cerulean Gym!" << endl;
+
   X = myX;
   Y = myY; //set the first position
  
@@ -35,7 +43,7 @@ void Player::setPokemon(){
 //default pokemon a player starts with
 //can change this later
 //what level should the pokemon start out with?
-  myPoke.push_back(new Pikachu(15) );
+  myPoke.push_back(new Pikachu(20) );
   myPoke.push_back(new Charmander(15) );
   myPoke.push_back(new Bulbasaur(15) );
   myPoke.push_back(new Squirtle(15) );

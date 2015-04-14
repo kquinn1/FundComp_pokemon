@@ -21,12 +21,13 @@ Psyduck::Psyduck(int level) : Water(level){
   Pokemon::setHP(); //set HP initially
   Pokemon::setAttack();
   Pokemon::setDef();
-  Pokemon::set_spec_A();
-  Pokemon::set_spec_D();
+  Pokemon::setSpecial();
   Pokemon::setSpeed();
 
   Pokemon::setName("PSYDUCK");
   setAttacks();
+
+  Pokemon::setEXPtype("MF");
 }
 void Psyduck::print(){
   cout << "PSYDUCK" ; 

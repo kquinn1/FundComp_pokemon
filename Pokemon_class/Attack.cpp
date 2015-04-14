@@ -29,3 +29,8 @@ void Attack::updatePP(){
 // this function will be called if the move is used
   pp-=1; //decrease the number of times the moves can be used by 1
 }
+
+void Attack::resetPP(){
+//set PP to max PP
+  pp = maxPP; 
+}

@@ -9,6 +9,7 @@
 #include "Fight.h"
 #include "Enemy.h"
 #include "Player.h" //not sure if these two are needed
+#include "Heal.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -38,8 +39,11 @@ int main(){
 // need to allow people to switch pokemon in between defeating
 // eventually: fights implemented when the player intersects their line of sight  
   Fight myfight(myplay , first );
+  Heal healing(myplay);
   Fight myfight2(myplay, second);
   Fight myfight3(myplay, third);
+
+  cout << myplay->getUserName() << ", you win!" << endl;
 
   return 0;
 }

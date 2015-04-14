@@ -26,6 +26,7 @@ class Fight{
 	void setEnemyPoke(); //set enemy pokemon at start of battle, if fainted:
 	void playerTurn();
 	void enemyTurn(); //the player turn or the enemy turn functions
+	void setExperience(); //add the stats earned to the pokemon in battle
   private:
 	Player* myPlayer;
 	Enemy* myEnemy;

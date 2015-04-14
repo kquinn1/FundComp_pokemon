@@ -22,16 +22,17 @@ class Pokemon{
 	void setIV_HP();
 	void setAttack();
 	void setDef();
-	void set_spec_A();
-	void set_spec_D();
+	void setSpecial();
 	void setSpeed();
         void setHP(); // HP initially
 	void setName(string s){ name = s; } ;
+	void setEXPtype(string e){ EXPtype = e; } ;
+	int getEXP(){ return EXP; };
+	void calcEXP(int); //calculates and sets EXP
 	string getName(){return name;};
 	int GetAttack();	
 	int getDefense();
-	int getSpecA();
-	int getSpecD();
+	int getSpecial();
 	int getSpeed();
 	int getHP();
 	int updateHP(int);//return a 0 if well, 1 if fainted
@@ -45,6 +46,11 @@ class Pokemon{
  	void setBaseSpec(int);
  	void setBaseSpeed(int);
  	void setBaseHP(int);
+	int getBaseA(){ return base_A; };
+ 	int getBaseD(){ return base_D; };
+ 	int getBaseSpec(){ return base_Speed; };
+ 	int getBaseSpeed(){ return base_Spec; };
+ 	int getBaseHP(){ return base_HP; };
 	virtual void print()= 0;
 	void restoreHP(); //restore HP to maxHP
 	Attack* getAttack(int);
@@ -52,6 +58,8 @@ class Pokemon{
   private:
 	string type;
 	string name;
+	string EXPtype;//for experience
+	int EXP; // for experience
 	int base_A;// base stats are particular for the type of pokemon
 	int base_D;
 	int base_Speed;
@@ -69,8 +77,7 @@ class Pokemon{
 	int EV_HP;
 	int attack;// following stats based on base, IVs, and EVs
 	int defense;
-	int specAttack;	
-	int specDefense;
+	int special;	
 	int speed;
 	int level;
 	int HP; // health
