@@ -25,7 +25,7 @@ Psyduck::Psyduck(int level) : Water(level){
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
 
-  Pokemon::setName("Psyduck");
+  Pokemon::setName("PSYDUCK");
   setAttacks();
 }
 void Psyduck::print(){

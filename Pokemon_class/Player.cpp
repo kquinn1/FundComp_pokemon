@@ -35,10 +35,10 @@ void Player::setPokemon(){
 //default pokemon a player starts with
 //can change this later
 //what level should the pokemon start out with?
-  myPoke.push_back(new Pikachu(10) );
-  myPoke.push_back(new Charmander(10) );
-  myPoke.push_back(new Bulbasaur(10) );
-  myPoke.push_back(new Squirtle(10) );
+  myPoke.push_back(new Pikachu(15) );
+  myPoke.push_back(new Charmander(15) );
+  myPoke.push_back(new Bulbasaur(15) );
+  myPoke.push_back(new Squirtle(15) );
 
   numPoke = 4;
 }

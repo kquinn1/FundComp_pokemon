@@ -25,7 +25,7 @@ Shellder::Shellder(int level) : Water(level){
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
 
-  Pokemon::setName("Shellder");
+  Pokemon::setName("SHELLDER");
   setAttacks();
 }
 

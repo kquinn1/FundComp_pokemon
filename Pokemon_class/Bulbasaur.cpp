@@ -26,7 +26,7 @@ Bulbasaur::Bulbasaur(int level) : Grass(level){
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
 
-  Pokemon::setName("Bulbasaur");
+  Pokemon::setName("BULBASAUR");
   setAttacks();
 }
 

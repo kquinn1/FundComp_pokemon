@@ -1,5 +1,12 @@
 //Katie Quinn
 //Fight implementation file
+//To do:
+// Exception handling
+// Add experience
+// The first pokemon a player uses should be the first one in their lineup
+// Add special attack functionality
+// 	remove the two variables in Pokemon class: should only have 1 special
+//
 #include "Fight.h"
 #include <stdio.h> //NULL
 #include <stdlib.h> //srand, rand
@@ -44,7 +51,7 @@ void Fight::battle(){
   cout << "Enemy sent out " <<  myEnemy->getCurrentPokemon()->getName() << endl;
   cout << "Go! " << myPlayer->getCurrentPokemon()->getName() << endl;
 
-  cout << myEnemy->getCurrentPokemon()->getName() << myEnemy->getCurrentPokemon()->getHP() << " HP!" <<endl;
+  cout << myEnemy->getCurrentPokemon()->getName() << " has " << myEnemy->getCurrentPokemon()->getHP() << " HP!" <<endl;
 //determine who goes first e.g. who has the fastest speed
   if((myPlayer->getCurrentPokemon()->getSpeed())<(myEnemy->getCurrentPokemon()->getSpeed())) turn++;
   while(isWinner()==0){ // && quit == 0){
@@ -100,7 +107,10 @@ void Fight::playerTurn(){
 		 cout << myEnemy->getCurrentPokemon()->getName() << " has fainted! " << endl;
 		 setEnemyPoke();		
   		 cout << "Enemy sent out " << myEnemy->getCurrentPokemon()->getName() << endl;
-  		cout << myEnemy->getCurrentPokemon()->getName() << myEnemy->getCurrentPokemon()->getHP() << " HP!" <<endl;
+  		cout << myEnemy->getCurrentPokemon()->getName() << " has " << myEnemy->getCurrentPokemon()->getHP() << " HP!" <<endl;
+ 		cout << "Switch Pokemon? Type 1: ";
+		cin >> uChoice;
+		if(uChoice==1) choosePoke();
 	   }
 
         }
@@ -270,7 +280,7 @@ int Fight::Damage(string turn,int choice){
   float crit;
   crit = ((double)baseSpeed/512) * 100;
   critNum = rand()%100; //generate a number 0 and 100
-  if(crit>=critNum) {crit = 2; cout <<"Critical hit" <<endl; } //it is a critical hit
+  if(crit>=critNum) {crit = 2; cout <<"CRITICAL HIT" <<endl; } //it is a critical hit
   else crit = 1;
   int damage;
 //determine if STAB bonus applies

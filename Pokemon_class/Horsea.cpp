@@ -25,7 +25,7 @@ Horsea::Horsea(int level) : Water(level){
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
 
-  Pokemon::setName("Horsea");
+  Pokemon::setName("HORSEA");
   setAttacks();
 }
 void Horsea::print(){

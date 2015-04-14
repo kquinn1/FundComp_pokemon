@@ -26,7 +26,7 @@ Pikachu::Pikachu(int level) : Electric(level){
   Pokemon::set_spec_D();
   Pokemon::setSpeed();
 
-  Pokemon::setName("Pikachu");
+  Pokemon::setName("PIKACHU");
   setAttacks(); //set attacks for pikachu, does not allow the user to decide
 }
 
