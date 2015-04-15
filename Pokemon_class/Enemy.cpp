@@ -12,6 +12,10 @@
 #include "Squirtle.h"
 #include "Starmie.h"
 #include "Staryu.h"
+#include "Snorlax.h"
+#include "Jigglypuff.h"
+#include "Oddish.h"
+#include "Eevee.h"
 //will need to include all the pokemon classes
 
 Enemy::Enemy(string myName, int myX, int myY, int prize, string poke1,int poke1Level, string poke2, int poke2Level){
@@ -69,6 +73,22 @@ void Enemy::setPokemon(string poke, int myLevel){
   } 
   else if(poke == "Staryu"){ 
     myPoke.push_back(new Staryu(myLevel) );
+    numPoke++;
+  } 
+  else if(poke == "Oddish"){ 
+    myPoke.push_back(new Oddish(myLevel) );
+    numPoke++;
+  } 
+  else if(poke == "Snorlax"){ 
+    myPoke.push_back(new Snorlax(myLevel) );
+    numPoke++;
+  } 
+  else if(poke == "Jigglypuff"){ 
+    myPoke.push_back(new Jigglypuff(myLevel) );
+    numPoke++;
+  } 
+  else if(poke == "Eeevee"){ 
+    myPoke.push_back(new Eevee(myLevel) );
     numPoke++;
   } 
 }

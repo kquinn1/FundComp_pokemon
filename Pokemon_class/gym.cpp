@@ -8,6 +8,7 @@
 
 #include "Fight.h"
 #include "Enemy.h"
+#include "onGrass.h"
 #include "Player.h" //not sure if these two are needed
 //#include "Heal.h" if you need to heal pokemon mid game
 #include <iostream>
@@ -32,6 +33,8 @@ int main(){
   Player *myplay;
   myplay = &Ash;
 
+
+  onGrass m1(myplay); //testing
 // need to change the pokemon the player can instantiate
 // need to have pokemon level up after each round
 // need to add items

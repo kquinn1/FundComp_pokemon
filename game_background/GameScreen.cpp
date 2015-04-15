@@ -8,8 +8,8 @@
 using namespace std;
 
 // Declare screen attributes as constant
-const int WIDTH = 700;
-const int HEIGHT = 530;
+const int WIDTH = 860;
+const int HEIGHT = 654;
 const int BPP = 32;
 
 // SDL_Surfaces/Images
