@@ -13,6 +13,7 @@ using namespace std;
 	SDL_Surface *background = NULL;		
 	SDL_Surface *image = NULL;
 	SDL_Surface *screen = NULL;
+	SDL_Surface *image2 = NULL;
 	//Sprite map to be clipped
 	SDL_Rect clip[12];
 	
@@ -109,8 +110,11 @@ bool load_files()
     }
   //Load the image
    image = load_image( "test.png" );
+
+   image2 = load_image("Pikachu.png"); // to have the pikachu walking behind
+
    //If there was an error in loading the image
-    if( image == NULL )
+    if( image == NULL | image2 == NULL)
     {
       return false;    
     }
@@ -121,6 +125,7 @@ void clean_up()
 {
 	//free surfaces 
 	SDL_FreeSurface( image );
+	SDL_FreeSurface( image2);
 	SDL_FreeSurface( background );
 	SDL_FreeSurface( screen );
 	//Quit SDL
@@ -251,11 +256,6 @@ int main(int argc, char* args[] ){
 		}
 
 	//detect collision with if statements
-	//should implement rectangles around the "trainers"
-		if( ypos < 270 && ypos > 230 && xpos > 320 && xpos < 360 )
-			cout << "Fight!" << endl;		
-	//	if( xpos < 	
-	
 
 		//If up is pressed
 		if( keystates[ SDLK_UP ] ){ //ash walking up 
@@ -276,7 +276,7 @@ int main(int argc, char* args[] ){
 */			
 		
 			apply_surface( xpos, ypos, image, screen, &clip[ 10 ] ); 
-						
+			apply_surface(xpos, ypos + 50, image2, screen );	
 			//increase y position by vel
 			if( check_collision( clip[10], xpos, ypos))			
 				ypos -= yvel;
@@ -297,6 +297,7 @@ int main(int argc, char* args[] ){
 				ypos = 172 - height;
 */						
 			apply_surface( xpos, ypos , image, screen, &clip[1]); 
+			apply_surface(xpos, ypos + 30, image2, screen );	
 			if( check_collision( clip[1], xpos, ypos))		 	
 				ypos += yvel;
 		}
@@ -316,6 +317,7 @@ int main(int argc, char* args[] ){
 			if( xpos < 86 && (xpos + width) > 86 && ypos > 135 && ypos < 174)
 				xpos = 88;			
 */			apply_surface(xpos, ypos, image, screen, &clip[4]);
+			apply_surface(xpos, ypos + 30, image2, screen );	
 			if( check_collision( clip[4], xpos, ypos))			
 				xpos -= xvel;
 			
@@ -334,6 +336,7 @@ int main(int argc, char* args[] ){
 			if( xpos < 260 && (xpos + width) > 260 && ypos > 0 && ypos < 138)
 				xpos = 258 - width;		
 */			apply_surface(xpos, ypos, image, screen, &clip[7]);
+			apply_surface(xpos, ypos + 30, image2, screen );	
 			if( check_collision( clip[7], xpos, ypos))			
 				xpos += xvel;
 		}
