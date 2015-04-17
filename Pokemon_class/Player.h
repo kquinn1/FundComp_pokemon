@@ -26,7 +26,7 @@ class Player{
 	Pokemon* getCurrentPokemon();
 	Item* getItem(int);
 	void deleteItem(int);
-	void addPokemon(Pokemon*, int level);
+	void addPokemon(Pokemon*);
         void deletePokemon(int); //is this needed
 	int getMoney(){ return money; };
 	int getNumPoke(){return numPoke;}

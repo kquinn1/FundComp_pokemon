@@ -15,7 +15,7 @@ Player::Player(int myX, int myY){
   cout << "Enter in your name: " ;
   cin >> name;
 
- cout << "Hello " << name << endl << "Welcome to the Pokemon Cerulean Gym!" << endl;
+ cout << "Hello " << name << endl << "Welcome to the Pokemon Simulator!" << endl;
 
   X = myX;
   Y = myY; //set the first position
@@ -66,9 +66,10 @@ Pokemon* Player::getCurrentPokemon(){
   return inAction;
 }
 
-void Player::addPokemon(Pokemon* poke,  int level){
+void Player::addPokemon(Pokemon* poke){
 //this function may have to be more complex
   myPoke.push_back(poke);
+  numPoke++; //increase the count of pokemon
 }
 
 void Player::deletePokemon(int i){

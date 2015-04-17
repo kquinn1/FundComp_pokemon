@@ -23,7 +23,7 @@ onGrass::onGrass(Player* m_player){//, Pokemon* m_poke, int isonGrass){
   myPlayer= m_player; //set player pointer
 // calculate the probability for a battle
   pokeRand = rand()%100; //pick a number between 0 and 99
-  if(pokeRand<20 ) cout << "No Pokemon!" << endl; //do nothing
+  if(pokeRand<20 ) cout << "No Pokemon found in grass!" << endl; //do nothing
   else if (pokeRand>20 && pokeRand<30 ){
 	randLevel = rand()%20 + 1;
 	myWild = (new Oddish(randLevel));
@@ -72,7 +72,7 @@ onGrass::onGrass(Player* m_player){//, Pokemon* m_poke, int isonGrass){
 
 void onGrass::battle(){
 //wild pokemon and player class battle
-  cout << " A level " << myWild->getLevel() <<" " << myWild->getName() << " wants to battle!!!!" << endl;
+  cout << "A level " << myWild->getLevel() <<" " << myWild->getName() << " wants to battle!!!!" << endl;
 // only one pokemon to battle
 //intialize turn variable
   int turn = 0;
@@ -86,7 +86,7 @@ void onGrass::battle(){
   cout << myWild->getName() << " has " << myWild->getHP() << " HP!" <<endl;
 //determine who goes first e.g. who has the fastest speed
   if((myPlayer->getCurrentPokemon()->getSpeed())<(myWild->getSpeed())) turn++;
-  while(isWinner()==0 && quit != 1){ // && quit == 0){
+  while(isWinner()==0 && quit == 0){ // && quit == 0){
 // while there is not a winner
     if((turn%2 + 1) %2){//Player's turn
    	quit = playerTurn(); //should pass an int denoting a onGrass pokemon or not
@@ -105,7 +105,10 @@ void onGrass::battle(){
      //set experience on last pokemon
      setExperience();
      cout << "The wild pokemon has fainted!" << endl; 
-  }else { cout << "You ran away!" << endl;}
+  }else if(quit ==2){
+     cout << "Successfuly caught " << myWild->getName() << endl;
+  }
+  else{ cout << "You ran away!" << endl;}
 }
 
 int onGrass::playerTurn(){
@@ -162,6 +165,10 @@ int onGrass::playerTurn(){
 	cout << "Sucessfuly ran away" << endl;
         return 1;
 	break;
+     case 4:
+	cout << "Catching pokemon..." << endl;
+	myPlayer->addPokemon(myWild);
+	return 2;
      default:
         cout << "Invalid option." << endl;
 	break;
@@ -247,6 +254,7 @@ void onGrass::battleMenu(){
   cout << "1. Fight " << endl;
   cout << "2. Change Pokemon " << endl;
   cout << "3. Run " << endl;
+  cout << "4. Catch Enemy " << endl;
 //cout << "4. Item " << endl;
   cout << "Your choice: " ;
 }
