@@ -30,6 +30,7 @@ const int TO_SHOP = 1;
 const int TO_PC = 2;
 const int TO_GYM = 3;
 const int TO_HOME = 4;
+const int TO_GRASS = 5;
 
 // surfaces
 SDL_Surface *ash = NULL;
@@ -55,6 +56,7 @@ SDL_Rect PC;
 SDL_Rect Shop;
 SDL_Rect Home;
 SDL_Rect Gym;
+SDL_Rect Grass;
 
 //Player
 class Player{
@@ -290,22 +292,28 @@ void set_Rect(){
   PC.x = 80;
   PC.y = 500;
   PC.w = 50;
-  PC.h = 60;
+  PC.h = 60; //shop door dimensions roughly
 
   Shop.x = 300;
   Shop.y = 500;
   Shop.w = 50;
-  Shop.h = 60;
+  Shop.h = 60; //shop door dimensions roughly
 
   Home.x = 670;
   Home.y = 530;
   Home.w = 40;
-  Home.h = 60;
+  Home.h = 60; //home door dimensions roughly
 
   Gym.x = 700;
   Gym.y = 100;
   Gym.w = 50;
-  Gym.h = 70;
+  Gym.h = 70; //gym door dimensions roughly
+
+  Grass.x = 30;
+  Grass.y = 40;
+  Grass.w = 310;
+  Grass.h = 210; // grass dimensions
+
 }
 
 bool init()
@@ -420,22 +428,29 @@ int Player::move(){
   updateBox(); //update the x and y coordinates of the box
 
   if(check_collision(myBox, Shop)){
-	cout << "Shop!" << endl;
+	cout << "Shop!" << endl; //for testing
 	return TO_SHOP;
   }
   else if(check_collision(myBox, PC)) {
-	cout << "PC" << endl;
+	cout << "PC" << endl; //for testing
 	return TO_PC;
   }
   else if(check_collision(myBox, Home)){
-	 cout << "HOME" << endl;
+	 cout << "HOME" << endl; //for testing
  	return TO_HOME;
    }
   else if(check_collision(myBox, Gym)){
-	 cout << "Gym! " << endl;
+	 cout << "Gym! " << endl; //for testing
 	 return TO_GYM;
   }
-  else return STAY;
+  else if(check_collision(myBox, Grass)){
+//	cout << "On grass! " ; // for testing
+	return TO_GRASS;
+  }
+  else {
+//	cout << "nothing" ; // for testing
+	return STAY;
+  }
 
 }
 
@@ -526,7 +541,7 @@ int main(){
 	// Move pikachu and ash
 	state = red.move();
 
-	switch(state){
+	switch(state){// need a way to transition from state to state
 	    case TO_PC:
 		quit = true;
 		break;
@@ -538,6 +553,10 @@ int main(){
 		break;
 	    case TO_HOME:
 		quit = true;
+		break;
+	    case TO_GRASS:
+		//determine if fight, then quit
+		quit = false;
 		break;
 	    case STAY:
 		quit = false;
