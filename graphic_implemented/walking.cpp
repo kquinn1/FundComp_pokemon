@@ -2,6 +2,8 @@
 #include "SDL/SDL_image.h"
 #include <string>
 #include "Timer.h"
+#include <iostream>
+using namespace std;
 
 //Screen attributes for now
 const int SCREEN_WIDTH = 860;
@@ -23,6 +25,12 @@ const int ASH_LEFT = 1;
 const int ASH_DOWN = 2;
 const int ASH_UP = 3;
 
+const int STAY = 0;
+const int TO_SHOP = 1;
+const int TO_PC = 2;
+const int TO_GYM = 3;
+const int TO_HOME = 4;
+
 // surfaces
 SDL_Surface *ash = NULL;
 SDL_Surface *pika = NULL;
@@ -42,18 +50,26 @@ SDL_Rect PclipsLeft[3];
 SDL_Rect PclipsDown[2];
 SDL_Rect PclipsUp[2];
 
-//Plyaer
+// to check collision on the screen
+SDL_Rect PC;
+SDL_Rect Shop;
+SDL_Rect Home;
+SDL_Rect Gym;
+
+//Player
 class Player{
   public:
 	Player();
 	void handle_events();
-	void move();
+	int move();//return whether to switch
 	void show();
+	void updateBox();
   private:
 	int xOffset;
 	int yOffset;
 	int xvel; //rate of movement
 	int yvel;
+	SDL_Rect myBox;
 	int Aframe;
 	int Pframe; // the current Pframe
 	int status; // status of animation
@@ -85,6 +101,50 @@ SDL_Surface *load_image( std::string filename ){
     return optimizedImage;
 }
 
+bool check_collision( SDL_Rect A, SDL_Rect B )
+{
+    //The sides of the rectangles
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+
+    //Calculate the sides of rect A
+    leftA = A.x;
+    rightA = A.x + A.w;
+    topA = A.y;
+    bottomA = A.y + A.h;
+
+    //Calculate the sides of rect B
+    leftB = B.x;
+    rightB = B.x + B.w;
+    topB = B.y;
+    bottomB = B.y + B.h;
+
+    //If any of the sides from A are outside of B
+    if( bottomA <= topB )
+    {
+        return false;
+    }
+
+    if( topA >= bottomB )
+    {
+        return false;
+    }
+
+    if( rightA <= leftB )
+    {
+        return false;
+    }
+
+    if( leftA >= rightB )
+    {
+        return false;
+    }
+
+    //If none of the sides from A are outside B
+    return true;
+}
 void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL )
 {
     //Holds offsets
@@ -225,6 +285,29 @@ void set_clips(){
 
 }
 
+void set_Rect(){
+//set the coordinates of the rectangles
+  PC.x = 80;
+  PC.y = 500;
+  PC.w = 50;
+  PC.h = 60;
+
+  Shop.x = 300;
+  Shop.y = 500;
+  Shop.w = 50;
+  Shop.h = 60;
+
+  Home.x = 670;
+  Home.y = 530;
+  Home.w = 40;
+  Home.h = 60;
+
+  Gym.x = 700;
+  Gym.y = 100;
+  Gym.w = 50;
+  Gym.h = 70;
+}
+
 bool init()
 {
         //Initialize all SDL subsystems
@@ -284,6 +367,15 @@ Player::Player(){
   Pframe = 0;
   Aframe = 0; 
   status = ASH_RIGHT;
+  myBox.w = A_WIDTH;
+  myBox.h = A_HEIGHT;
+  updateBox();
+}
+
+void Player::updateBox(){
+  myBox.x = xOffset;
+  myBox.y = yOffset;
+
 }
 
 void Player::handle_events(){
@@ -312,7 +404,7 @@ void Player::handle_events(){
         }
     }
 }
-void Player::move(){
+int Player::move(){
 //move
   if(status == ASH_LEFT || status == ASH_RIGHT){
     xOffset += xvel;
@@ -324,7 +416,29 @@ void Player::move(){
   if((yOffset < 0) || (yOffset + A_HEIGHT > SCREEN_HEIGHT)){
 	yOffset -= yvel;
    }
+
+  updateBox(); //update the x and y coordinates of the box
+
+  if(check_collision(myBox, Shop)){
+	cout << "Shop!" << endl;
+	return TO_SHOP;
+  }
+  else if(check_collision(myBox, PC)) {
+	cout << "PC" << endl;
+	return TO_PC;
+  }
+  else if(check_collision(myBox, Home)){
+	 cout << "HOME" << endl;
+ 	return TO_HOME;
+   }
+  else if(check_collision(myBox, Gym)){
+	 cout << "Gym! " << endl;
+	 return TO_GYM;
+  }
+  else return STAY;
+
 }
+
 
 void Player::show(){
    //if moving to left
@@ -374,14 +488,19 @@ void Player::show(){
   }
 }
 
+
+
 int main(){
 
+   int state;
    bool quit = false;
 //Initialize 
    if( init() == false) return 1;
    if ( load_files() == false) return 1;
 //clip the sheet
    set_clips();
+
+   set_Rect();
 //Frame rate regulator
    Timer fps;
 // The player
@@ -405,7 +524,25 @@ int main(){
             }
         }
 	// Move pikachu and ash
-	red.move();
+	state = red.move();
+
+	switch(state){
+	    case TO_PC:
+		quit = true;
+		break;
+	    case TO_GYM:
+		quit = true;
+		break;
+	    case TO_SHOP:
+		quit = true;
+		break;
+	    case TO_HOME:
+		quit = true;
+		break;
+	    case STAY:
+		quit = false;
+		break;
+	}
 	// Fill the background screen
 	apply_surface(0, 0, background, screen );
 	// show pika and ash
