@@ -11,13 +11,12 @@ using namespace std;
 	SDL_Event event;
 	//The Surfaces
 	SDL_Surface *background = NULL;		
-	SDL_Surface *image = NULL;
+	SDL_Surface *image = NULL; //for the player
 	SDL_Surface *screen = NULL;
-	SDL_Surface *image2 = NULL;
+	SDL_Surface *image2 = NULL; //for pikachu
 	//Sprite map to be clipped
-	SDL_Rect clip[12];
-	
-	
+	SDL_Rect clip[12]; //for the player
+	SDL_Rect clipPika[10];//for pikachu
 
 SDL_Surface *load_image( std::string filename ) 
 {
@@ -144,37 +143,12 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
     SDL_BlitSurface( source, clip, destination, &offset );
 }
 
-int main(int argc, char* args[] ){
-	//initialize surface to start in the middle
-	int xpos, ypos;
-	int xvel, yvel, width, height;
-	width = 31; //clip parameters
-	height = 32;
-	xvel = 3; //set speed
-	yvel = 3; //set speed
-	xpos = 200;
-	ypos = 550;
-	//to help determine the image for walking	
-	int counter;
-	bool quit = false;
-	//Get the keystates 
-	Uint8 *keystates = SDL_GetKeyState( NULL );
-	
-	//initialize
-	if( init() == false )
-	{
-		return 1;
-	}
-	//load the files
-	if( load_files() == false )
-	{
-		return 1;
-	}
-	//Update the screen
-	if( SDL_Flip( screen ) == -1 )
-	{
-		return 1;
-	}
+void set_clips(){
+    int width, height, pWidth, pHeight;
+    width = 31; //clip parameters
+    height = 32;
+    pWidth = 50;
+    pHeight = 35;
 	//Clip range for the top left
     clip[ 0 ].x = 0;
     clip[ 0 ].y = 0;
@@ -242,7 +216,89 @@ int main(int argc, char* args[] ){
     clip[ 11 ].y = 98;
     clip[ 11 ].w = width;
     clip[ 11 ].h = height;		
+
+    clipPika[0].x = 0;
+    clipPika[0].y = 0;
+    clipPika[0].w = pWidth;
+    clipPika[0].h = pHeight;
+
+    clipPika[1].x = pWidth;
+    clipPika[1].y = 0;
+    clipPika[1].w = pWidth;
+    clipPika[1].h = pHeight;
+    
+    clipPika[2].x = pWidth*2;
+    clipPika[2].y = 0;
+    clipPika[2].w = pWidth;
+    clipPika[2].h = pHeight;
 	
+    clipPika[3].x = pWidth*3;
+    clipPika[3].y = 0;
+    clipPika[3].w = pWidth;
+    clipPika[3].h = pHeight;
+    
+    clipPika[4].x = pWidth*4;
+    clipPika[4].y = 0;
+    clipPika[4].w = pWidth;
+    clipPika[4].h = pHeight;
+    
+    clipPika[5].x = pWidth*5;
+    clipPika[5].y = 0;
+    clipPika[5].w = pWidth;
+    clipPika[5].h = pHeight;
+    
+    clipPika[6].x = pWidth*6;
+    clipPika[6].y = 0;
+    clipPika[6].w = pWidth-6;
+    clipPika[6].h = pHeight;
+    
+    clipPika[7].x = pWidth*7-5;
+    clipPika[7].y = 0;
+    clipPika[7].w = pWidth-10;
+    clipPika[7].h = pHeight;
+   
+    clipPika[8].x = pWidth*8-5;
+    clipPika[8].y = 0;
+    clipPika[8].w = pWidth-10;
+    clipPika[8].h = pHeight;
+
+    clipPika[9].x = pWidth*9-5;
+    clipPika[9].y = 0;
+    clipPika[9].w = pWidth-10;
+    clipPika[9].h = pHeight;
+}
+
+int main(int argc, char* args[] ){
+	//initialize surface to start in the middle
+	int xpos, ypos, xvel, yvel; 
+	xvel = 3; //set speed
+	yvel = 3; //set speed
+	xpos = 200;
+	ypos = 550;
+	//to help determine the image for walking	
+	int counter;
+	bool quit = false;
+	//Get the keystates 
+	Uint8 *keystates = SDL_GetKeyState( NULL );
+	
+	//initialize
+	if( init() == false )
+	{
+		return 1;
+	}
+	//load the files
+	if( load_files() == false )
+	{
+		return 1;
+	}
+	//Update the screen
+	if( SDL_Flip( screen ) == -1 )
+	{
+		return 1;
+	}
+// clips should be in a separate function
+	set_clips();
+
    	//Apply the surface
    	apply_surface(0, 0, background, screen );	
 	
@@ -254,29 +310,13 @@ int main(int argc, char* args[] ){
 			}
 		
 		}
-
 	//detect collision with if statements
 
 		//If up is pressed
 		if( keystates[ SDLK_UP ] ){ //ash walking up 
-			apply_surface(0, 0, background, screen );			
-/*		//if statements to keep sprite out of water			
-			if( ypos < 429 && (ypos + height > 429) && (xpos + width) > 257)
-				ypos = 431;
-			if( ypos < 342 && (ypos + height) > 342 && (xpos + width) > 131 && xpos < 215)
-				ypos = 344;
-			if( ypos < 219 && (ypos + height) > 219 && xpos > 83 && xpos < 299)
-				ypos = 221;
-			if( ypos < 138 && (ypos + height) > 138 && xpos > 260 && (xpos + width) < 341)
-				ypos = 140;
-			if( ypos < 90 && (ypos + height) > 90 && xpos > 176 && (xpos + width) < 260)
-				ypos = 92;
-			if( ypos < 138 && (ypos + height) > 138 && xpos > 83 && xpos < 176)
-				ypos = 140;
-*/			
-		
-			apply_surface( xpos, ypos, image, screen, &clip[ 10 ] ); 
-			apply_surface(xpos, ypos + 50, image2, screen );	
+			apply_surface(0, 0, background, screen );	
+			apply_surface( xpos, ypos, image, screen, &clip[ 10 ] );
+ 			apply_surface(xpos-10, ypos + 30, image2, screen, &clipPika[6] );	
 			//increase y position by vel
 			if( check_collision( clip[10], xpos, ypos))			
 				ypos -= yvel;
@@ -284,40 +324,17 @@ int main(int argc, char* args[] ){
 		} 
 		//If down is pressed   #added else ifs so no diagonal movement
 		else if( keystates[ SDLK_DOWN ] ){ //ash walking down
-			apply_surface(0, 0, background, screen );			
-/*			if( ypos < SCREEN_HEIGHT - 2 && (ypos + height) > SCREEN_HEIGHT - 2 && (xpos + width) > 257)
-				ypos = SCREEN_HEIGHT - 4 - height;
-			if( ypos < 387 && (ypos + height) > 387 && xpos > 83 && xpos < 170)
-				ypos = 389 - height;
-			if( ypos < 258 && (ypos + height) > 258 && xpos > 128 && xpos < 215)
-				ypos = 256 - height;
-			if( ypos < 258 && (ypos + height) > 258 && xpos > 257 && xpos < 341)
-				ypos = 256 - height;
-			if( ypos < 174 && (ypos + height) > 174 && xpos > 83 && xpos< 299)
-				ypos = 172 - height;
-*/						
+			apply_surface(0, 0, background, screen );		
 			apply_surface( xpos, ypos , image, screen, &clip[1]); 
-			apply_surface(xpos, ypos + 30, image2, screen );	
+			apply_surface(xpos-10, ypos + 30, image2, screen , &clipPika[0]);	
 			if( check_collision( clip[1], xpos, ypos))		 	
 				ypos += yvel;
 		}
 		//If left is pressed 
 		else if( keystates[ SDLK_LEFT ] ){ //ash walking left
 			apply_surface(0, 0, background, screen );
-/*			if( xpos < 170 && (xpos + width > 170) && (ypos + height) > 387)
-				xpos = 172;
-			if( xpos < 86 && (xpos + width) > 86 && ypos > 215 && ypos < 388)
-				xpos = 88;
-			if( xpos < 215 && (xpos + width) > 214 && (ypos + height) > 255 && ypos < 343)
-				xpos = 217;
-			if( xpos < 301 && (xpos + width) > 301 && ypos < 219 && (ypos + height) > 174)
-				xpos = 140;
-			if( xpos < 176 && (xpos + width) > 176 && ypos > 90 && ypos < 138)
-				xpos = 178;
-			if( xpos < 86 && (xpos + width) > 86 && ypos > 135 && ypos < 174)
-				xpos = 88;			
-*/			apply_surface(xpos, ypos, image, screen, &clip[4]);
-			apply_surface(xpos, ypos + 30, image2, screen );	
+			apply_surface(xpos, ypos, image, screen, &clip[4]);
+			apply_surface(xpos, ypos + 30, image2, screen, &clipPika[8] );	
 			if( check_collision( clip[4], xpos, ypos))			
 				xpos -= xvel;
 			
@@ -325,22 +342,11 @@ int main(int argc, char* args[] ){
 		//If right is pressed
 		else if( keystates[ SDLK_RIGHT ] ){ //ash walking right
 			apply_surface(0, 0, background, screen );	
-/*			if( xpos <  296 && (xpos + width) > 296 && ypos > 432)
-				xpos = 294 - width;
-			if( xpos < 257 && (xpos + width) > 257 && (ypos + height) > 258 && ypos < 432)
-				xpos = 255 - width;
-			if( xpos < 131 && (xpos + width) > 131 && (ypos + height) > 258 && ypos < 342)
-				xpos = 129 - width;
-			if( xpos < 341 && (xpos + width) > 341 && ypos > 138 && (ypos + height) < 258)
-				xpos = 339 - width;
-			if( xpos < 260 && (xpos + width) > 260 && ypos > 0 && ypos < 138)
-				xpos = 258 - width;		
-*/			apply_surface(xpos, ypos, image, screen, &clip[7]);
-			apply_surface(xpos, ypos + 30, image2, screen );	
+			apply_surface(xpos, ypos, image, screen, &clip[7]);
+			apply_surface(xpos-10, ypos + 30, image2, screen, &clipPika[1] );	
 			if( check_collision( clip[7], xpos, ypos))			
 				xpos += xvel;
 		}
-		//cout << "X: " << xpos << endl << "Y: " << ypos << endl; //get the coordinates of sprite 
 		//Update the screen 
 		if( SDL_Flip( screen ) == -1 ){ 
 			return 1;
@@ -348,6 +354,5 @@ int main(int argc, char* args[] ){
 		SDL_Delay(50);
 	}
 	clean_up();
-	
 	return 0;
 }
