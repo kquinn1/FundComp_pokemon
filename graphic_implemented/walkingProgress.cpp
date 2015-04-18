@@ -1,6 +1,15 @@
+// walking.cpp 
+// Testing sprite animation: getting the player to look like it is moving
+
+//Headers needed
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include <string>
+#include <iostream>
+using namespace std;
+//#include "Player.h"
+//#include "function.h"
+//#include "globals.h"
 
 //Screen attributes for now
 const int SCREEN_WIDTH = 860;
@@ -9,6 +18,7 @@ const int SCREEN_BPP = 32;
 
 //Pframes per second
 const int FRAMES_PER_SECOND = 10;
+
 
 //Dimensions of the sprite
 const int PIKA_HEIGHT = 35;
@@ -41,6 +51,12 @@ SDL_Rect PclipsLeft[3];
 SDL_Rect PclipsDown[2];
 SDL_Rect PclipsUp[2];
 
+// to check collision on the screen
+SDL_Rect PC;
+SDL_Rect Shop;
+SDL_Rect Home;
+SDL_Rect Gym;
+
 //Plyaer
 class Player{
   public:
@@ -48,9 +64,11 @@ class Player{
 	void handle_events();
 	void move();
 	void show();
+	void updateBox();
   private:
 	int xOffset;
 	int yOffset;
+	SDL_Rect box;
 	int xvel; //rate of movement
 	int yvel;
 	int Aframe;
@@ -114,6 +132,74 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
     //Blit
     SDL_BlitSurface( source, clip, destination, &offset );
 }
+bool check_collision( SDL_Rect A, SDL_Rect B )
+{
+    //The sides of the rectangles
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+
+    //Calculate the sides of rect A
+    leftA = A.x;
+    rightA = A.x + A.w;
+    topA = A.y;
+    bottomA = A.y + A.h;
+
+    //Calculate the sides of rect B
+    leftB = B.x;
+    rightB = B.x + B.w;
+    topB = B.y;
+    bottomB = B.y + B.h;
+
+    //If any of the sides from A are outside of B
+    if( bottomA <= topB )
+    {
+        return false;
+    }
+
+    if( topA >= bottomB )
+    {
+        return false;
+    }
+
+    if( rightA <= leftB )
+    {
+        return false;
+    }
+
+    if( leftA >= rightB )
+    {
+        return false;
+    }
+
+    //If none of the sides from A are outside B
+    return true;
+}
+
+void set_Rect(){
+//set the coordinates of the rectangles
+  PC.x = 80;
+  PC.y = 500;
+  PC.w = 50;
+  PC.h = 60;
+
+  Shop.x = 300;
+  Shop.y = 500;
+  Shop.w = 50;
+  Shop.h = 60;
+
+  Home.x = 670;
+  Home.y = 530;
+  Home.w = 40;
+  Home.h = 60;
+
+  Gym.x = 700;
+  Gym.y = 100;
+  Gym.w = 50;
+  Gym.h = 70;
+}
+
 void set_clips(){
     int aWidth, aHeight;
     int pWidth, pHeight;
@@ -240,7 +326,7 @@ void set_clips(){
     PclipsUp[1].h = pHeight;
 
 
-}
+  } 
 
 bool init()
 {
@@ -297,6 +383,10 @@ void clean_up()
 Player::Player(){
   xOffset = 200;
   yOffset = 200;
+ // box.x = xOffset;
+ // box.y = yOffset;
+ // box.w = A_WIDTH;
+ // box.h = A_HEIGHT;
   xvel = 0;
   Pframe = 0;
   Aframe = 0; 
@@ -341,8 +431,21 @@ void Player::move(){
   if((yOffset < 0) || (yOffset + A_HEIGHT > SCREEN_HEIGHT)){
 	yOffset -= yvel;
    }
+ // updateBox();
+//check collisions
+//  if(check_collision(box, Shop)) cout << "Shop!" << endl;
+ // if(check_collision(box, Gym)) cout << "Gym!" << endl;
+ // if(check_collision(box, Home)) cout << "Home! " << endl;
+ // if(check_collision(box, PC)) cout << "PC" << endl;
+
 }
 
+void Player::updateBox(){
+  box.x = xOffset;
+  box.y = yOffset;
+  box.w = A_WIDTH;
+  box.h = A_HEIGHT;
+}
 void Player::show(){
    //if moving to left
    if(xvel < 0){
@@ -390,7 +493,6 @@ void Player::show(){
 	apply_surface(xOffset - IMG_OFFSET,  yOffset - A_HEIGHT, pika, screen, &PclipsDown[Pframe]);
   }
 }
-
 Timer::Timer()
 {
     //Initialize the variables
@@ -481,6 +583,7 @@ bool Timer::is_paused()
     return paused;
 }
 
+
 int main(){
 
    bool quit = false;
@@ -488,7 +591,9 @@ int main(){
    if( init() == false) return 1;
    if ( load_files() == false) return 1;
 //clip the sheet
-   set_clips();
+  set_clips();
+//set the collision rectangles
+//  set_Rect();
 //Frame rate regulator
    Timer fps;
 // The player
@@ -532,3 +637,5 @@ int main(){
     clean_up();
     return 0;
 }
+
+
