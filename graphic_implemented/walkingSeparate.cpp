@@ -38,51 +38,6 @@ SDL_Surface *load_image( std::string filename ){
     //Return the optimized surface
     return optimizedImage;
 }
-/*
-bool check_collision( SDL_Rect A, SDL_Rect B )
-{
-    //The sides of the rectangles
-    int leftA, leftB;
-    int rightA, rightB;
-    int topA, topB;
-    int bottomA, bottomB;
-
-    //Calculate the sides of rect A
-    leftA = A.x;
-    rightA = A.x + A.w;
-    topA = A.y;
-    bottomA = A.y + A.h;
-
-    //Calculate the sides of rect B
-    leftB = B.x;
-    rightB = B.x + B.w;
-    topB = B.y;
-    bottomB = B.y + B.h;
-
-    //If any of the sides from A are outside of B
-    if( bottomA <= topB )
-    {
-        return false;
-    }
-
-    if( topA >= bottomB )
-    {
-        return false;
-    }
-
-    if( rightA <= leftB )
-    {
-        return false;
-    }
-
-    if( leftA >= rightB )
-    {
-        return false;
-    }
-
-    //If none of the sides from A are outside B
-    return true;
-}*/
 void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL )
 {
     //Holds offsets
@@ -212,19 +167,25 @@ int main() {
 
 	switch(state){// need a way to transition from state to state
 	    case TO_PC:
+// SDL_SetWindowSize(screen, int, int);
+// change background
+// create a file that does that, has the player pointer?
 		quit = true;
 		break;
 	    case TO_GYM:
+//SDL_SetWindowSize(screen, int, int);
 		quit = true;
 		break;
 	    case TO_SHOP:
+//set window size, change background
 		quit = true;
 		break;
 	    case TO_HOME:
+//set window size 
 		quit = true;
 		break;
 	    case TO_GRASS:
-		//determine if fight, then quit
+//create fight if fight change the window
 		quit = false;
 		break;
 	    case STAY:

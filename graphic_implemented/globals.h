@@ -3,10 +3,10 @@
 #include "SDL/SDL.h"
 
 //Screen attributes for now
-const int SCREEN_WIDTH = 860;
-const int SCREEN_HEIGHT = 654;
-const int SCREEN_BPP = 32;
-
+static int SCREEN_WIDTH = 860;
+static int SCREEN_HEIGHT = 654;
+static int SCREEN_BPP = 32;
+// want to be able to change the screen width and height in different states
 //Pframes per second
 const int FRAMES_PER_SECOND = 10;
 

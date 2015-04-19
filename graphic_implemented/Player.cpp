@@ -3,7 +3,8 @@
 #include "SDL/SDL_image.h"
 #include "function.h"
 #include "globals.h"
-
+#include <iostream>
+using namespace std;
 SDL_Event  event;
 
 //sprite sheet 
@@ -201,27 +202,27 @@ int Player::move(){
   updateBox();
 
  if(check_collision(myBox, Shop)){
-//      cout << "Shop!" << endl; //for testing
+      cout << "Shop!" << endl; //for testing
         return TO_SHOP;
   }
   else if(check_collision(myBox, PC)) {
-//      cout << "PC" << endl; //for testing
+     cout << "PC" << endl; //for testing
         return TO_PC;
   }
   else if(check_collision(myBox, Home)){
-//       cout << "HOME" << endl; //for testing
+       cout << "HOME" << endl; //for testing
         return TO_HOME;
    }
   else if(check_collision(myBox, Gym)){
-//       cout << "Gym! " << endl; //for testing
+      cout << "Gym! " << endl; //for testing
          return TO_GYM;
   }
   else if(check_collision(myBox, Grass)){
-//      cout << "On grass! " ; // for testing
+      cout << "On grass! " ; // for testing
         return TO_GRASS;
   }
   else {
-//      cout << "nothing" ; // for testing
+      cout << "nothing" ; // for testing
         return STAY;
   } 
 }

@@ -58,4 +58,53 @@ bool check_collision( SDL_Rect A, SDL_Rect B )
     //If none of the sides from A are outside B
     return true;
 }
+bool init(int SCREEN_WIDTH, int SCREEN_HEIGHT, int SCREEN_BPP,SDL_Surface *screen)
+{
+        //Initialize all SDL subsystems
+        if( SDL_Init( SDL_INIT_EVERYTHING ) == -1)
+        {
+                return false;
+        }
 
+        //Set up the screen
+        screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
+        //If there was an error
+        if( screen == NULL)
+        {
+                return false;
+        }
+        //Set window caption
+        SDL_WM_SetCaption( "Pokemon Town", NULL);
+        //IF
+        return true;
+}
+
+/*
+
+SDL_Surface *load_image( std::string filename ){
+    //The image that's loaded
+    SDL_Surface* loadedImage = NULL;
+    //The optimized surface that will be used
+    SDL_Surface* optimizedImage = NULL;
+    //Load the image
+    loadedImage = IMG_Load( filename.c_str() );
+    //If the image loaded
+    if( loadedImage != NULL )
+    {
+        //Create an optimized surface
+        optimizedImage = SDL_DisplayFormat( loadedImage );
+        //Free the old surface
+        SDL_FreeSurface( loadedImage );
+        //If the surface was optimized
+        if( optimizedImage != NULL )
+        {
+            //Color key surface
+            Uint32 colorkey = SDL_MapRGB(optimizedImage->format,0,0,0);
+            SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey );
+        }
+    }
+
+    //Return the optimized surface
+    return optimizedImage;
+}
+*/
