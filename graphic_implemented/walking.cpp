@@ -1,3 +1,6 @@
+//Katie Quinn
+//File shows background- Pikachu follows ash around
+
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include <string>
@@ -64,18 +67,19 @@ class Player{
 	Player();
 	void handle_events();
 	int move();//return whether to switch
-	void show();
-	void updateBox();
+	void show(); //show the sprite
+	void updateBox(); //for collisions
   private:
-	int xOffset;
+	int xOffset; //x and y positions
 	int yOffset;
-	int xvel; //rate of movement
+	int xvel; //rate of movement in both directions
 	int yvel;
-	SDL_Rect myBox;
+	SDL_Rect myBox; //for collisions have a bounding box
 	int Aframe;
 	int Pframe; // the current Pframe
 	int status; // status of animation
 };
+
 SDL_Surface *load_image( std::string filename ){
     //The image that's loaded
     SDL_Surface* loadedImage = NULL;
@@ -159,7 +163,7 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
     //Blit
     SDL_BlitSurface( source, clip, destination, &offset );
 }
-void set_clips(){
+void set_clips(){ //set the sprite clips
     int aWidth, aHeight;
     int pWidth, pHeight;
     aWidth = 31;
@@ -360,7 +364,7 @@ bool load_files()
 void clean_up()
 {
         //free surfaces 
-        SDL_FreeSurface( pika );
+        SDL_FreeSurface( pika ); //free all the surfaces
         SDL_FreeSurface( ash );
         SDL_FreeSurface( background );
         SDL_FreeSurface( screen );
@@ -428,19 +432,19 @@ int Player::move(){
   updateBox(); //update the x and y coordinates of the box
 
   if(check_collision(myBox, Shop)){
-	cout << "Shop!" << endl; //for testing
+//	cout << "Shop!" << endl; //for testing
 	return TO_SHOP;
   }
   else if(check_collision(myBox, PC)) {
-	cout << "PC" << endl; //for testing
+//	cout << "PC" << endl; //for testing
 	return TO_PC;
   }
   else if(check_collision(myBox, Home)){
-	 cout << "HOME" << endl; //for testing
+//	 cout << "HOME" << endl; //for testing
  	return TO_HOME;
    }
   else if(check_collision(myBox, Gym)){
-	 cout << "Gym! " << endl; //for testing
+//	 cout << "Gym! " << endl; //for testing
 	 return TO_GYM;
   }
   else if(check_collision(myBox, Grass)){

@@ -5,19 +5,38 @@
 #include <iostream>
 using namespace std;
 
-	const int SCREEN_WIDTH = 432;
-	const int SCREEN_HEIGHT = 603;
-	const int SCREEN_BPP = 32;
-	SDL_Event event;
-	//The Surfaces
-	SDL_Surface *background = NULL;		
-	SDL_Surface *image = NULL;
-	SDL_Surface *screen = NULL;
-	//Sprite map to be clipped
-	SDL_Rect clip[12];
-	
-	
+const int SCREEN_WIDTH = 432;
+const int SCREEN_HEIGHT = 603;
+const int SCREEN_BPP = 32;
+SDL_Event event;
+//The Surfaces
+SDL_Surface *background = NULL;		
+SDL_Surface *ash = NULL;
+SDL_Surface *pika = NULL;
+SDL_Surface *screen = NULL;
 
+//Dimensions of the sprite
+const int PIKA_HEIGHT = 35;
+const int PIKA_WIDTH = 50;
+const int A_HEIGHT = 32;
+const int A_WIDTH = 31;
+const int IMG_OFFSET = 7;
+//direction status of sprite
+const int ASH_RIGHT = 0;
+const int ASH_LEFT = 1;
+const int ASH_DOWN = 2;
+const int ASH_UP = 3;	
+
+//sprite sheet 
+SDL_Rect AclipsRight[3];
+SDL_Rect AclipsLeft[3];
+SDL_Rect AclipsUp[3];
+SDL_Rect AclipsDown[3];
+SDL_Rect PclipsRight[3];
+SDL_Rect PclipsLeft[3];
+SDL_Rect PclipsDown[2];
+SDL_Rect PclipsUp[2];
+	
 SDL_Surface *load_image( std::string filename ) 
 {
     //The image that's loaded
@@ -103,14 +122,11 @@ bool load_files()
 {
   //Load the background
    background = load_image( "Pokemongym.bmp" );
-   //If error loading background
-    if( background == NULL ){
-	return false;
-    }
   //Load the image
-   image = load_image( "test.png" );
+   ash = load_image( "test.png" );
+   pika = load_image("Pikachu.png");
    //If there was an error in loading the image
-    if( image == NULL )
+    if( ash  == NULL || pika == NULL || background == NULL)
     {
       return false;    
     }
@@ -120,10 +136,10 @@ bool load_files()
 void clean_up()
 {
 	//free surfaces 
-	SDL_FreeSurface( image );
 	SDL_FreeSurface( background );
 	SDL_FreeSurface( screen );
-	//Quit SDL
+	SDL_FreeSurface( pika );
+        SDL_FreeSurface( ash );
 	SDL_Quit();
 }
 void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL )
@@ -137,6 +153,132 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
 
     //Blit
     SDL_BlitSurface( source, clip, destination, &offset );
+}
+
+void set_clips(){
+    int aWidth, aHeight;
+    int pWidth, pHeight;
+    aWidth = 31;
+    aHeight = 32;
+    pWidth = 50;
+    pHeight = 35;
+
+    AclipsDown[0].x = 0;
+    AclipsDown[0].y = 0;
+    AclipsDown[0].w = aWidth;
+    AclipsDown[0].h = aHeight;
+
+    //Clip range for the top middle
+    AclipsDown[1].x = aWidth;
+    AclipsDown[1].y = 0;
+    AclipsDown[1].w = aWidth;
+    AclipsDown[1].h = aHeight;
+
+    //Clip range for the top right
+    AclipsDown[2].x = aWidth*2;
+    AclipsDown[2].y = 0;
+    AclipsDown[2].w = aWidth;
+    AclipsDown[2].h = aHeight;
+
+   //Clip range for the middle left
+    AclipsLeft[0].x = 0;
+    AclipsLeft[0].y = aHeight+2;
+    AclipsLeft[0].w = aWidth;
+    AclipsLeft[0].h = aHeight;
+
+ //Clip range for the middle
+    AclipsLeft[1].x = aWidth;
+    AclipsLeft[1].y = aHeight+2;
+    AclipsLeft[1].w = aWidth;
+    AclipsLeft[1].h = aHeight;
+
+    //Clip range for the middle right
+    AclipsLeft[2].x = aWidth*2;
+    AclipsLeft[2].y = aHeight+2;
+    AclipsLeft[2].w = aWidth;
+    AclipsLeft[2].h = aHeight;
+
+    AclipsRight[0].x = 0;
+    AclipsRight[0].y = aHeight*2+2;
+    AclipsRight[0].w = aWidth;
+    AclipsRight[0].h = aHeight;
+
+    //Clip range for the bottom middle
+    AclipsRight[1].x = aWidth;
+    AclipsRight[1].y = aHeight*2+2;
+    AclipsRight[1].w = aWidth;
+    AclipsRight[1].h = aHeight;
+    //Clip range for the bottom right
+    AclipsRight[2].x = aWidth*2;
+    AclipsRight[2].y = aHeight*2+2;
+    AclipsRight[2].w = aWidth;
+    AclipsRight[2].h = aHeight;
+
+    AclipsUp[0].x = 0;
+    AclipsUp[0].y = aHeight*3+2;
+    AclipsUp[0].w = aWidth;
+    AclipsUp[0].h = aHeight;
+
+    //Clip range for the bottom middle
+    AclipsUp[1].x = aWidth;
+    AclipsUp[1].y = aHeight*3+2;
+    AclipsUp[1].w = aWidth;
+    AclipsUp[1].h = aHeight;
+    //Clip range for the bottom right
+    AclipsUp[2].x = aWidth*2;
+    AclipsUp[2].y = aHeight*3+2;
+    AclipsUp[2].w = aWidth;
+    AclipsUp[2].h = aHeight;
+    
+    PclipsRight[0].x = pWidth;
+    PclipsRight[0].y = 0;
+    PclipsRight[0].w = pWidth;
+    PclipsRight[0].h = pHeight;
+
+    PclipsRight[1].x = pWidth*2;
+    PclipsRight[1].y = 0;
+    PclipsRight[1].w = pWidth;
+    PclipsRight[1].h = pHeight;
+
+    PclipsRight[2].x = pWidth*3;
+    PclipsRight[2].y = 0;
+    PclipsRight[2].w = pWidth;
+    PclipsRight[2].h = pHeight;
+
+    PclipsLeft[0].x = pWidth*7-5;
+    PclipsLeft[0].y = 0;
+    PclipsLeft[0].w = pWidth-10;
+    PclipsLeft[0].h = pHeight;
+
+    PclipsLeft[1].x = pWidth*8-5;
+    PclipsLeft[1].y = 0;
+    PclipsLeft[1].w = pWidth-10;
+    PclipsLeft[1].h = pHeight;
+
+    PclipsLeft[2].x = pWidth*9-5;
+    PclipsLeft[2].y = 0;
+    PclipsLeft[2].w = pWidth-10;
+    PclipsLeft[2].h = pHeight;
+
+    PclipsDown[0].x = 0;
+    PclipsDown[0].y = 0;
+    PclipsDown[0].w = pWidth;
+    PclipsDown[0].h = pHeight;
+
+    PclipsDown[1].x = pWidth*4;
+    PclipsDown[1].y = 0;
+    PclipsDown[1].w = pWidth;
+    PclipsDown[1].h = pHeight;
+
+    PclipsUp[0].x = pWidth*5;
+    PclipsUp[0].y = 0;
+    PclipsUp[0].w = pWidth;
+    PclipsUp[0].h = pHeight;
+
+    PclipsUp[1].x = pWidth*6;
+    PclipsUp[1].y = 0;
+    PclipsUp[1].w = pWidth-6;
+    PclipsUp[1].h = pHeight;
 }
 
 int main(int argc, char* args[] ){
@@ -156,88 +298,13 @@ int main(int argc, char* args[] ){
 	Uint8 *keystates = SDL_GetKeyState( NULL );
 	
 	//initialize
-	if( init() == false )
-	{
-		return 1;
-	}
+	if( init() == false ) return 1;
 	//load the files
-	if( load_files() == false )
-	{
-		return 1;
-	}
+	if( load_files() == false ) return 1;
 	//Update the screen
-	if( SDL_Flip( screen ) == -1 )
-	{
-		return 1;
-	}
-	//Clip range for the top left
-    clip[ 0 ].x = 0;
-    clip[ 0 ].y = 0;
-    clip[ 0 ].w = width;
-    clip[ 0 ].h = height;
+	if( SDL_Flip( screen ) == -1 )return 1;
 
-    //Clip range for the top middle
-    clip[ 1 ].x = 32;
-    clip[ 1 ].y = 0;
-    clip[ 1 ].w = width;
-    clip[ 1 ].h = height;
-
-    //Clip range for the top right
-    clip[ 2 ].x = 64;
-    clip[ 2 ].y = 0;
-    clip[ 2 ].w = width;
-    clip[ 2 ].h = height;
-
-    //Clip range for the middle left
-    clip[ 3 ].x = 0;
-    clip[ 3 ].y = 33;
-    clip[ 3 ].w = width;
-    clip[ 3 ].h = height;
-	//Clip range for the middle
-    clip[ 4 ].x = 34;
-    clip[ 4 ].y = 33;
-    clip[ 4 ].w = width;
-    clip[ 4 ].h = height;
-
-    //Clip range for the middle right
-    clip[ 5 ].x = 66;
-    clip[ 5 ].y = 33;
-    clip[ 5 ].w = width;
-    clip[ 5 ].h = height;
-
-    //Clip range for the bottom left
-    clip[ 6 ].x = 0;
-    clip[ 6 ].y = 66;
-    clip[ 6 ].w = width;
-    clip[ 6 ].h = height;
-
-    //Clip range for the bottom middle
-    clip[ 7 ].x = 33;
-    clip[ 7 ].y = 66;
-    clip[ 7 ].w = width;
-    clip[ 7 ].h = height;
-    //Clip range for the bottom right
-    clip[ 8 ].x = 66;
-    clip[ 8 ].y = 66;
-    clip[ 8 ].w = width;
-    clip[ 8 ].h = height;
-	//Clip range for the bottom left
-    clip[ 9 ].x = 0;
-    clip[ 9 ].y = 98;
-    clip[ 9 ].w = width;
-    clip[ 9 ].h = height;
-
-    //Clip range for the bottom middle
-    clip[ 10 ].x = 33;
-    clip[ 10 ].y = 98;
-    clip[ 10 ].w = width;
-    clip[ 10 ].h = height;
-    //Clip range for the bottom right
-    clip[ 11 ].x = 66;
-    clip[ 11 ].y = 98;
-    clip[ 11 ].w = width;
-    clip[ 11 ].h = height;		
-	
+	set_clips(); 
    	//Apply the surface
    	apply_surface(0, 0, background, screen );	
 	

@@ -3,35 +3,10 @@
 #include "SDL/SDL_image.h"
 #include "function.h"
 #include "globals.h"
-/*
-//Screen attributes for now
-const int SCREEN_WIDTH = 860;
-const int SCREEN_HEIGHT = 654;
-const int SCREEN_BPP = 32;
 
-//Pframes per second
-const int FRAMES_PER_SECOND = 10;
+SDL_Event  event;
 
-//Dimensions of the sprite
-const int PIKA_HEIGHT = 35;
-const int PIKA_WIDTH = 50;
-const int A_HEIGHT = 32;
-const int A_WIDTH = 31;
-const int IMG_OFFSET = 7;
-//direction status of sprite
-const int ASH_RIGHT = 0;
-const int ASH_LEFT = 1;
-const int ASH_DOWN = 2;
-const int ASH_UP = 3;
-
-// surfaces
-SDL_Surface *ash = NULL;
-SDL_Surface *pika = NULL;
-SDL_Surface *screen = NULL;
-SDL_Surface *background = NULL;
-
-SDL_Event event;
-
+//sprite sheet 
 SDL_Rect AclipsRight[3];
 SDL_Rect AclipsLeft[3];
 SDL_Rect AclipsUp[3];
@@ -40,7 +15,7 @@ SDL_Rect PclipsRight[3];
 SDL_Rect PclipsLeft[3];
 SDL_Rect PclipsDown[2];
 SDL_Rect PclipsUp[2];
-*/
+
 Player::Player(){
   xOffset = 200;
   yOffset = 200;
@@ -49,21 +24,12 @@ Player::Player(){
   Aframe = 0;
   status = ASH_RIGHT;
   set_clips();
-
 }
-/*
-void Player::apply_surface( int x, int y, SDL_Surface* &source, SDL_Surface* &destination, SDL_Rect* clip = NULL )
-{
-    //Holds offsets
-    SDL_Rect offset;
 
-    //Get offsets
-    offset.x = x;
-    offset.y = y;
-
-    //Blit
-    SDL_BlitSurface( source, clip, destination, &offset );
-}*/
+void Player::updateBox(){
+  myBox.x = xOffset;
+  myBox.y = yOffset;
+}
 
 void Player::set_clips(){
     int aWidth, aHeight;
@@ -219,7 +185,7 @@ void Player::handle_events(){
   }
     }
 }
-void Player::move(){
+int Player::move(){
 //move
   if(status == ASH_LEFT || status == ASH_RIGHT){
     xOffset += xvel;
@@ -231,6 +197,33 @@ void Player::move(){
   if((yOffset < 0) || (yOffset + A_HEIGHT > SCREEN_HEIGHT)){
         yOffset -= yvel;
    }
+
+  updateBox();
+
+ if(check_collision(myBox, Shop)){
+//      cout << "Shop!" << endl; //for testing
+        return TO_SHOP;
+  }
+  else if(check_collision(myBox, PC)) {
+//      cout << "PC" << endl; //for testing
+        return TO_PC;
+  }
+  else if(check_collision(myBox, Home)){
+//       cout << "HOME" << endl; //for testing
+        return TO_HOME;
+   }
+  else if(check_collision(myBox, Gym)){
+//       cout << "Gym! " << endl; //for testing
+         return TO_GYM;
+  }
+  else if(check_collision(myBox, Grass)){
+//      cout << "On grass! " ; // for testing
+        return TO_GRASS;
+  }
+  else {
+//      cout << "nothing" ; // for testing
+        return STAY;
+  } 
 }
 
 void Player::show(){

@@ -1,4 +1,4 @@
-OBJS = keyPress.cpp
+OBJS = walkingSeparate.cpp globals.h Player.cpp Player.h Timer.cpp Timer.h function.h function.cpp
 
 CC = g++
 
@@ -6,7 +6,7 @@ COMPILER_FLAGS =
 
 LINKER_FLAGS = -lSDL -lSDL_image
 
-OBJ_NAME = main
+OBJ_NAME = test
 
 all: $(OBJS)
 	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
