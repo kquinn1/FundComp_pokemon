@@ -79,7 +79,7 @@ void set_Rect(){
 
 int main(int argc, char* args[] ){
 	//initialize surface to start in the middle
-	int state;
+   int state;
    bool quit = false;   
    int first = 0;
    int second = 0;
