@@ -76,6 +76,10 @@ void Player::deletePokemon(int i){
   myPoke.erase(myPoke.begin()+ i); //cannot do erase(i)?
 }
 
+void Player::addItem(Item* newItem){
+  myItem.push_back(newItem);// should there be a number of items stored?
+}
+
 void Player::deleteItem(int i){
   myItem.erase(myItem.begin() + i); //check to see if this works
 }
