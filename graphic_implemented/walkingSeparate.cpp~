@@ -142,7 +142,7 @@ int main() {
 //Frame rate regulator
    Timer fps;
 // The player
-   Player red;
+   Player red;;
    red.set_clips();
    while( quit == false )
     {
