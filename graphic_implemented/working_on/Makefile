@@ -1,4 +1,4 @@
-OBJS = Gym.cpp Timer.cpp Timer.h
+OBJS = walk.cpp function.h function.cpp globals.h Player.cpp Player.h Timer.cpp Timer.h
 
 CC = g++
 

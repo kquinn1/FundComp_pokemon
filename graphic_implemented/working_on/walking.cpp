@@ -1,21 +1,21 @@
+//Katie Quinn
+//File shows background- Pikachu follows ash around
+
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
-//include "SDL/SDL_ttf.h"
-#include "Timer.h"
 #include <string>
+#include "Player.h"
+#include "Timer.h"
 #include <iostream>
 using namespace std;
 
-const int SCREEN_WIDTH = 432;
-const int SCREEN_HEIGHT = 603;
+//Screen attributes for now
+const int SCREEN_WIDTH = 860;
+const int SCREEN_HEIGHT = 654;
 const int SCREEN_BPP = 32;
+
+//Pframes per second
 const int FRAMES_PER_SECOND = 10;
-SDL_Event event;
-//The Surfaces
-SDL_Surface *background = NULL;		
-SDL_Surface *ash = NULL;
-SDL_Surface *pika = NULL;
-SDL_Surface *screen = NULL;
 
 //Dimensions of the sprite
 const int PIKA_HEIGHT = 35;
@@ -27,15 +27,23 @@ const int IMG_OFFSET = 7;
 const int ASH_RIGHT = 0;
 const int ASH_LEFT = 1;
 const int ASH_DOWN = 2;
-const int ASH_UP = 3;	
+const int ASH_UP = 3;
 
-//to fight or not
-const int FIRST_FIGHT = 1;
-const int SECOND_FIGHT = 2;
-const int THIRD_FIGHT = 3;
-const int IDLE = 0;
-const int FIGHT = 1; // have already battled
-const int NO_FIGHT = 0;
+const int STAY = 0;
+const int TO_SHOP = 1;
+const int TO_PC = 2;
+const int TO_GYM = 3;
+const int TO_HOME = 4;
+const int TO_GRASS = 5;
+
+// surfaces
+SDL_Surface *ash = NULL;
+SDL_Surface *pika = NULL;
+SDL_Surface *screen = NULL;
+SDL_Surface *background = NULL;
+
+// event structure
+SDL_Event event;
 
 //sprite sheet 
 SDL_Rect AclipsRight[3];
@@ -47,20 +55,21 @@ SDL_Rect PclipsLeft[3];
 SDL_Rect PclipsDown[2];
 SDL_Rect PclipsUp[2];
 
-SDL_Rect Trainer;
-SDL_Rect Swimmer;
-SDL_Rect Misty;
+// to check collision on the screen
+SDL_Rect PC;
+SDL_Rect Shop;
+SDL_Rect Home;
+SDL_Rect Gym;
+SDL_Rect Grass;
 
 //Player
 class Player{
   public:
 	Player();
 	void handle_events();
-	void set_clips();
 	int move();//return whether to switch
 	void show(); //show the sprite
 	void updateBox(); //for collisions
-	void movePlayer(int, int);
   private:
 	int xOffset; //x and y positions
 	int yOffset;
@@ -71,37 +80,33 @@ class Player{
 	int Pframe; // the current Pframe
 	int status; // status of animation
 };
-	
-SDL_Surface *load_image( std::string filename ) 
-{
+
+SDL_Surface *load_image( std::string filename ){
     //The image that's loaded
-        SDL_Surface* loadedImage = NULL;
-            
-    //The optimized image that will be used
-        SDL_Surface* optimizedImage = NULL;
-                     
+    SDL_Surface* loadedImage = NULL;
+    //The optimized surface that will be used
+    SDL_Surface* optimizedImage = NULL;
     //Load the image
-        loadedImage = IMG_Load( filename.c_str() );
-        
+    loadedImage = IMG_Load( filename.c_str() );
     //If the image loaded
-        if( loadedImage != NULL )
+    if( loadedImage != NULL )
+    {
+        //Create an optimized surface
+        optimizedImage = SDL_DisplayFormat( loadedImage );
+        //Free the old surface
+        SDL_FreeSurface( loadedImage );
+        //If the surface was optimized
+        if( optimizedImage != NULL )
         {
-     //Create an optimized image
-           optimizedImage = SDL_DisplayFormat( loadedImage );
-    //Free the old image
-         SDL_FreeSurface( loadedImage );
-       }
+            //Color key surface
+	    Uint32 colorkey = SDL_MapRGB(optimizedImage->format,0,0,0);
+            SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey );
+        }
+    }
 
-	if( optimizedImage!=NULL){
-	//Include a line that will color key the image
-		Uint32 colorkey = SDL_MapRGB( optimizedImage->format,0,0,0);
-		SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey );
-
-	}
-    //Return the optimized image
-         return optimizedImage;
+    //Return the optimized surface
+    return optimizedImage;
 }
-
 
 bool check_collision( SDL_Rect A, SDL_Rect B )
 {
@@ -113,7 +118,6 @@ bool check_collision( SDL_Rect A, SDL_Rect B )
 
     //Calculate the sides of rect A
     leftA = A.x;
-
     rightA = A.x + A.w;
     topA = A.y;
     bottomA = A.y + A.h;
@@ -148,52 +152,6 @@ bool check_collision( SDL_Rect A, SDL_Rect B )
     //If none of the sides from A are outside B
     return true;
 }
-
-bool init()
-{
-	//Initialize all SDL subsystems
-	if( SDL_Init( SDL_INIT_EVERYTHING ) == -1)
-	{
-		return false;
-	}
-
-	//Set up the screen
-	screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
-	//If there was an error
-	if( screen == NULL)
-	{
-		return false;
-	}
-	//Set window caption
-	SDL_WM_SetCaption( "Cerulean Gym", NULL);
-	//IF
-	return true;
-}
-
-bool load_files()
-{
-  //Load the background
-   background = load_image( "Pokemon_gym.bmp" );
-  //Load the image
-   ash = load_image( "test.png" );
-   pika = load_image("Pikachu.png");
-   //If there was an error in loading the image
-    if( ash  == NULL || pika == NULL || background == NULL)
-    {
-      return false;    
-    }
-    //If everything loaded fine
-      return true;    
-}
-void clean_up()
-{
-	//free surfaces 
-	SDL_FreeSurface( background );
-	SDL_FreeSurface( screen );
-	SDL_FreeSurface( pika );
-        SDL_FreeSurface( ash );
-	SDL_Quit();
-}
 void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL )
 {
     //Holds offsets
@@ -206,8 +164,7 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
     //Blit
     SDL_BlitSurface( source, clip, destination, &offset );
 }
-
-void Player::set_clips(){ //set the sprite clips
+void set_clips(){ //set the sprite clips
     int aWidth, aHeight;
     int pWidth, pHeight;
     aWidth = 31;
@@ -336,47 +293,102 @@ void Player::set_clips(){ //set the sprite clips
 }
 
 void set_Rect(){
-//set the collision rectangles for the trainers
-// these need to be edited
-	Trainer.x = 175;
-	Trainer.y = 110;
-	Trainer.w = 30;
-	Trainer.h=  35;
+//set the coordinates of the rectangles
+  PC.x = 80;
+  PC.y = 500;
+  PC.w = 50;
+  PC.h = 60; //shop door dimensions roughly
 
-	Swimmer.x = 170;
-	Swimmer.y = 235;
-	Swimmer.w = 100;
-	Swimmer.h = 35;
+  Shop.x = 300;
+  Shop.y = 500;
+  Shop.w = 50;
+  Shop.h = 60; //shop door dimensions roughly
 
-	Misty.x =  140;
-	Misty.y = 75;
-	Misty.w = 30;
-	Misty.h = 80;
-} 
+  Home.x = 670;
+  Home.y = 530;
+  Home.w = 40;
+  Home.h = 60; //home door dimensions roughly
+
+  Gym.x = 700;
+  Gym.y = 100;
+  Gym.w = 50;
+  Gym.h = 70; //gym door dimensions roughly
+
+  Grass.x = 30;
+  Grass.y = 40;
+  Grass.w = 310;
+  Grass.h = 210; // grass dimensions
+
+}
+
+bool init()
+{
+        //Initialize all SDL subsystems
+        if( SDL_Init( SDL_INIT_EVERYTHING ) == -1)
+        {
+                return false;
+        }
+
+        //Set up the screen
+        screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
+        //If there was an error
+        if( screen == NULL)
+        {
+                return false;
+        }
+        //Set window caption
+        SDL_WM_SetCaption( "Pokemon Town", NULL);
+        //IF
+        return true;
+}
+
+bool load_files()
+{
+  //Load the background
+   background = load_image( "Pokemon_town.bmp" );
+   //If error loading background
+    if( background == NULL ){
+        return false;
+    }
+  //Load the image
+   ash = load_image("test.png"); //ash
+   pika = load_image( "Pikachu.png" );//pikachu
+
+   //If there was an error in loading the image
+    if( ash == NULL || pika == NULL)
+    {
+      return false;
+    }
+    //If everything loaded fine
+      return true;
+}
+void clean_up()
+{
+        //free surfaces 
+        SDL_FreeSurface( pika ); //free all the surfaces
+        SDL_FreeSurface( ash );
+        SDL_FreeSurface( background );
+        SDL_FreeSurface( screen );
+        //Quit SDL
+        SDL_Quit();
+}
 
 Player::Player(){
   xOffset = 200;
-  yOffset = 550;
+  yOffset = 200;
   xvel = 0;
-  yvel = 0;
   Pframe = 0;
   Aframe = 0; 
   status = ASH_RIGHT;
   myBox.w = A_WIDTH;
   myBox.h = A_HEIGHT;
   updateBox();
-  set_clips();
 }
 
 void Player::updateBox(){
   myBox.x = xOffset;
   myBox.y = yOffset;
 
-}
-
-void Player::movePlayer(int x, int y){
-	xOffset = x;
-	yOffset = y;
 }
 
 void Player::handle_events(){
@@ -388,8 +400,8 @@ void Player::handle_events(){
         {
             case SDLK_RIGHT: xvel += A_WIDTH / 4; break;
             case SDLK_LEFT: xvel -= A_WIDTH / 4; break;
-	   		case SDLK_DOWN: yvel += A_HEIGHT / 4; break;
-	    		case SDLK_UP: yvel -= A_HEIGHT / 4; break;
+	    case SDLK_DOWN: yvel += A_HEIGHT / 4; break;
+	    case SDLK_UP: yvel -= A_HEIGHT / 4; break;
         }
     }
     //If a key was released
@@ -400,8 +412,8 @@ void Player::handle_events(){
         {
             case SDLK_RIGHT: xvel -= A_WIDTH / 4; break;
             case SDLK_LEFT: xvel += A_WIDTH / 4; break;
-	    		case SDLK_DOWN: yvel -= A_HEIGHT/4; break;
-	    		case SDLK_UP: yvel += A_HEIGHT / 4; break;
+	    case SDLK_DOWN: yvel -= A_HEIGHT/4; break;
+	    case SDLK_UP: yvel += A_HEIGHT / 4; break;
         }
     }
 }
@@ -411,91 +423,40 @@ int Player::move(){
     xOffset += xvel;
   } else  yOffset += yvel;
 // keep in bounds
-//for up
-  if(status == ASH_UP){
-		if(yOffset < 429 && (yOffset + A_HEIGHT > 429) && (xOffset + A_WIDTH > 257)){
-			yOffset = 431;
-      }
-		if( yOffset < 342 && (yOffset + A_HEIGHT) > 342 && (xOffset + A_WIDTH) > 131 && xOffset < 215)
-				yOffset = 344;
-	   if( yOffset < 219 && (yOffset + A_HEIGHT) > 219 && xOffset > 83 && xOffset < 299)
-				yOffset = 221;
-		if( yOffset < 138 && (yOffset + A_HEIGHT) > 138 && xOffset > 260 && (xOffset + A_WIDTH) < 341)
-				yOffset = 140;
-		if(yOffset < 90 && (yOffset + A_HEIGHT) > 90 && xOffset > 176 && (xOffset + A_WIDTH) < 260)
-				yOffset = 92;
-		if( yOffset < 138 && (yOffset+ A_HEIGHT) > 138 && xOffset > 83 && xOffset < 176)
-				yOffset = 140;
+  if((xOffset<0) || (xOffset + A_WIDTH > SCREEN_WIDTH)){
+	xOffset -= xvel;
   }
-//for down
-  else if(status == ASH_DOWN){
-			if( yOffset < SCREEN_HEIGHT - 2 && (yOffset + A_HEIGHT) > SCREEN_HEIGHT - 2 && (xOffset + A_WIDTH) > 257)
-				yOffset = SCREEN_HEIGHT - 4 - A_HEIGHT;
-			if( yOffset < 387 && (yOffset + A_HEIGHT) > 387 && xOffset > 83 && xOffset < 170)
-				yOffset = 389 - A_HEIGHT;
-			if( yOffset < 258 && (yOffset + A_HEIGHT) > 258 && xOffset > 128 && xOffset < 215)
-				yOffset = 256 - A_HEIGHT;
-			if( yOffset < 258 && (yOffset + A_HEIGHT) > 258 && xOffset > 257 && xOffset < 341)
-				yOffset = 256 - A_HEIGHT;
-			if( yOffset < 174 && (yOffset + A_HEIGHT) > 174 && xOffset > 83 && xOffset< 299)
-				yOffset = 172 - A_HEIGHT;
-  }
-//for right
-  else if(status == ASH_RIGHT){
-			if( xOffset <  296 && (xOffset + A_WIDTH) > 296 && yOffset > 432)
-				xOffset = 294 - A_WIDTH;
-			if( xOffset < 257 && (xOffset + A_WIDTH) > 257 && (yOffset + A_HEIGHT) > 258 && yOffset < 432)
-				xOffset = 255 - A_WIDTH;
-			if( xOffset < 131 && (xOffset + A_WIDTH) > 131 && (yOffset + A_HEIGHT) > 258 && yOffset < 342)
-				xOffset = 129 - A_WIDTH;
-			if( xOffset < 341 && (xOffset + A_WIDTH) > 341 && yOffset > 138 && (yOffset + A_HEIGHT) < 258)
-				xOffset = 339 - A_WIDTH;
-			if( xOffset < 260 && (xOffset + A_WIDTH) > 260 && yOffset > 0 && yOffset < 138)
-				xOffset = 258 - A_WIDTH;
-	}		
-//for left
-	else if(status == ASH_LEFT){
-			if( xOffset < 170 && (xOffset + A_WIDTH > 170) && (yOffset + A_HEIGHT) > 387)
-				xOffset = 172;
-			if( xOffset < 86 && (xOffset + A_WIDTH) > 86 && yOffset > 215 && yOffset < 388)
-				xOffset = 88;
-			if( xOffset < 215 && (xOffset + A_WIDTH) > 214 && (yOffset + A_HEIGHT) > 255 && yOffset < 343)
-				xOffset = 217;
-			if( xOffset < 301 && (xOffset + A_WIDTH) > 301 && yOffset < 219 && (yOffset + A_HEIGHT) > 174)
-				xOffset = 140;
-			if( xOffset < 176 && (xOffset + A_WIDTH) > 176 && yOffset > 90 && yOffset < 138)
-				xOffset = 178;
-			if( xOffset < 86 && (xOffset + A_WIDTH) > 86 && yOffset > 135 && yOffset < 174)
-				xOffset = 88;	
-	}
-//keeps the trainer in bounds
-  if(status == ASH_LEFT || status == ASH_RIGHT){
-    if((xOffset<0) || (xOffset + A_WIDTH > SCREEN_WIDTH)){
-			xOffset -= xvel;
-  		}
-  }
-  else if((yOffset < 0) || (yOffset + A_HEIGHT > SCREEN_HEIGHT)){
+  if((yOffset < 0) || (yOffset + A_HEIGHT > SCREEN_HEIGHT)){
 	yOffset -= yvel;
    }
 
   updateBox(); //update the x and y coordinates of the box
 
-if(check_collision(myBox, Swimmer)){
+  if(check_collision(myBox, Shop)){
 //	cout << "Shop!" << endl; //for testing
-	return FIRST_FIGHT;
+	return TO_SHOP;
   }
-  else if(check_collision(myBox, Trainer)) {
+  else if(check_collision(myBox, PC)) {
 //	cout << "PC" << endl; //for testing
-	return SECOND_FIGHT;
+	return TO_PC;
   }
-  else if(check_collision(myBox, Misty)){
+  else if(check_collision(myBox, Home)){
 //	 cout << "HOME" << endl; //for testing
- 	return THIRD_FIGHT;
+ 	return TO_HOME;
    }
+  else if(check_collision(myBox, Gym)){
+//	 cout << "Gym! " << endl; //for testing
+	 return TO_GYM;
+  }
+  else if(check_collision(myBox, Grass)){
+//	cout << "On grass! " ; // for testing
+	return TO_GRASS;
+  }
   else {
 //	cout << "nothing" ; // for testing
-	return IDLE;
+	return STAY;
   }
+
 }
 
 
@@ -547,26 +508,24 @@ void Player::show(){
   }
 }
 
-int main(int argc, char* args[] ){
-	//initialize surface to start in the middle
-	int state;
-   bool quit = false;   
-   int first = 0;
-   int second = 0;
-   int third = 0;
-	
-	//initialize
-	if( init() == false ) return 1;
-	//load the files
-	if( load_files() == false ) return 1;
-	//Update the screen
-	if( SDL_Flip( screen ) == -1 )return 1;
 
-	set_Rect();
 
-   Player red;
+int main(){
+
+   int state;
+   bool quit = false;
+//Initialize 
+   if( init() == false) return 1;
+   if ( load_files() == false) return 1;
+//clip the sheet
+   set_clips();
+
+   set_Rect();
+//Frame rate regulator
    Timer fps;
-	   while( quit == false )
+// The player
+   Player red;;
+   while( quit == false )
     {
         //Start the Pframe timer
         fps.start();
@@ -586,18 +545,28 @@ int main(int argc, char* args[] ){
         }
 	// Move pikachu and ash
 	state = red.move();
-	if( state == FIRST_FIGHT && first == NO_FIGHT){
-			cout << "Swimmer wants to fight! " << endl; //for test
-			first = FIGHT;
-	}		
-   else if( state==SECOND_FIGHT && second == NO_FIGHT){
-		   cout << "Trainer wants to fight!" << endl;
-			second = FIGHT; // denotes that the battle has occurred
-   }
-	else if(state == THIRD_FIGHT && third == NO_FIGHT){
-		    cout << "Misty wants to fight! " << endl;
-			 third = FIGHT;
-   }
+
+	switch(state){// need a way to transition from state to state
+	    case TO_PC:
+		quit = true;
+		break;
+	    case TO_GYM:
+		quit = true;
+		break;
+	    case TO_SHOP:
+		quit = true;
+		break;
+	    case TO_HOME:
+		quit = true;
+		break;
+	    case TO_GRASS:
+		//determine if fight, then quit
+		quit = false;
+		break;
+	    case STAY:
+		quit = false;
+		break;
+	}
 	// Fill the background screen
 	apply_surface(0, 0, background, screen );
 	// show pika and ash
@@ -616,5 +585,4 @@ int main(int argc, char* args[] ){
 
     clean_up();
     return 0;
-
 }
