@@ -476,7 +476,7 @@ int Player::move(){
 // keep in bounds
 //for up
   if(status == ASH_UP){
-		if(yOffset < 429 && (yOffset + A_HEIGHT > 429) && (xOffset + A_WIDTH > 257)){
+		/*if(yOffset < 429 && (yOffset + A_HEIGHT > 429) && (xOffset + A_WIDTH > 257)){
 			yOffset = 431;
       }
 		if( yOffset < 342 && (yOffset + A_HEIGHT) > 342 && (xOffset + A_WIDTH) > 131 && xOffset < 215)
@@ -488,12 +488,12 @@ int Player::move(){
 		if(yOffset < 90 && (yOffset + A_HEIGHT) > 90 && xOffset > 176 && (xOffset + A_WIDTH) < 260)
 				yOffset = 92;
 		if( yOffset < 138 && (yOffset+ A_HEIGHT) > 138 && xOffset > 83 && xOffset < 176)
-				yOffset = 140;
-//     if(check_collision(myBox, water3) || check_collision(myBox, water4) || check_collision(myBox, water6) || check_collision(myBox, water6) || check_collision(myBox, water7) || check_collision(myBox, water8)) yOffset += yvel;
+				yOffset = 140;*/
+		if(check_collision
   }
 //for down
   else if(status == ASH_DOWN){
-		if( yOffset < SCREEN_HEIGHT - 2 && (yOffset + A_HEIGHT) > SCREEN_HEIGHT - 2 && (xOffset + A_WIDTH) > 257)
+			if( yOffset < SCREEN_HEIGHT - 2 && (yOffset + A_HEIGHT) > SCREEN_HEIGHT - 2 && (xOffset + A_WIDTH) > 257)
 				yOffset = SCREEN_HEIGHT - 4 - A_HEIGHT;
 			if( yOffset < 387 && (yOffset + A_HEIGHT) > 387 && xOffset > 83 && xOffset < 170)
 				yOffset = 389 - A_HEIGHT;
@@ -502,16 +502,11 @@ int Player::move(){
 			if( yOffset < 258 && (yOffset + A_HEIGHT) > 258 && xOffset > 257 && xOffset < 341)
 				yOffset = 256 - A_HEIGHT;
 			if( yOffset < 174 && (yOffset + A_HEIGHT) > 174 && xOffset > 83 && xOffset< 299)
-
 				yOffset = 172 - A_HEIGHT;
-
-//     if(check_collision(myBox, water1) || check_collision(myBox, water3) || check_collision(myBox, water4) || check_collision(myBox, water10) ) yOffset -= yvel;
   }
-
-
 //for right
   else if(status == ASH_RIGHT){
-	if( xOffset <  296 && (xOffset + A_WIDTH) > 296 && yOffset > 432)
+			if( xOffset <  296 && (xOffset + A_WIDTH) > 296 && yOffset > 432)
 				xOffset = 294 - A_WIDTH;
 			if( xOffset < 257 && (xOffset + A_WIDTH) > 257 && (yOffset + A_HEIGHT) > 258 && yOffset < 432)
 				xOffset = 255 - A_WIDTH;
@@ -521,11 +516,9 @@ int Player::move(){
 				xOffset = 339 - A_WIDTH;
 			if( xOffset < 260 && (xOffset + A_WIDTH) > 260 && yOffset > 0 && yOffset < 138)
 				xOffset = 258 - A_WIDTH;
-
-//     if(check_collision(myBox,water3) || check_collision(myBox, water9) || check_collision(myBox, water10)) xOffset -= xvel;	
-   }		
+	}		
 //for left
-   else if(status == ASH_LEFT){
+	else if(status == ASH_LEFT){
 			if( xOffset < 170 && (xOffset + A_WIDTH > 170) && (yOffset + A_HEIGHT) > 387)
 				xOffset = 172;
 			if( xOffset < 86 && (xOffset + A_WIDTH) > 86 && yOffset > 215 && yOffset < 388)
@@ -538,9 +531,7 @@ int Player::move(){
 				xOffset = 178;
 			if( xOffset < 86 && (xOffset + A_WIDTH) > 86 && yOffset > 135 && yOffset < 174)
 				xOffset = 88;	
-
-//     if(check_collision(myBox, water1) || check_collision(myBox, water2) || check_collision(myBox, water3) || check_collision(myBox, water4) || check_collision(myBox, water5)) xOffset += xvel;
-  }
+	}
 //keeps the trainer in bounds
   if(status == ASH_LEFT || status == ASH_RIGHT){
     if((xOffset<0) || (xOffset + A_WIDTH > SCREEN_WIDTH)){
