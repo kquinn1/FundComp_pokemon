@@ -6,6 +6,16 @@
 //Pokemon Yellow
 //The gym will be implemented later in order to include graphics, etc.
 
+// need to change the pokemon the player can instantiate
+// need to have pokemon level up after each round
+// need to add items
+// need to allow people to switch pokemon in between defeating
+// should there be a larger gym or multiple gyms?
+// Shop needs to be created
+// Fight needs to be changed to allow you to use items
+//
+
+
 #include "Fight.h"
 #include "Enemy.h"
 #include "onGrass.h"
@@ -18,6 +28,11 @@ using namespace std;
 
 const int FALSE = 0;
 const int TRUE = 1;
+
+void dispMenu(){
+  cout << "Choose an option: " << endl << "1. Go to grass" << endl << "2. Go to the gym. " << endl << "3. Go to the shop" << endl << "4. Heal Pokemon" << endl << "5. Quit" << endl;
+  cout << "Choice: " << endl;
+}
 
 int main(){
   int uChoice;
@@ -40,31 +55,33 @@ int main(){
   Player *myplay;
   myplay = &Ash;
 
-// display options to the user
-// 	1. go to grass
-// 	2. go to gym
-// 	3. go to shop
-// 	4. heal pokemon
-
 
   while(quit == false){
-	
-        cout << "Choose an option: " << endl << "1. Go to grass" << endl << "2. Go to the gym. " << endl << "3. Go to the shop" << endl << "4. Heal Pokemon" << endl << "5. Quit" << endl;
-  cout << "Choice: " << endl;
+	dispMenu(); // display the menu	
         cin >> uChoice;
+
+//	if(!cin){
+	//	cin.clear(); // user did not input nubmer
+	//	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//	}  need a way to deal with non numeric input
+
       	if(uChoice == 1)
 		onGrass m1(myplay);
 	else if (uChoice == 2) {
 	   if(hasFought == FALSE){
 		cout << "Welcome to the Cerlulean gym!" << endl;
- 		Fight myfight(myplay , first );
-  		Fight myfight2(myplay, second);
-  		Fight myfight3(myplay, third);
-		hasFought = TRUE;
+		if(first->isDefeated() == FALSE){
+ 			Fight myfight(myplay , first );
+  		} else cout << first->getName() << " has already been defeated!" << endl;
+		if(second->isDefeated() ==FALSE){
+			Fight myfight2(myplay, second);
+		} else cout << second->getName() << " has already been defeated!" << endl;
+  		if(third->isDefeated() == FALSE ){
+			Fight myfight3(myplay, third);
+			if(third->isDefeated() == TRUE) hasFought = TRUE;
+		} 
 	   }
 	   else cout << "Already beat the gym leader! " << endl;
-// if the player has gone to the gym but failed to beat the gym leader
-// need an option for that
 	}
 	else if(uChoice ==3){
 		Shop myShop(myplay);
@@ -81,13 +98,7 @@ int main(){
 		cout << "Invalid choice!" << endl;
          }
 
-  }  // need to initialize all objects before going into the case statement
-	//else it won't work
-	//
-// need to change the pokemon the player can instantiate
-// need to have pokemon level up after each round
-// need to add items
-// need to allow people to switch pokemon in between defeating
+   }
 
   return 0;
 }
