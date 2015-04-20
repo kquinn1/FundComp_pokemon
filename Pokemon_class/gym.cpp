@@ -40,6 +40,7 @@ int main(){
 // need to add items
 // need to allow people to switch pokemon in between defeating
 // eventually: fights implemented when the player intersects their line of sight  
+  cout << "Welcome to the Cerlulean gym!" << endl;
   Fight myfight(myplay , first );
 // if need to heal  Heal healing(myplay);
   Fight myfight2(myplay, second);

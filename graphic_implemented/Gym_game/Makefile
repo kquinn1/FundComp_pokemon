@@ -1,4 +1,4 @@
-OBJS = Gym.cpp Timer.cpp Timer.h
+OBJS = Gym.cpp Player.cpp Player.h Timer.cpp Timer.h globals.h function.cpp function.h
 
 CC = g++
 
@@ -12,4 +12,4 @@ all: $(OBJS)
 	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
 
 clean: 
-	rm -f *.o $(OBJ_NAME) *~
+	rm -f *.o main *~

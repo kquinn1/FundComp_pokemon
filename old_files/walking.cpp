@@ -376,7 +376,6 @@ Player::Player(){
   xOffset = 200;
   yOffset = 200;
   xvel = 0;
-  yvel = 0;
   Pframe = 0;
   Aframe = 0; 
   status = ASH_RIGHT;

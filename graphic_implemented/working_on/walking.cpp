@@ -4,6 +4,7 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include <string>
+#include "Player.h"
 #include "Timer.h"
 #include <iostream>
 using namespace std;
@@ -376,7 +377,6 @@ Player::Player(){
   xOffset = 200;
   yOffset = 200;
   xvel = 0;
-  yvel = 0;
   Pframe = 0;
   Aframe = 0; 
   status = ASH_RIGHT;

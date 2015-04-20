@@ -1,6 +1,7 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
-#include "SDL/SDL_ttf.h"
+//include "SDL/SDL_ttf.h"
+#include "Timer.h"
 #include <string>
 #include <iostream>
 using namespace std;
@@ -8,6 +9,7 @@ using namespace std;
 const int SCREEN_WIDTH = 432;
 const int SCREEN_HEIGHT = 603;
 const int SCREEN_BPP = 32;
+const int FRAMES_PER_SECOND = 10;
 SDL_Event event;
 //The Surfaces
 SDL_Surface *background = NULL;		
@@ -27,6 +29,14 @@ const int ASH_LEFT = 1;
 const int ASH_DOWN = 2;
 const int ASH_UP = 3;	
 
+//to fight or not
+const int FIRST_FIGHT = 1;
+const int SECOND_FIGHT = 2;
+const int THIRD_FIGHT = 3;
+const int IDLE = 0;
+const int FIGHT = 1; // have already battled
+const int NO_FIGHT = 0;
+
 //sprite sheet 
 SDL_Rect AclipsRight[3];
 SDL_Rect AclipsLeft[3];
@@ -36,6 +46,43 @@ SDL_Rect PclipsRight[3];
 SDL_Rect PclipsLeft[3];
 SDL_Rect PclipsDown[2];
 SDL_Rect PclipsUp[2];
+
+SDL_Rect Trainer;
+SDL_Rect Swimmer;
+SDL_Rect Misty;
+
+// to keep out of the water created 10 hard coded rectangles
+SDL_Rect water1;
+SDL_Rect water2;
+SDL_Rect water3;
+SDL_Rect water4;
+SDL_Rect water5;
+SDL_Rect water6;
+SDL_Rect water7;
+SDL_Rect water8;
+SDL_Rect water9;
+SDL_Rect water10;
+
+//Player
+class Player{
+  public:
+	Player();
+	void handle_events();
+	void set_clips();
+	int move();//return whether to switch
+	void show(); //show the sprite
+	void updateBox(); //for collisions
+	void movePlayer(int, int);
+  private:
+	int xOffset; //x and y positions
+	int yOffset;
+	int xvel; //rate of movement in both directions
+	int yvel;
+	SDL_Rect myBox; //for collisions have a bounding box
+	int Aframe;
+	int Pframe; // the current Pframe
+	int status; // status of animation
+};
 	
 SDL_Surface *load_image( std::string filename ) 
 {
@@ -66,37 +113,54 @@ SDL_Surface *load_image( std::string filename )
     //Return the optimized image
          return optimizedImage;
 }
-bool check_collision(SDL_Rect clip, int xpos, int ypos /*, SDL_Rect border (include later when testing water detection)*/){ //clip should be input of clip[i], border is edge of screen for now
-	int boardleft, boardright, boardtop, boardbot; //edges of collision detection
-	int spriteleft, spriteright, spritetop, spritebot;
-	 	
-	spriteleft = xpos;
-	spriteright = xpos + clip.w;
-	spritetop = ypos;
-	spritebot = ypos + clip.h;
-	
-	boardleft = 0;
-	boardright = SCREEN_WIDTH;
-	boardtop = 0;
-	boardbot = SCREEN_HEIGHT;
 
-	if( spriteleft < boardleft ){		
-		return false;
-	}
-	if( spriteright > boardright ){
-		return false;
-	}
-	if( spritetop < boardtop ){
-		return false;
-	}
-	if( spritebot > boardbot){
-		return false;
-	}
-	
-	//If none of the sides from A are outside B
-	return true;
-		
+
+bool check_collision( SDL_Rect A, SDL_Rect B )
+{
+    //The sides of the rectangles
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+
+    //Calculate the sides of rect A
+    leftA = A.x;
+
+    rightA = A.x + A.w;
+    topA = A.y;
+    bottomA = A.y + A.h;
+
+    //Calculate the sides of rect B
+    leftB = B.x;
+    rightB = B.x + B.w;
+    topB = B.y;
+    bottomB = B.y + B.h;
+
+    //If any of the sides from A are outside of B
+    if( bottomA <= topB )
+    {
+        return false;
+    }
+
+    if( topA >= bottomB )
+    {
+        return false;
+    }
+
+    if( rightA <= leftB )
+    {
+        return false;
+    }
+
+    if( leftA >= rightB )
+    {
+        return false;
+    }
+
+    //If none of the sides from A are outside B
+    return true;
 }
+
 bool init()
 {
 	//Initialize all SDL subsystems
@@ -121,7 +185,7 @@ bool init()
 bool load_files()
 {
   //Load the background
-   background = load_image( "Pokemongym.bmp" );
+   background = load_image( "Pokemon_gym.bmp" );
   //Load the image
    ash = load_image( "test.png" );
    pika = load_image("Pikachu.png");
@@ -155,7 +219,7 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
     SDL_BlitSurface( source, clip, destination, &offset );
 }
 
-void set_clips(){
+void Player::set_clips(){ //set the sprite clips
     int aWidth, aHeight;
     int pWidth, pHeight;
     aWidth = 31;
@@ -185,8 +249,7 @@ void set_clips(){
     AclipsLeft[0].y = aHeight+2;
     AclipsLeft[0].w = aWidth;
     AclipsLeft[0].h = aHeight;
-
- //Clip range for the middle
+        //Clip range for the middle
     AclipsLeft[1].x = aWidth;
     AclipsLeft[1].y = aHeight+2;
     AclipsLeft[1].w = aWidth;
@@ -229,7 +292,7 @@ void set_clips(){
     AclipsUp[2].y = aHeight*3+2;
     AclipsUp[2].w = aWidth;
     AclipsUp[2].h = aHeight;
-    
+
     PclipsRight[0].x = pWidth;
     PclipsRight[0].y = 0;
     PclipsRight[0].w = pWidth;
@@ -264,11 +327,12 @@ void set_clips(){
     PclipsDown[0].y = 0;
     PclipsDown[0].w = pWidth;
     PclipsDown[0].h = pHeight;
-
+  
     PclipsDown[1].x = pWidth*4;
     PclipsDown[1].y = 0;
     PclipsDown[1].w = pWidth;
     PclipsDown[1].h = pHeight;
+
 
     PclipsUp[0].x = pWidth*5;
     PclipsUp[0].y = 0;
@@ -279,23 +343,290 @@ void set_clips(){
     PclipsUp[1].y = 0;
     PclipsUp[1].w = pWidth-6;
     PclipsUp[1].h = pHeight;
+
+
+}
+
+void set_Rect(){
+//set the collision rectangles for the trainers
+// these need to be edited
+	Trainer.x = 175;
+	Trainer.y = 110;
+	Trainer.w = 30;
+	Trainer.h=  35;
+
+	Swimmer.x = 170;
+	Swimmer.y = 235;
+	Swimmer.w = 100;
+	Swimmer.h = 35;
+
+	Misty.x =  140;
+	Misty.y = 75;
+	Misty.w = 30;
+	Misty.h = 80;
+
+	water1.x = 37;
+	water1.y = 317;
+	water1.w = 100;
+	water1.h = 163;
+
+	water2.x = 35;
+	water2.y = 176;
+	water2.w = 37;
+	water2.h = 140;
+
+	water3.x = 105;
+	water3.y = 210;
+	water3.w = 65;
+	water3.h = 70;
+
+	water4.x = 36;
+	water4.y = 145;
+	water4.w = 204;
+	water4.h = 31;
+	
+	water5.x = 40;
+	water5.y = 72;
+	water5.w = 70;
+	water5.h = 73;
+	
+	water6.x = 110;
+	water6.y = 72;
+	water6.w = 62;
+	water6.h = 37;
+	
+	water7.x = 136;
+	water7.y = 37;
+	water7.w = 73;
+	water7.h = 34;
+
+	water8.x = 208;
+	water8.y = 68;
+	water8.w = 100;
+	water8.h = 42;
+	
+	water9.x = 278;
+	water9.y = 107;
+	water9.w = 30;
+	water9.h = 107;
+	
+	water10.x = 206;
+	water10.y = 212;
+	water10.w = 200;
+	water10.h = 270;
+
+} 
+
+Player::Player(){
+  xOffset = 200;
+  yOffset = 550;
+  xvel = 0;
+  yvel = 0;
+  Pframe = 0;
+  Aframe = 0; 
+  status = ASH_RIGHT;
+  myBox.w = A_WIDTH;
+  myBox.h = A_HEIGHT;
+  updateBox();
+  set_clips();
+}
+
+void Player::updateBox(){
+  myBox.x = xOffset;
+  myBox.y = yOffset;
+
+}
+
+void Player::movePlayer(int x, int y){
+	xOffset = x;
+	yOffset = y;
+}
+
+void Player::handle_events(){
+    //If a key was pressed
+    if( event.type == SDL_KEYDOWN )
+    {
+        //Set the xvel
+        switch( event.key.keysym.sym )
+        {
+            case SDLK_RIGHT: xvel += A_WIDTH / 4; break;
+            case SDLK_LEFT: xvel -= A_WIDTH / 4; break;
+	   		case SDLK_DOWN: yvel += A_HEIGHT / 4; break;
+	    		case SDLK_UP: yvel -= A_HEIGHT / 4; break;
+        }
+    }
+    //If a key was released
+    else if( event.type == SDL_KEYUP )
+    {
+        //Set the xvel
+        switch( event.key.keysym.sym )
+        {
+            case SDLK_RIGHT: xvel -= A_WIDTH / 4; break;
+            case SDLK_LEFT: xvel += A_WIDTH / 4; break;
+	    		case SDLK_DOWN: yvel -= A_HEIGHT/4; break;
+	    		case SDLK_UP: yvel += A_HEIGHT / 4; break;
+        }
+    }
+}
+int Player::move(){
+//move
+  if(status == ASH_LEFT || status == ASH_RIGHT){
+    xOffset += xvel;
+  } else  yOffset += yvel;
+// keep in bounds
+//for up
+  if(status == ASH_UP){
+		if(yOffset < 429 && (yOffset + A_HEIGHT > 429) && (xOffset + A_WIDTH > 257)){
+			yOffset = 431;
+      }
+		if( yOffset < 342 && (yOffset + A_HEIGHT) > 342 && (xOffset + A_WIDTH) > 131 && xOffset < 215)
+				yOffset = 344;
+	   if( yOffset < 219 && (yOffset + A_HEIGHT) > 219 && xOffset > 83 && xOffset < 299)
+				yOffset = 221;
+		if( yOffset < 138 && (yOffset + A_HEIGHT) > 138 && xOffset > 260 && (xOffset + A_WIDTH) < 341)
+				yOffset = 140;
+		if(yOffset < 90 && (yOffset + A_HEIGHT) > 90 && xOffset > 176 && (xOffset + A_WIDTH) < 260)
+				yOffset = 92;
+		if( yOffset < 138 && (yOffset+ A_HEIGHT) > 138 && xOffset > 83 && xOffset < 176)
+				yOffset = 140;
+//     if(check_collision(myBox, water3) || check_collision(myBox, water4) || check_collision(myBox, water6) || check_collision(myBox, water6) || check_collision(myBox, water7) || check_collision(myBox, water8)) yOffset += yvel;
+  }
+//for down
+  else if(status == ASH_DOWN){
+		if( yOffset < SCREEN_HEIGHT - 2 && (yOffset + A_HEIGHT) > SCREEN_HEIGHT - 2 && (xOffset + A_WIDTH) > 257)
+				yOffset = SCREEN_HEIGHT - 4 - A_HEIGHT;
+			if( yOffset < 387 && (yOffset + A_HEIGHT) > 387 && xOffset > 83 && xOffset < 170)
+				yOffset = 389 - A_HEIGHT;
+			if( yOffset < 258 && (yOffset + A_HEIGHT) > 258 && xOffset > 128 && xOffset < 215)
+				yOffset = 256 - A_HEIGHT;
+			if( yOffset < 258 && (yOffset + A_HEIGHT) > 258 && xOffset > 257 && xOffset < 341)
+				yOffset = 256 - A_HEIGHT;
+			if( yOffset < 174 && (yOffset + A_HEIGHT) > 174 && xOffset > 83 && xOffset< 299)
+
+				yOffset = 172 - A_HEIGHT;
+
+//     if(check_collision(myBox, water1) || check_collision(myBox, water3) || check_collision(myBox, water4) || check_collision(myBox, water10) ) yOffset -= yvel;
+  }
+
+
+//for right
+  else if(status == ASH_RIGHT){
+	if( xOffset <  296 && (xOffset + A_WIDTH) > 296 && yOffset > 432)
+				xOffset = 294 - A_WIDTH;
+			if( xOffset < 257 && (xOffset + A_WIDTH) > 257 && (yOffset + A_HEIGHT) > 258 && yOffset < 432)
+				xOffset = 255 - A_WIDTH;
+			if( xOffset < 131 && (xOffset + A_WIDTH) > 131 && (yOffset + A_HEIGHT) > 258 && yOffset < 342)
+				xOffset = 129 - A_WIDTH;
+			if( xOffset < 341 && (xOffset + A_WIDTH) > 341 && yOffset > 138 && (yOffset + A_HEIGHT) < 258)
+				xOffset = 339 - A_WIDTH;
+			if( xOffset < 260 && (xOffset + A_WIDTH) > 260 && yOffset > 0 && yOffset < 138)
+				xOffset = 258 - A_WIDTH;
+
+//     if(check_collision(myBox,water3) || check_collision(myBox, water9) || check_collision(myBox, water10)) xOffset -= xvel;	
+   }		
+//for left
+   else if(status == ASH_LEFT){
+			if( xOffset < 170 && (xOffset + A_WIDTH > 170) && (yOffset + A_HEIGHT) > 387)
+				xOffset = 172;
+			if( xOffset < 86 && (xOffset + A_WIDTH) > 86 && yOffset > 215 && yOffset < 388)
+				xOffset = 88;
+			if( xOffset < 215 && (xOffset + A_WIDTH) > 214 && (yOffset + A_HEIGHT) > 255 && yOffset < 343)
+				xOffset = 217;
+			if( xOffset < 301 && (xOffset + A_WIDTH) > 301 && yOffset < 219 && (yOffset + A_HEIGHT) > 174)
+				xOffset = 140;
+			if( xOffset < 176 && (xOffset + A_WIDTH) > 176 && yOffset > 90 && yOffset < 138)
+				xOffset = 178;
+			if( xOffset < 86 && (xOffset + A_WIDTH) > 86 && yOffset > 135 && yOffset < 174)
+				xOffset = 88;	
+
+//     if(check_collision(myBox, water1) || check_collision(myBox, water2) || check_collision(myBox, water3) || check_collision(myBox, water4) || check_collision(myBox, water5)) xOffset += xvel;
+  }
+//keeps the trainer in bounds
+  if(status == ASH_LEFT || status == ASH_RIGHT){
+    if((xOffset<0) || (xOffset + A_WIDTH > SCREEN_WIDTH)){
+			xOffset -= xvel;
+  		}
+  }
+  else if((yOffset < 0) || (yOffset + A_HEIGHT > SCREEN_HEIGHT)){
+	yOffset -= yvel;
+   }
+
+  updateBox(); //update the x and y coordinates of the box
+
+if(check_collision(myBox, Swimmer)){
+//	cout << "Shop!" << endl; //for testing
+	return FIRST_FIGHT;
+  }
+  else if(check_collision(myBox, Trainer)) {
+//	cout << "PC" << endl; //for testing
+	return SECOND_FIGHT;
+  }
+  else if(check_collision(myBox, Misty)){
+//	 cout << "HOME" << endl; //for testing
+ 	return THIRD_FIGHT;
+   }
+  else {
+//	cout << "nothing" ; // for testing
+	return IDLE;
+  }
+}
+
+
+void Player::show(){
+   //if moving to left
+   if(xvel < 0){
+	status = ASH_LEFT; //set animation to left
+	Pframe++; // next Pframe
+   	Aframe++;
+    }
+  //if moving to the right
+  else if(xvel > 0){
+	status = ASH_RIGHT;
+	Pframe++;
+   	Aframe++;
+  }
+  else if(yvel < 0){
+ 	status = ASH_UP;
+	Pframe++;
+   	Aframe++;
+  }
+  else if(yvel > 0 ) {
+	status = ASH_DOWN;
+	Pframe++;
+   	Aframe++;
+  }
+  else{ //standing still
+	Pframe = 0;
+   	Aframe = 0;
+  }
+// loop animation
+  if((Pframe >= 4 && (status == ASH_LEFT || status == ASH_RIGHT)) || (Pframe>=2 && (status == ASH_UP || status == ASH_DOWN)) ){
+	Pframe = 0;
+  }
+  if(Aframe >= 3) Aframe = 0;
+
+  if(status == ASH_LEFT){
+	apply_surface(xOffset,yOffset, ash, screen, &AclipsLeft[Aframe]);
+	apply_surface(xOffset + A_WIDTH, yOffset, pika, screen, &PclipsLeft[Pframe]);
+  } else if( status == ASH_RIGHT){
+	apply_surface(xOffset,yOffset, ash, screen, &AclipsRight[Aframe]);
+	apply_surface(xOffset - A_HEIGHT -2, yOffset, pika, screen, &PclipsRight[Pframe]);
+  } else if(status == ASH_UP){
+	apply_surface(xOffset,yOffset, ash, screen, &AclipsUp[Aframe]);
+	apply_surface(xOffset - IMG_OFFSET, yOffset + A_HEIGHT, pika, screen, &PclipsUp[Pframe]);
+  }  else if(status == ASH_DOWN){
+	apply_surface(xOffset, yOffset, ash, screen, &AclipsDown[Aframe]);
+	apply_surface(xOffset - IMG_OFFSET,  yOffset - A_HEIGHT, pika, screen, &PclipsDown[Pframe]);
+  }
 }
 
 int main(int argc, char* args[] ){
 	//initialize surface to start in the middle
-	int xpos, ypos;
-	int xvel, yvel, width, height;
-	width = 31; //clip parameters
-	height = 32;
-	xvel = 3; //set speed
-	yvel = 3; //set speed
-	xpos = 200;
-	ypos = 550;
-	//to help determine the image for walking	
-	int counter;
-	bool quit = false;
-	//Get the keystates 
-	Uint8 *keystates = SDL_GetKeyState( NULL );
+	int state;
+   bool quit = false;   
+   int first = 0;
+   int second = 0;
+   int third = 0;
 	
 	//initialize
 	if( init() == false ) return 1;
@@ -304,114 +635,59 @@ int main(int argc, char* args[] ){
 	//Update the screen
 	if( SDL_Flip( screen ) == -1 )return 1;
 
-	set_clips(); 
-   	//Apply the surface
-   	apply_surface(0, 0, background, screen );	
-	
-	while( quit == false ){
-		while( SDL_PollEvent( &event )){
-			if(event.type == SDL_QUIT )
-			{
-				quit = true;
-			}
-		
-		}
+	set_Rect();
 
-	//detect collision with if statements
-	//should implement rectangles around the "trainers"
-		if( ypos < 270 && ypos > 230 && xpos > 320 && xpos < 360 )
-			cout << "Fight!" << endl;		
-	//	if( xpos < 	
-	
+   Player red;
+   Timer fps;
+	   while( quit == false )
+    {
+        //Start the Pframe timer
+        fps.start();
 
-		//If up is pressed
-		if( keystates[ SDLK_UP ] ){ //ash walking up 
-			apply_surface(0, 0, background, screen );			
-		//if statements to keep sprite out of water			
-			if( ypos < 429 && (ypos + height > 429) && (xpos + width) > 257)
-				ypos = 431;
-			if( ypos < 342 && (ypos + height) > 342 && (xpos + width) > 131 && xpos < 215)
-				ypos = 344;
-			if( ypos < 219 && (ypos + height) > 219 && xpos > 83 && xpos < 299)
-				ypos = 221;
-			if( ypos < 138 && (ypos + height) > 138 && xpos > 260 && (xpos + width) < 341)
-				ypos = 140;
-			if( ypos < 90 && (ypos + height) > 90 && xpos > 176 && (xpos + width) < 260)
-				ypos = 92;
-			if( ypos < 138 && (ypos + height) > 138 && xpos > 83 && xpos < 176)
-				ypos = 140;
-			
-		
-			apply_surface( xpos, ypos, image, screen, &clip[ 10 ] ); 
-						
-			//increase y position by vel
-			if( check_collision( clip[10], xpos, ypos))			
-				ypos -= yvel;
-			
-		} 
-		//If down is pressed   #added else ifs so no diagonal movement
-		else if( keystates[ SDLK_DOWN ] ){ //ash walking down
-			apply_surface(0, 0, background, screen );			
-			if( ypos < SCREEN_HEIGHT - 2 && (ypos + height) > SCREEN_HEIGHT - 2 && (xpos + width) > 257)
-				ypos = SCREEN_HEIGHT - 4 - height;
-			if( ypos < 387 && (ypos + height) > 387 && xpos > 83 && xpos < 170)
-				ypos = 389 - height;
-			if( ypos < 258 && (ypos + height) > 258 && xpos > 128 && xpos < 215)
-				ypos = 256 - height;
-			if( ypos < 258 && (ypos + height) > 258 && xpos > 257 && xpos < 341)
-				ypos = 256 - height;
-			if( ypos < 174 && (ypos + height) > 174 && xpos > 83 && xpos< 299)
-				ypos = 172 - height;
-						
-			apply_surface( xpos, ypos , image, screen, &clip[1]); 
-			if( check_collision( clip[1], xpos, ypos))		 	
-				ypos += yvel;
-		}
-		//If left is pressed 
-		else if( keystates[ SDLK_LEFT ] ){ //ash walking left
-			apply_surface(0, 0, background, screen );
-			if( xpos < 170 && (xpos + width > 170) && (ypos + height) > 387)
-				xpos = 172;
-			if( xpos < 86 && (xpos + width) > 86 && ypos > 215 && ypos < 388)
-				xpos = 88;
-			if( xpos < 215 && (xpos + width) > 214 && (ypos + height) > 255 && ypos < 343)
-				xpos = 217;
-			if( xpos < 301 && (xpos + width) > 301 && ypos < 219 && (ypos + height) > 174)
-				xpos = 140;
-			if( xpos < 176 && (xpos + width) > 176 && ypos > 90 && ypos < 138)
-				xpos = 178;
-			if( xpos < 86 && (xpos + width) > 86 && ypos > 135 && ypos < 174)
-				xpos = 88;			
-			apply_surface(xpos, ypos, image, screen, &clip[4]);
-			if( check_collision( clip[4], xpos, ypos))			
-				xpos -= xvel;
-			
-		} 
-		//If right is pressed
-		else if( keystates[ SDLK_RIGHT ] ){ //ash walking right
-			apply_surface(0, 0, background, screen );	
-			if( xpos <  296 && (xpos + width) > 296 && ypos > 432)
-				xpos = 294 - width;
-			if( xpos < 257 && (xpos + width) > 257 && (ypos + height) > 258 && ypos < 432)
-				xpos = 255 - width;
-			if( xpos < 131 && (xpos + width) > 131 && (ypos + height) > 258 && ypos < 342)
-				xpos = 129 - width;
-			if( xpos < 341 && (xpos + width) > 341 && ypos > 138 && (ypos + height) < 258)
-				xpos = 339 - width;
-			if( xpos < 260 && (xpos + width) > 260 && ypos > 0 && ypos < 138)
-				xpos = 258 - width;		
-			apply_surface(xpos, ypos, image, screen, &clip[7]);
-			if( check_collision( clip[7], xpos, ypos))			
-				xpos += xvel;
-		}
-		//cout << "X: " << xpos << endl << "Y: " << ypos << endl; //get the coordinates of sprite 
-		//Update the screen 
-		if( SDL_Flip( screen ) == -1 ){ 
-			return 1;
-		}
-		SDL_Delay(50);
-	}
-	clean_up();
-	
-	return 0;
+        //While there's events to handle
+        while( SDL_PollEvent( &event ) )
+        {
+            //Handle events for the player
+            red.handle_events();
+
+            //If the user has Xed out the window
+            if( event.type == SDL_QUIT )
+            {
+                //Quit the program
+                quit = true;
+            }
+        }
+	// Move pikachu and ash
+	state = red.move();
+	if( state == FIRST_FIGHT && first == NO_FIGHT){
+			cout << "Swimmer wants to fight! " << endl; //for test
+			first = FIGHT;
+	}		
+   else if( state==SECOND_FIGHT && second == NO_FIGHT){
+		   cout << "Trainer wants to fight!" << endl;
+			second = FIGHT; // denotes that the battle has occurred
+   }
+	else if(state == THIRD_FIGHT && third == NO_FIGHT){
+		    cout << "Misty wants to fight! " << endl;
+			 third = FIGHT;
+   }
+	// Fill the background screen
+	apply_surface(0, 0, background, screen );
+	// show pika and ash
+	red.show(); //Update the screen
+        if( SDL_Flip( screen ) == -1 )
+        {
+            return 1;
+        }
+
+        //Cap the Pframe rate
+        if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
+        {
+            SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
+        }
+    }
+
+    clean_up();
+    return 0;
+
 }
