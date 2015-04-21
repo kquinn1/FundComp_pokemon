@@ -30,6 +30,8 @@ class Pokemon{
 	int getEXP(){ return EXP; };
 	void calcEXP(int); //calculates and sets EXP
 	string getName(){return name;};
+	int ifLevelUp(); //determine if level up
+	void levelUp(); //level up
 	int getMax(){ return maxHP; };
 	int GetAttack();	
 	int getDefense();
