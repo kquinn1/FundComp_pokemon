@@ -10,6 +10,7 @@ const int B_BASE_A = 45;
 const int B_BASE_D = 20;
 const int B_BASE_SPEED= 20;
 const int B_BASE_SPEC = 25;
+const int CATCH = 170;
 
 Jigglypuff::Jigglypuff(int level) : Normal(level){
 //set base stats to calculate stats
@@ -30,7 +31,8 @@ Jigglypuff::Jigglypuff(int level) : Normal(level){
   setAttacks();
 //set up experience type for leveling up
   Pokemon::setEXPtype("F"); //will allow for accurate calculations
-
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 
 void Jigglypuff::print() {

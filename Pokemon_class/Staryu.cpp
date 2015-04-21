@@ -9,6 +9,7 @@ const int S_BASE_D = 55;
 const int S_BASE_SPEED= 85;
 const int S_BASE_SPEC = 70;
 const int S_BASE_HP = 30; //base stats for bulbasaur
+const int CATCH = 225;
 
 Staryu::Staryu(int level) : Water(level){
   Pokemon::setBaseA(S_BASE_A);
@@ -28,6 +29,8 @@ Staryu::Staryu(int level) : Water(level){
   setAttacks();
 
   Pokemon::setEXPtype("S");
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 
 void Staryu::print(){

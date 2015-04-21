@@ -9,6 +9,7 @@ const int P_BASE_D = 48;
 const int P_BASE_SPEED= 55;
 const int P_BASE_SPEC = 50;
 const int P_BASE_HP = 50; //base stats for psyduck
+const int CATCH = 190;
 
 Psyduck::Psyduck(int level) : Water(level){
   Pokemon::setBaseA(P_BASE_A);
@@ -31,6 +32,8 @@ Psyduck::Psyduck(int level) : Water(level){
 }
 void Psyduck::print(){
   cout << "PSYDUCK" ; 
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 
 void Psyduck::setAttacks(){

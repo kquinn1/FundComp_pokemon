@@ -10,6 +10,7 @@ const int PIK_BASE_D = 30;
 const int PIK_BASE_SPEED = 90;
 const int PIK_BASE_SPEC = 50;
 const int PIK_BASE_HP = 35; //base stats for pikachu
+const int CATCH = 190;
 
 Pikachu::Pikachu(int level) : Electric(level){
   Pokemon::setBaseA(PIK_BASE_A);
@@ -29,6 +30,9 @@ Pikachu::Pikachu(int level) : Electric(level){
   setAttacks(); //set attacks for pikachu, does not allow the user to decide
 
   Pokemon::setEXPtype("MF");
+
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 
 void Pikachu::print(){

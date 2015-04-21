@@ -9,6 +9,7 @@ const int S_BASE_A = 65;
 const int S_BASE_D = 100;
 const int S_BASE_SPEED= 40;
 const int S_BASE_SPEC = 45;
+const int CATCH = 190;
 
 Shellder::Shellder(int level) : Water(level){
   Pokemon::setBaseA(S_BASE_A);
@@ -28,6 +29,8 @@ Shellder::Shellder(int level) : Water(level){
   setAttacks();
 
   Pokemon::setEXPtype("S");
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 
 void Shellder::print(){

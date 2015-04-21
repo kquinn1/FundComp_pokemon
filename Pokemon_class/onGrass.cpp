@@ -16,6 +16,10 @@
 #include "Squirtle.h"
 using namespace std;
 
+const int CAUGHT = 1;
+const int ESCAPED = 0;
+const int BALL = 255; // assume that a poke ball is used
+
 onGrass::onGrass(Player* m_player){//, Pokemon* m_poke, int isonGrass){
   srand( time(NULL) );//initialize random seed
   int pokeRand; // number to see if pokemon is instantiated
@@ -58,6 +62,7 @@ onGrass::onGrass(Player* m_player){//, Pokemon* m_poke, int isonGrass){
         myWild = (new Squirtle(randLevel));
   }
   if(pokeRand>20){
+// for testing	cout << randLevel << " the level. " << endl;
 	battle(); //battle against the pokemon created
   }
 
@@ -166,14 +171,35 @@ int onGrass::playerTurn(){
         return 1;
 	break;
      case 4:
-	cout << "Catching pokemon..." << endl;
-	myPlayer->addPokemon(myWild);
-	return 2;
+	if( isCaught() == CAUGHT ) {
+  		cout << "Catching pokemon..." << endl;
+		myPlayer->addPokemon(myWild);
+		return 2;
+	}
+	else{
+		cout << "Failed to catch pokemon!" << endl;
+	}
+	break;
      default:
         cout << "Invalid option." << endl;
 	break;
      }
      return 0; //the player did not run away
+}
+
+int onGrass::isCaught(){
+//return a 1 if caught
+//return a 0 if not
+//using formula
+  srand( time(NULL) );//initialize random seed
+  // to use for the random number
+  int M = rand()%255; //generate random int between 0 and 255
+  int stat;
+
+  stat = (myWild->getMax() * 255 * 4 ) / (myWild->getHP() * BALL );
+
+  if( stat >= M ) return CAUGHT;
+  else return ESCAPED;
 }
 
 void onGrass::setExperience(){

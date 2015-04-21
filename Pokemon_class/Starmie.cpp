@@ -9,6 +9,7 @@ const int S_BASE_A = 75;
 const int S_BASE_D = 85;
 const int S_BASE_SPEED= 115;
 const int S_BASE_SPEC = 100;
+const int CATCH = 60;
 
 Starmie::Starmie(int level) : Water(level){
   Pokemon::setBaseA(S_BASE_A);
@@ -28,6 +29,8 @@ Starmie::Starmie(int level) : Water(level){
   setAttacks();
 
   Pokemon::setEXPtype("S");
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 
 void Starmie::print(){

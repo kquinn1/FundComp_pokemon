@@ -220,3 +220,11 @@ void Pokemon::calcEXP(int enemy_level){
 //need fucntion to check to see to level up
 }
 
+void Pokemon::setCatch(int catchR){
+  catchRate = catchR;
+}
+
+int Pokemon::getCatch(){
+  return catchRate;
+}
+
