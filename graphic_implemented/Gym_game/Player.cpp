@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "globals.h"
 #include "function.h"
+#include <iostream>
+using namespace std;
 
 //sprite sheet 
 SDL_Rect AclipsRight[3];
@@ -27,6 +29,7 @@ Player::Player(){
   myBox.h = A_HEIGHT;
   updateBox();
   set_clips();
+
 }
 
 void Player::updateBox(){
@@ -206,6 +209,10 @@ void Player::show(){
 	apply_surface(xOffset, yOffset, ash, screen, &AclipsDown[Aframe]);
 	apply_surface(xOffset - IMG_OFFSET,  yOffset - A_HEIGHT, pika, screen, &PclipsDown[Pframe]);
   }
+
+//  if(pika == NULL) cout << "pika is null" << endl;
+//  if(ash == NULL) cout << "ash is null" << endl;
+//  if(screen == NULL) cout << "screen is null " << endl;
 }
 
 void Player::set_clips(){ //set the sprite clips

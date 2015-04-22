@@ -9,6 +9,7 @@ const int H_BASE_A = 40;
 const int H_BASE_D = 70;
 const int H_BASE_SPEED= 60;
 const int H_BASE_SPEC = 70;
+const int CATCH = 225;
 
 Horsea::Horsea(int level) : Water(level){
   Pokemon::setBaseA(H_BASE_A);
@@ -28,6 +29,8 @@ Horsea::Horsea(int level) : Water(level){
   setAttacks();
 
   Pokemon::setEXPtype("MF");
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 void Horsea::print(){
   cout << "HORSEA" ; 

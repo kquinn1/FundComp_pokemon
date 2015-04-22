@@ -197,6 +197,7 @@ void Pokemon:: setMove(string myName, string myType, int myPower, int myPP, int 
 void Pokemon::calcEXP(int enemy_level){
 //will calculate the experience to award given a specific pokemon type
   int exp2add; 
+//should I use a switch statement here?
   if(EXPtype=="F"){//currently have no fast pokemon but implemented for future
 //calculate experience for fast pokemon
      exp2add = ( 4 * pow(enemy_level,3) ) / 5;
@@ -217,6 +218,49 @@ void Pokemon::calcEXP(int enemy_level){
   EXP+=exp2add;
 
   cout << "Current experience: " << EXP << endl;
-//need fucntion to check to see to level up
+
+  if( ifLevelUp() ) levelUp();
+  //esle do nothing
+}
+
+int Pokemon::ifLevelUp(){
+  int stat;
+//regression equations used to determine EXP needed to level up
+  if(EXPtype == "F"){
+	stat =(0.614)*(pow(level+1,0.3942));
+  }else if(EXPtype == "MF"){
+  	stat = (0.5546)*(pow(level+1, 0.3958));
+  }else if(EXPtype == "MS"){
+	stat = (0.4899)*(pow(level+1,0.4305));
+  }else if(EXPtype == "S"){
+	stat = (0.5093)*(pow(level+1,0.3954));
+  }
+  if( EXP >= stat ) return 1;
+  else return 0;
+}
+
+void Pokemon::levelUp(){
+  int currentHP;
+  int oldMaxHP;
+
+  level++; //increment the level
+  cout << "Pokemon has reached new level: " << level << endl;
+  setAttack();
+  setDef();
+  setSpecial();
+  setSpeed();
+// TO DO: when you set the HP need to make sure that the HP is incremented by appr. amount
+  currentHP = HP;
+  oldMaxHP = maxHP;
+  setHP(); //re calculate the base statistics
+  HP = currentHP + (maxHP - oldMaxHP);
+}
+
+void Pokemon::setCatch(int catchR){
+  catchRate = catchR;
+}
+
+int Pokemon::getCatch(){
+  return catchRate;
 }
 

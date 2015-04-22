@@ -30,6 +30,9 @@ class Pokemon{
 	int getEXP(){ return EXP; };
 	void calcEXP(int); //calculates and sets EXP
 	string getName(){return name;};
+	int ifLevelUp(); //determine if level up
+	void levelUp(); //level up
+	int getMax(){ return maxHP; };
 	int GetAttack();	
 	int getDefense();
 	int getSpecial();
@@ -46,6 +49,8 @@ class Pokemon{
  	void setBaseSpec(int);
  	void setBaseSpeed(int);
  	void setBaseHP(int);
+	void setCatch(int); //i){ catchRate = i;} ;
+	int getCatch(); //{ return catchRate ; } ; 
 	int getBaseA(){ return base_A; };
  	int getBaseD(){ return base_D; };
  	int getBaseSpec(){ return base_Speed; };
@@ -80,6 +85,7 @@ class Pokemon{
 	int special;	
 	int speed;
 	int level;
+	int catchRate;
 	int HP; // health
 	int maxHP; //max health, or the initial HP
 	vector<Attack*> attacks;

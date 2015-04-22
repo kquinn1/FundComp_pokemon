@@ -10,6 +10,7 @@ const int B_BASE_A = 110;
 const int B_BASE_D = 65;
 const int B_BASE_SPEED= 30;
 const int B_BASE_SPEC = 65;
+const int CATCH = 25;
 
 Snorlax::Snorlax(int level) : Normal(level){
 //set base stats to calculate stats
@@ -30,7 +31,8 @@ Snorlax::Snorlax(int level) : Normal(level){
   setAttacks();
 //set up experience type for leveling up
   Pokemon::setEXPtype("S"); //will allow for accurate calculations
-
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 
 void Snorlax::print() {

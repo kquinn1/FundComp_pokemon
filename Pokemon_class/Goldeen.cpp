@@ -9,6 +9,7 @@ const int G_BASE_D = 60;
 const int G_BASE_SPEED= 63;
 const int G_BASE_SPEC = 50;
 const int G_BASE_HP = 45; //base stats for goldeen
+const int CATCH = 225;
 
 Goldeen::Goldeen(int level) : Water(level){
   Pokemon::setBaseA(G_BASE_A);
@@ -28,6 +29,9 @@ Goldeen::Goldeen(int level) : Water(level){
   setAttacks();
 
   Pokemon::setEXPtype("MF");
+//set catch rate
+  Pokemon::setCatch(CATCH);
+
 }
 
 void Goldeen::print(){

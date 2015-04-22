@@ -9,6 +9,7 @@ const int C_BASE_D = 43;
 const int C_BASE_SPEED= 65;
 const int C_BASE_SPEC = 50;
 const int C_BASE_HP = 39; //base stats for charmander
+const int CATCH = 45;
 
 Charmander::Charmander(int level) : Fire(level){
 //set base stats
@@ -30,6 +31,9 @@ Charmander::Charmander(int level) : Fire(level){
 
 //set exp type for experience calculations
   Pokemon::setEXPtype("MS");
+
+//set catch rate for grass
+  Pokemon::setCatch(CATCH);
 }
 
 void Charmander::print(){

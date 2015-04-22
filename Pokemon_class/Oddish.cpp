@@ -10,6 +10,7 @@ const int B_BASE_A = 50;
 const int B_BASE_D = 55;
 const int B_BASE_SPEED= 30;
 const int B_BASE_SPEC = 75;
+const int CATCH = 255;
 
 Oddish::Oddish(int level) : Grass(level){
 //set base stats to calculate stats
@@ -30,7 +31,8 @@ Oddish::Oddish(int level) : Grass(level){
   setAttacks();
 //set up experience type for leveling up
   Pokemon::setEXPtype("MS"); //will allow for accurate calculations
-
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 
 void Oddish::print() {

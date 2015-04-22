@@ -9,6 +9,7 @@ const int S_BASE_D = 65;
 const int S_BASE_SPEED= 43;
 const int S_BASE_SPEC = 50;
 const int S_BASE_HP = 44; //base stats for squirtle
+const int CATCH = 45;
 
 Squirtle::Squirtle(int level) : Water(level){
   Pokemon::setBaseA(S_BASE_A);
@@ -28,6 +29,8 @@ Squirtle::Squirtle(int level) : Water(level){
   setAttacks();
 
   Pokemon::setEXPtype("MS");
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 
 void Squirtle::print(){

@@ -24,6 +24,7 @@ class onGrass{
 	int playerTurn();
 	void enemyTurn(); //the player turn or the enemy turn functions
 	void setExperience(); //add the stats earned to the pokemon in battle
+	int isCaught(); // function that determines whether or not pokemon is caught
   private:
 	Player* myPlayer;
 	Pokemon* myWild;

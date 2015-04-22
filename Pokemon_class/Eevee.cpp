@@ -10,7 +10,7 @@ const int B_BASE_D = 49;
 const int B_BASE_SPEED= 45;
 const int B_BASE_SPEC = 65;
 const int B_BASE_HP = 45; //base stats for bulbasaur
-
+const int CATCH = 45;
 Eevee::Eevee(int level) : Normal(level){
 //set base stats to calculate stats
   Pokemon::setBaseA(B_BASE_A);
@@ -31,6 +31,8 @@ Eevee::Eevee(int level) : Normal(level){
 //set up experience type for leveling up
   Pokemon::setEXPtype("MF"); //will allow for accurate calculations
 
+//set catch rate
+  Pokemon::setCatch(CATCH);
 }
 
 void Eevee::print() {
