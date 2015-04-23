@@ -1,3 +1,5 @@
+//Katie Quinn
+// global variables for the background image of the twon
 #ifndef GLOBALS_H
 #define GLOBALS_H
 #include "SDL/SDL.h"
@@ -16,12 +18,13 @@ const int PIKA_WIDTH = 50;
 const int A_HEIGHT = 32;
 const int A_WIDTH = 31;
 const int IMG_OFFSET = 7;
-//direction status of sprite
+//direction status of animated sprite
 const int ASH_RIGHT = 0;
 const int ASH_LEFT = 1;
 const int ASH_DOWN = 2;
 const int ASH_UP = 3;
 
+// demonstrates whether collision detection happens or not
 const int STAY = 0;
 const int TO_SHOP = 1;
 const int TO_PC = 2;
@@ -29,6 +32,7 @@ const int TO_GYM = 3;
 const int TO_HOME = 4;
 const int TO_GRASS = 5;
 
+//SDL surfaces, static because only one wanted: still issues here
 static SDL_Surface *ash;
 static SDL_Surface *pika;
 static SDL_Surface *screen;
@@ -41,5 +45,6 @@ static SDL_Rect Home;
 static SDL_Rect Gym;
 static SDL_Rect Grass;
 
+// want to have one event globally
 static SDL_Event event;
 #endif 

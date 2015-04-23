@@ -1,12 +1,12 @@
 //Katie Quinn
+//Fight.cpp
+// Fight inherits from Battle 
 //Fight implementation file
 //To do:
 // Exception handling
-// Add experience
 // The first pokemon a player uses should be the first one in their lineup
-// Add special attack functionality
-// 	remove the two variables in Pokemon class: should only have 1 special
-//
+
+//#include "Battle.h"
 #include "Fight.h"
 #include <stdio.h> //NULL
 #include <stdlib.h> //srand, rand
@@ -14,20 +14,10 @@
 #include <iostream>
 using namespace std;
 
-Fight::Fight(Player* m_player, Enemy* m_enemy){//, Pokemon* m_poke, int isWild){
-  myPlayer= m_player;
-  //if statement
-//  if(isWild==1){// a wild pokemon battle
- //  myWild = m_poke;  
- //  wildBattle();
- // }else{ // an enemy pokemon battle
+Fight::Fight(Player* m_player, Enemy* m_enemy):Battle(m_player){ // call to the battle class constructor
    myEnemy = m_enemy;
-   battle();
- // }
+   battle();// commence the battle
 }
-
-//should there be a deconstructor?
-//Fight::~Fight(){ }}
 
 void Fight::battle(){
 //enemy and player class battle
@@ -39,7 +29,7 @@ void Fight::battle(){
  // int quit = 0;
   int enemy;
 //the player should choose the current pokemon to use
-  choosePoke();
+  Battle::choosePoke();
 //simplification: usually is the first pokemon available, then has options to switch later on
 
 //the enemy will use the last pokemon available to use in vector
@@ -87,12 +77,12 @@ void Fight::playerTurn(){
   int switchChoice; //for while loop
   int valid = 0; //to use in while loop
 //option to change pokemon, run, or fight, item implemented later
-  battleMenu(); //display options on a turn
+  Battle::battleMenu(); //display options on a turn
   cin >> uChoice;
   switch(uChoice){
      case 1://Fight 
 //show attacks & decide on the attack
-	uChoice = showAttacks();
+	uChoice = Battle::showAttacks();
 //use the attack on the pokemon
 //display the battle
   cout << myPlayer->getCurrentPokemon()->getName() << " will use " << myPlayer->getCurrentPokemon()->getAttack(uChoice)->getName() << "." << endl;
@@ -187,70 +177,11 @@ void Fight::enemyTurn(){
 //set a new pokemon
     if(myPlayer->isDefeated()==0){
 	cout << myPlayer->getCurrentPokemon()->getName()<< " has fainted!" << endl ;
-	choosePoke();
+	Battle::choosePoke();
      }
   }
 }
 
-void Fight::wildBattle(){
-//the player and a wild pokemon battle
-//the player should choose the current pokemon to use
-}
-
-void Fight::choosePoke(){
-//this function allows the user to choose which pokemon to use
-  int size;
-  int uChoice;
-  int valid = 0;
-  while( valid == 0 ){
-    cout << "Pick the pokemon you will use: " << endl;  
-  //declare iterator
-    size = myPlayer->getNumPoke();
-    for(int i=0; i<size; i++){
-      cout << "Choice " << i << ": "<<myPlayer->getPokemon(i)->getName();
-      cout <<"      Current HP: "<< myPlayer->getPokemon(i)->getHP() << endl;
-    }  
-    cout << "I choose..." ;
-    cin >> uChoice;
-//set the current Pokemon
-    if(myPlayer->getPokemon(uChoice)->getHP()==0){
-//can't use a fainted pokemon
-      cout <<"This pokemon has fainted!" << endl;
-    } else valid = 1;
-  }
-  myPlayer->setCurrentPokemon(myPlayer->getPokemon(uChoice));
-  cout << "Go! " << myPlayer->getCurrentPokemon()->getName() << endl;
-}
-
-void Fight::battleMenu(){
-  cout << "Choose an option: " << endl;
-  cout << "1. Fight " << endl;
-  cout << "2. Change Pokemon " << endl;
-  cout << "3. Run " << endl;
-//cout << "4. Item " << endl;
-  cout << "Your choice: " ;
-}
-
-int Fight::showAttacks(){
-  int valid = 0; //in order to check for a valid attack
-  int uChoice;
-  while(valid == 0){
-    cout << "Choose an attack...." << endl;
-    for(int i = 0; i<4; i++){
-        cout << i << ". ";
-        cout << myPlayer->getCurrentPokemon()->getAttack(i)->getName() <<endl;
-        cout << "Type: " ;
-        cout << myPlayer->getCurrentPokemon()->getAttack(i)->getType() << endl;
-        cout << "PP: " ;
-        cout << myPlayer->getCurrentPokemon()->getAttack(i)->getPP() << endl;
-    }
-    cin >> uChoice;
-    if(myPlayer->getCurrentPokemon()->getAttack(uChoice)->getPP() == 0 ){
-      cout << "This attack is not valid! " <<endl;
-    } else {valid = 1; }
-  }
-  return uChoice;
-}
 //calculate the damage a pokemon does
 int Fight::Damage(string turn,int choice){
 //int Fight::Damage(int baseSpeed,int a_level, int a_attack, int d_defense, int attack_power, string attack_type, string a_type, string d_type, int acc_attack){
@@ -327,7 +258,7 @@ int Fight::Damage(string turn,int choice){
   if(attack_type == a_type) STAB = 1.5;
   else STAB = 1; //the pokemon and it's attack are different
 //adjust the type variable based on the attack type and the type of defensive pokemon
-  type = typeCalc(attack_type, d_type);
+  type = Battle::typeCalc(attack_type, d_type);
 //display appropriate message
   if(type==2) cout << "It's super effective!" << endl;
   else if(type==0.5) cout << "It's not very effective." << endl;
@@ -340,36 +271,6 @@ int Fight::Damage(string turn,int choice){
   damage = (((2*(double)a_level+10)/250) * ((double)a_attack/(double)d_defense) * attack_power + 2 ) * Modifier;
 
   return damage;
-}
-
-float Fight::typeCalc(string attack_type,string d_type){
-//calculate the type modification variable for the damage calculation
-//float typeBonus(string attack_type,string  d_type){
-  float type;
-  if(attack_type == "normal") type = 1;
-  else if(d_type == "normal") type = 1;
-  else if (attack_type == d_type) type = 0.5;
-  else if(attack_type == "fire"){
-     if(d_type == "water") type = 0.5;
-     else if(d_type == "grass") type = 2;
-     else type = 1;
-     }
-  else if(attack_type == "water"){
-     if(d_type == "fire") type = 2;
-     else if(d_type == "grass") type = 0.5;
-     else type = 1;                                                                
-  }
-  else if(attack_type == "grass"){
-     if(d_type == "fire") type = 0.5;
-     else if(d_type == "water") type = 2;
-     else type = 1;
-  }
-  else if(attack_type == "electric"){
-     if(d_type == "grass") type = 0.5; 
-     else if(d_type == "water") type = 2;
-     else type = 1;
-  } 
-  return type;
 }
 
 int Fight::isWinner(){
