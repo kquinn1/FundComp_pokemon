@@ -109,6 +109,7 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
     SDL_BlitSurface( source, clip, destination, &offset );
 }
 
+
 int main(int argc, char* args[] ){
 	
 	bool quit = false;
@@ -148,7 +149,7 @@ int main(int argc, char* args[] ){
     clip[ 2 ].w = SCREEN_WIDTH;
     clip[ 2 ].h = SCREEN_HEIGHT;
 
-    //level-up
+    //Items
     clip[ 3 ].x = 0;
     clip[ 3 ].y = SCREEN_HEIGHT;
     clip[ 3 ].w = SCREEN_WIDTH;
@@ -165,8 +166,75 @@ int main(int argc, char* args[] ){
     clip[ 5 ].w = SCREEN_WIDTH;
     clip[ 5 ].h = SCREEN_HEIGHT;
 
-    		
+    //Items menu arrow
+    clip[ 6 ].x = 218;
+    clip[ 6 ].y = 758;
+    clip[ 6 ].w = 48;
+    clip[ 6 ].h = 53;
+
+       //Battle options arrow
+    clip[ 7 ].x = 1771;
+    clip[ 7 ].y = 1262;
+    clip[ 7 ].w = 34;
+    clip[ 7 ].h = 36;
+
+   	//choose pokemon arrow
+    clip[ 8 ].x = 1711;
+    clip[ 8 ].y = 52;
+    clip[ 8 ].w = 35;
+    clip[ 8 ].h = 42;
+
+    	//choose Pokemon health/stats
+    clip[ 9 ].x = 1871;
+    clip[ 9 ].y = 20;
+    clip[ 9 ].w = 577;
+    clip[ 9 ].h = 76;
+    	//attack options arrow
+    clip[ 10 ].x = 1077;
+    clip[ 10 ].y = 1101;
+    clip[ 10 ].w = 34;
+    clip[ 10 ].h = 41;
+
+   	 //Pokeball
+    clip[ 11 ].x = 1728;
+    clip[ 11 ].y = 1262;
+    clip[ 11 ].w = 41;
+    clip[ 11 ].h = 37;		
+		
+   	 //Pokeball initial placement
+    clip[ 12 ].x = 482;
+    clip[ 12 ].y = 394;
+    clip[ 12 ].w = 43;
+    clip[ 12 ].h = 35;	
 	
+	//health full
+    clip[ 13 ].x = 1730;
+    clip[ 13 ].y = 1190;
+    clip[ 13 ].w = 269;
+    clip[ 13 ].h = 24;
+
+   	 //health half
+    clip[ 14 ].x = 1730;
+    clip[ 14 ].y = 1216;
+    clip[ 14 ].w = 269;
+    clip[ 14 ].h = 21;		
+		
+   	 //health almost dead
+    clip[ 15 ].x = 1730;
+    clip[ 15 ].y = 1239;
+    clip[ 15 ].w = 269;
+    clip[ 15 ].h = 24;	
+
+	//empty space to cover unecessary arrows
+    clip[ 16 ].x = 0;
+    clip[ 16 ].y = 0;
+    clip[ 16 ].w = 45;
+    clip[ 16 ].h = 45;
+
+
+
+	int state = 0;
+	int option = 0;
    	//Apply the surface
    	//apply_surface(0, 0, background, screen );	
 	//Fill the screen white
@@ -179,19 +247,240 @@ int main(int argc, char* args[] ){
 			}
 		
 		}
-		// initial pokemon
-		 
-		//apply_surface( 0, 0, image, screen, &clip[ 0 ] ); 
-		}
-		if(keystates[SDLK_DOWN] ){
-			apply_surface( 0, 0, image, screen, &clip[ 1 ] );
-		}
-		if( keystates[ SDLK_LEFT ] ){ 
+		switch(state){
+			case 0:
+				apply_surface( 0, 0, image, screen, &clip[ 0 ] );
+				if( SDL_Flip( screen ) == -1 ){ 
+					return 1;
+				}
+				cout << "press space to continue" << endl;
+				while( state != 1 ){
+					while( SDL_PollEvent( &event )){
+						if( keystates[SDLK_SPACE])
+						state = 1;
+					}
+					//wait until space is pressed
+					//Then go to battle options			
+				}
+				SDL_Delay(100);
+				state = 1;
+				break;
+				 
+			case 1: //Battle tactics
+				apply_surface( 0, 0, image, screen, &clip[ 1 ] );
+				//Update the screen 
+				if( SDL_Flip( screen ) == -1 ){ 
+					return 1;
+				}
+				cout << "choose an option" << endl;
+				if( !keystates[SDLK_SPACE]){
+					switch( event.key.keysym.sym){
+						case SDLK_RIGHT:
+							option = option++; //add one to option
+							if(option == 2) option = 1;
+							else if(option == 4) option = 3;
+							break;
+						case SDLK_DOWN:
+							option = option + 2; //add 2 to option
+							if(option == 4) option = 2;
+							else if(option == 5) option = 3;
+							break;
+						case SDLK_UP:
+							option = option - 2; //sub 2 from option
+							if(option == -2) option = 0;
+							else if(option == -1) option = 1;
+							break;
+					
+						case SDLK_LEFT:
+							option = option--; //sub 1 from option
+							if(option == -1) option = 0;
+							else if(option == 1) option = 2;			
+							break;
+					
+					}
+				}
+				else{
+					if(option == 0)
+						state = 2; //Fight options state
+					else if (option == 1)
+						state = 3; //Choose pokemon
+					else if (option == 2)
+						state = 4; //Items
+					else if (option == 3)
+						quit = true;
+					option = 0; //reset option for next menus
+				}
+								
+					switch(option){
+						case 0: apply_surface(385, 538, image, screen, &clip[7] );
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+						case 1: apply_surface(647, 540, image, screen, &clip[7] );
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+						case 2: apply_surface(385, 615, image, screen, &clip[7] );
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+						case 3: apply_surface(647, 615, image, screen, &clip[7] );
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+					}					
+				SDL_Delay(100); //make sure change doesn't happen twice
+				break;
+			case 2:	//Fighting options
+				apply_surface( 0, 0, image, screen, &clip[ 4 ] );
+				cout << "choose attack" << endl;				
+				
+				if( SDL_Flip( screen ) == -1 ){ 
+					return 1;
+				}
+				if( !keystates[SDLK_SPACE]){
+					switch( event.key.keysym.sym){
+						case SDLK_RIGHT:
+							option = option++; //add one to option
+							if(option == 2) option = 1;
+							else if(option == 4) option = 3;
+							break;
+						case SDLK_DOWN:
+							option = option + 2; //add 2 to option
+							if(option == 4) option = 2;
+							else if(option == 5) option = 3;
+							break;
+						case SDLK_UP:
+							option = option - 2; //sub 2 from option
+							if(option == -2) option = 0;
+							else if(option == -1) option = 1;
+							break;
+					
+						case SDLK_LEFT:
+							option = option--; //sub 1 from option
+							if(option == -1) option = 0;
+							else if(option == 1) option = 2;			
+							break;
+					
+					}
+				}
+				else{
+					if(option == 0)
+						//apply attack						
+						state = 1; //Fight options state
+					else if (option == 1)
+						//apply attack
+						state = 1; //Fight options
+					else if (option == 2)
+						//apply attack
+						state = 1; //Fight options
+					else if (option == 3)
+						//cancel attack
+						state = 1; // Fight options
+					option = 0; //reset option for next menus
+
+				}
+					switch(option){
+						case 0: 
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+						case 1: apply_surface(530, 455, image, screen, &clip[10] );
+							apply_surface(221, 455, image, screen, &clip[16] );
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+						case 2: apply_surface(221, 551, image, screen, &clip[10] );
+							apply_surface(221, 455, image, screen, &clip[16] );
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+						case 3: apply_surface(530, 551, image, screen, &clip[10] );
+							apply_surface(221, 455, image, screen, &clip[16] );
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+					}
+				break;	
+			case 3: //Choose Pokemon
+				apply_surface( 0, 0, image, screen, &clip[ 2 ] );
+				if( !keystates[SDLK_SPACE]){
+					switch( event.key.keysym.sym){
+						
+						case SDLK_DOWN:
+							option = option++; //add 1 to option
+							if(option >= 3) option = 3;
+							break;
+						case SDLK_UP:
+							option--; //sub 1 from option
+							if(option <= 0) option = 0;
+							break;
+					}
+				}
+				else{
+					if(option == 0)
+						//call pokemon						
+						state = 1; //Fight options state
+					else if (option == 1)
+						//call pokemon
+						state = 1; //Fight options
+					else if (option == 2)
+						//call pokemon
+						state = 1; //Fight options
+					
+					option = 0; //reset option for next menus
+
+				}
+					/*switch(option){
+						case 0: 
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+						case 1: apply_surface(530, 455, image, screen, &clip[10] );
+							apply_surface(221, 455, image, screen, &clip[16] );
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+						case 2: apply_surface(221, 551, image, screen, &clip[10] );
+							apply_surface(221, 455, image, screen, &clip[16] );
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+						case 3: apply_surface(530, 551, image, screen, &clip[10] );
+							apply_surface(221, 455, image, screen, &clip[16] );
+							if( SDL_Flip( screen ) == -1 ){ 
+								return 1;
+							}
+							break;
+					}*/				
+				break;
+			case 4: //Items
+				apply_surface( 0, 0, image, screen, &clip[ 3 ] );
+				quit = true;				
+				break;		
+
+
+		}		
+				
+	
+		
+		/*if( keystates[ SDLK_LEFT ] ){ 
 			apply_surface( 0, 0, image, screen, &clip[ 2 ] ); 
 		}
 		if(keystates[SDLK_RIGHT] ){
 			apply_surface( 0, 0, image, screen, &clip[ 3 ] );
-		}
+		}*/
 		//Update the screen 
 		if( SDL_Flip( screen ) == -1 ){ 
 			return 1;

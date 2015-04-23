@@ -1,58 +1,61 @@
 //Paul Dowling
-// Loads the battle screen against misty, need sprites for other trainers
+//Battle.cpp
+//.cpp file for battle graphics. May need to merge this with the battle algorithm.
 
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
-#include "SDL/SDL_ttf.h"
-#include <string>
-#include <iostream>
+#include "Battle.h"
+
 using namespace std;
 
-	const int SCREEN_WIDTH = 432;
-	const int SCREEN_HEIGHT = 603;
-	const int SCREEN_BPP = 32;
-	SDL_Event event;
-	//The Surfaces
-	SDL_Surface *background = NULL;		
-	SDL_Surface *image_trainer = NULL; //stores trainer sprite or active pokemon
-	SDL_Surface *image_enemy = NULL; //store enemy sprite or active pokemon
-	SDL_Surface *screen = NULL;
-	//Sprite map to be clipped
-	SDL_Rect clip[16]; //What size shall it be? need lots of different size clips. Sprite sheet isn't linear
-	
-	
+Battle::Battle(){ //constructor probably ran when the battle starts
 
-SDL_Surface *load_image( std::string filename ) 
-{
-    //The image that's loaded
-        SDL_Surface* loadedImage = NULL;
-            
-    //The optimized image that will be used
-        SDL_Surface* optimizedImage = NULL;
-                     
-    //Load the image
-        loadedImage = IMG_Load( filename.c_str() );
-        
-    //If the image loaded
-        if( loadedImage != NULL )
-        {
-     //Create an optimized image
-           optimizedImage = SDL_DisplayFormat( loadedImage );
-    //Free the old image
-         SDL_FreeSurface( loadedImage );
-       }
 
-	if( optimizedImage!=NULL){
-	//Include a line that will color key the image
-		Uint32 colorkey = SDL_MapRGB( optimizedImage->format,0,0,0);
-		SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey );
 
-	}
-    //Return the optimized image
-         return optimizedImage;
 }
+Battle::~Battle(){	
 
-bool init()
+
+}
+SDL_Surface* Battle::load_image( string filename){
+	
+	SDL_Surface* loadedImage = NULL;
+	SDL_Surface* optimizedImage = NULL;
+	loadedImage = IMG_LOAD (filename.c_str() );
+	
+	if(loadedImage != NULL){
+		optimizedImage = SDL_DisplayFormat( loadedImage);
+		SDL_FreeSurface( loadedImage );
+	}
+	if( optimizedImage != NULL){
+		SDL_FreeSurface( loadedImage);
+	}
+
+	return optimizedImage;
+
+}
+void Battle::apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL )
+{
+    //Holds offsets
+    SDL_Rect offset;
+
+    //Get offsets
+    offset.x = x;
+    offset.y = y;
+
+    //Blit
+    SDL_BlitSurface( source, clip, destination, &offset );
+}
+bool Battle::load_files()
+{
+  //Load the background
+   Battle_Background = load_image( "Battle_user.png" );
+   //If error loading background
+    if( Battle_Background == NULL ){
+	return false;
+    }
+      //If everything loaded fine
+      return true;    
+}
+bool Battle::init()
 {
 	//Initialize all SDL subsystems
 	if( SDL_Init( SDL_INIT_EVERYTHING ) == -1)
@@ -68,119 +71,92 @@ bool init()
 		return false;
 	}
 	//Set window caption
-	SDL_WM_SetCaption( "Cerulean Gym", NULL);
+	SDL_WM_SetCaption( "Battle Screen test", NULL);
 	//IF
+	 //Fill the screen white 
+	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
 	return true;
 }
 
-bool load_files()
-{
-  //Load the background
-   background = load_image( "Pokemongym.bmp" );
-   //If error loading background
-    if( background == NULL ){
-	return false;
-    }
-  //Load the image
-   image_trainer = load_image( "Battle_user.png" );
-   //If there was an error in loading the image
-    if( image_trainer == NULL )
-    {
-	return false;    
-    }
-    //If everything loaded fine
-      return true;    
+void Battle::choose_pokemon(){
+	apply_surface(0,0, Battle_Background, screen, &Battle_clip[2]);
+	//while variable != Enter pressed	
+		//apply_surface(x,y, Battle_Background, screen, &Battle_clip[A]); //apply the surface of the arrow
+	
+	
+
 }
-void clean_up()
+void Battle::fight(){
+	apply_surface(0,0, Battle_Background, screen, &Battle_clip[4]);
+
+
+
+}
+
+void Battle::level_up(){
+	apply_surface(0,0, Battle_Background, screen, &Battle_clip[3]);
+
+
+
+}
+
+void Battle::set_battle_clips(){
+	//Initial for fights
+	Battle_clip[0].x = 0;
+	Battle_clip[0].y = 0;
+	Battle_clip[0].w = SCREEN_WIDTH; //these may change based on screen size, want to fill screen with this clip
+	Battle_clip[0].h = SCREEN_HEIGHT;
+	
+	Battle_clip[1].x = 860;
+	Battle_clip[1].y = 0;
+	Battle_clip[1].w = SCREEN_WIDTH; //these may change based on screen size, want to fill screen with this clip
+	Battle_clip[1].h = SCREEN_HEIGHT;
+
+	Battle_clip[2].x = 1720;
+	Battle_clip[2].y = 0;
+	Battle_clip[2].w = SCREEN_WIDTH; //these may change based on screen size, want to fill screen with this clip
+	Battle_clip[2].h = SCREEN_HEIGHT;
+
+	Battle_clip[3].x = 0;
+	Battle_clip[3].y = 654;
+	Battle_clip[3].w = SCREEN_WIDTH; //these may change based on screen size, want to fill screen with this clip
+	Battle_clip[3].h = SCREEN_HEIGHT;
+
+	Battle_clip[4].x = 860;
+	Battle_clip[4].y = 654;
+	Battle_clip[4].w = SCREEN_WIDTH; //these may change based on screen size, want to fill screen with this clip
+	Battle_clip[4].h = SCREEN_HEIGHT;
+
+	Battle_clip[5].x = 1720;
+	Battle_clip[5].y = 654;
+	Battle_clip[5].w = SCREEN_WIDTH; //these may change based on screen size, want to fill screen with this clip
+	Battle_clip[5].h = SCREEN_HEIGHT;
+
+	Battle_clip[6].x = 0;
+	Battle_clip[6].y = 0;
+	Battle_clip[6].w = SCREEN_WIDTH; //these may change based on screen size, want to fill screen with this clip
+	Battle_clip[6].h = SCREEN_HEIGHT;
+
+	Battle_clip[7].x = 0;
+	Battle_clip[7].y = 0;
+	Battle_clip[7].w = SCREEN_WIDTH; //these may change based on screen size, want to fill screen with this clip
+	Battle_clip[7].h = SCREEN_HEIGHT;
+
+	Battle_clip[8].x = 0;
+	Battle_clip[8].y = 0;
+	Battle_clip[8].w = SCREEN_WIDTH; //these may change based on screen size, want to fill screen with this clip
+	Battle_clip[8].h = SCREEN_HEIGHT;
+
+
+
+
+
+}
+void Battle::clean_up()
 {
 	//free surfaces 
-	SDL_FreeSurface( image_trainer );
-	SDL_FreeSurface( image_enemy );
-	SDL_FreeSurface( background );
+	SDL_FreeSurface( Battle_background );
 	SDL_FreeSurface( screen );
 	//Quit SDL
 	SDL_Quit();
-}
-void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL )
-{
-    //Holds offsets
-    SDL_Rect offset;
-
-    //Get offsets
-    offset.x = x;
-    offset.y = y;
-
-    //Blit
-    SDL_BlitSurface( source, clip, destination, &offset );
-}
-
-int main(int argc, char* args[] ){
-	bool quit = false;	
-	//initialize
-	if( init() == false )
-	{
-		return 1;
-	}
-	//load the files
-	if( load_files() == false )
-	{
-		return 1;
-	}
-	//Update the screen
-	if( SDL_Flip( screen ) == -1 )
-	{
-		return 1;
-	}
-
-	set_display();
-   	//Apply the surface
-   	apply_surface(0, 0, background, screen ); //simplify to a white screen
-		
-	
-	while( quit == false ){
-		while( SDL_PollEvent( &event )){
-			if(event.type == SDL_QUIT )
-			{
-				quit = true;
-			}
-		
-		}
-		//Apply all of the clips
-		apply_surface(100, 500, image_trainer, screen, &clip[0] );
-		//Update the screen 
-		if( SDL_Flip( screen ) == -1 ){ 
-			return 1;
-		}
-		SDL_Delay(50);
-	}
-	clean_up();
-	
-	return 0;
-}
-
-void set_display(){
-//Set clips for user
-	//guess for trainer
-	clip[0].x = 0;
-	clip[0].y = 0;
-	clip[0].w = 70;
-	clip[0].h = 100;
-	//clip for trainer health bar
-
-	//clip for enemy health
-	
-	//clip for enemy pokeball count
-
-	//clip for text bar
-
-	//clip for text bar w/ wild pokemon
-
-	//choose action
-
-	//attack type	
-	
-//Set clips for enemy sprite sheet
-	//probably not as many clips on this sheet
-	
-
 }
