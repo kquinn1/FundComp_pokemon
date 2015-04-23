@@ -14,11 +14,11 @@ class Battle{
 	Battle(Player*); // this will set myPlayer
 	virtual void battle() = 0; //pure virtual function - abstract class
 	virtual void enemyTurn() = 0;
-	virtual	int Damage(std::string, int); // needs to be in other classes
+	virtual	int Damage(std::string, int) {return 1;}; // needs to be in other classes
 	void choosePoke(); //sets the current pokemon of the player
 	void battleMenu(); //same for both clases
 	virtual void setExperience() = 0; //add the stats to pokemon in battle
-	virtual int isWinner();
+	virtual int isWinner() {return 1;};
 	int showAttacks(); // choose the attack
 	float typeCalc(std::string, std::string); 
   protected: // I need the derived class to have access to this pointer

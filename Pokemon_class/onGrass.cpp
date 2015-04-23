@@ -20,7 +20,7 @@ const int CAUGHT = 1;
 const int ESCAPED = 0;
 const int BALL = 255; // assume that a poke ball is used
 
-onGrass::onGrass(Player* m_player) : Battle(m_plyaer{
+onGrass::onGrass(Player* m_player) : Battle(m_player){
   srand( time(NULL) );//initialize random seed
   int pokeRand; // number to see if pokemon is instantiated
   int randLevel; // make the pokemon a random level
