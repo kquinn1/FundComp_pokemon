@@ -225,6 +225,7 @@ void Pokemon::calcEXP(int enemy_level){
 
 int Pokemon::ifLevelUp(){
   int stat;
+// I calculated regression equations based on EXP table found online
 //regression equations used to determine EXP needed to level up
   if(EXPtype == "F"){
 	stat =(0.614)*(pow(level+1,0.3942));
@@ -249,11 +250,12 @@ void Pokemon::levelUp(){
   setDef();
   setSpecial();
   setSpeed();
-// TO DO: when you set the HP need to make sure that the HP is incremented by appr. amount
+//when you set the HP make sure that the HP is incremented by appr. amount
   currentHP = HP;
   oldMaxHP = maxHP;
   setHP(); //re calculate the base statistics
-  HP = currentHP + (maxHP - oldMaxHP);
+  HP = currentHP + (maxHP - oldMaxHP); 
+// HP is incremented by the change in maxHP 
 }
 
 void Pokemon::setCatch(int catchR){

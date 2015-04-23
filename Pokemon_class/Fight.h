@@ -4,32 +4,29 @@
 //Fight header file
 #ifndef FIGHT_H
 #define FIGHT_H
+#include "Battle.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Pokemon.h"
 #include <string>
 
-class Fight{
+class Fight : public Battle{
   public:
 	Fight(Player*, Enemy*);
-//	Fight(Player*, Enemy*, Pokemon*, int); //constructor
         void battle(); //fight
-	void wildBattle(); //fight if not enemt 
         int isWinner(); //determine who wins
         //will return a 1 if there is a winner, 0 if no winner
         int Damage(string, int);
-//	int Damage(int,int,int,int,int,string,string,string,int); //calculate the damage
-	float typeCalc(string, string); //calculate the type modifier
-	void choosePoke();//allows the user to choose which pokemon to battle with 
-	void battleMenu(); //displays a menu for the player to choose battle 
-	int showAttacks(); //show attacks & choose an attack
+	//float typeCalc(string, string); //calculate the type modifier
+	//void choosePoke();//allows the user to choose which pokemon to battle with 
+//	void battleMenu(); //displays a menu for the player to choose battle 
+//	int showAttacks(); //show attacks & choose an attack
 	void setEnemyPoke(); //set enemy pokemon at start of battle, if fainted:
 	void playerTurn();
 	void enemyTurn(); //the player turn or the enemy turn functions
 	void setExperience(); //add the stats earned to the pokemon in battle
   private:
-	Player* myPlayer;
+//	Player* myPlayer;
 	Enemy* myEnemy;
-	Pokemon* myWild;
 };
 #endif

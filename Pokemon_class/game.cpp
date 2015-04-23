@@ -18,6 +18,7 @@
 
 #include "Fight.h"
 #include "Enemy.h"
+#include "Battle.h" //needed?
 #include "onGrass.h"
 #include "Player.h" //not sure if these two are needed
 #include "Heal.h" //if you need to heal pokemon mid game

@@ -20,7 +20,7 @@ const int CAUGHT = 1;
 const int ESCAPED = 0;
 const int BALL = 255; // assume that a poke ball is used
 
-onGrass::onGrass(Player* m_player){//, Pokemon* m_poke, int isonGrass){
+onGrass::onGrass(Player* m_player) : Battle(m_plyaer{
   srand( time(NULL) );//initialize random seed
   int pokeRand; // number to see if pokemon is instantiated
   int randLevel; // make the pokemon a random level
@@ -84,7 +84,7 @@ void onGrass::battle(){
   int quit = 0;
   int enemy;
 //the player should choose the current pokemon to use
-  choosePoke();
+  Battle::choosePoke();
 //simplification: usually is the first pokemon available, then has options to switch later on
 
 
@@ -124,12 +124,12 @@ int onGrass::playerTurn(){
   int switchChoice; //for while loop
   int valid = 0; //to use in while loop
 //option to change pokemon, run, or onGrass, item implemented later
-  battleMenu(); //display options on a turn
+  Battle::battleMenu(); //display options on a turn
   cin >> uChoice;
   switch(uChoice){
      case 1://onGrass 
 //show attacks & decide on the attack
-	uChoice = showAttacks();
+	uChoice = Battle::showAttacks();
 //use the attack on the pokemon
 //display the battle
   cout << myPlayer->getCurrentPokemon()->getName() << " will use " << myPlayer->getCurrentPokemon()->getAttack(uChoice)->getName() << "." << endl;
@@ -151,7 +151,7 @@ int onGrass::playerTurn(){
 		  cout << "Switch Pokemon? Type 1 or 0: ";
 		  cin >> switchChoice;
 		  if(switchChoice == 1) {
-			choosePoke();
+			Battle::choosePoke();
 			valid = 1;
 		  }
 		  else if(switchChoice== 0) valid = 1; //do nothing
@@ -250,6 +250,7 @@ void onGrass::enemyTurn(){
      }
   }
 }
+/*
 void onGrass::choosePoke(){
 //this function allows the user to choose which pokemon to use
   int size;
@@ -304,7 +305,7 @@ int onGrass::showAttacks(){
     } else {valid = 1; }
   }
   return uChoice;
-}
+}*/
 //calculate the damage a pokemon does
 int onGrass::Damage(string turn,int choice){
 //set statistics needed for damage
@@ -378,7 +379,7 @@ int onGrass::Damage(string turn,int choice){
   if(attack_type == a_type) STAB = 1.5;
   else STAB = 1; //the pokemon and it's attack are different
 //adjust the type variable based on the attack type and the type of defensive pokemon
-  type = typeCalc(attack_type, d_type);
+  type = Battle::typeCalc(attack_type, d_type);
 //display appropriate message
   if(type==2) cout << "It's super effective!" << endl;
   else if(type==0.5) cout << "It's not very effective." << endl;
@@ -392,7 +393,7 @@ int onGrass::Damage(string turn,int choice){
 
   return damage;
 }
-
+/*
 float onGrass::typeCalc(string attack_type,string d_type){
 //calculate the type modification variable for the damage calculation
 //float typeBonus(string attack_type,string  d_type){
@@ -422,7 +423,7 @@ float onGrass::typeCalc(string attack_type,string d_type){
   } 
   return type;
 }
-
+*/
 int onGrass::isWinner(){
 //if there is a winner
   if(myWild->getHP()!=0 && myPlayer->isDefeated()==0) return 0;
