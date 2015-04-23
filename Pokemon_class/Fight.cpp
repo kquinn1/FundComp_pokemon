@@ -192,10 +192,6 @@ void Fight::enemyTurn(){
   }
 }
 
-void Fight::wildBattle(){
-//the player and a wild pokemon battle
-//the player should choose the current pokemon to use
-}
 
 void Fight::choosePoke(){
 //this function allows the user to choose which pokemon to use
