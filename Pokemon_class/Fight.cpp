@@ -7,6 +7,8 @@
 // Add special attack functionality
 // 	remove the two variables in Pokemon class: should only have 1 special
 //
+
+//#include "Battle.h"
 #include "Fight.h"
 #include <stdio.h> //NULL
 #include <stdlib.h> //srand, rand
@@ -14,20 +16,10 @@
 #include <iostream>
 using namespace std;
 
-Fight::Fight(Player* m_player, Enemy* m_enemy){//, Pokemon* m_poke, int isWild){
-  myPlayer= m_player;
-  //if statement
-//  if(isWild==1){// a wild pokemon battle
- //  myWild = m_poke;  
- //  wildBattle();
- // }else{ // an enemy pokemon battle
+Fight::Fight(Player* m_player, Enemy* m_enemy):Battle(m_player){//, Pokemon* m_poke, int isWild){
    myEnemy = m_enemy;
    battle();
- // }
 }
-
-//should there be a deconstructor?
-//Fight::~Fight(){ }}
 
 void Fight::battle(){
 //enemy and player class battle
@@ -39,7 +31,7 @@ void Fight::battle(){
  // int quit = 0;
   int enemy;
 //the player should choose the current pokemon to use
-  choosePoke();
+  Battle::choosePoke();
 //simplification: usually is the first pokemon available, then has options to switch later on
 
 //the enemy will use the last pokemon available to use in vector
@@ -87,12 +79,12 @@ void Fight::playerTurn(){
   int switchChoice; //for while loop
   int valid = 0; //to use in while loop
 //option to change pokemon, run, or fight, item implemented later
-  battleMenu(); //display options on a turn
+  Battle::battleMenu(); //display options on a turn
   cin >> uChoice;
   switch(uChoice){
      case 1://Fight 
 //show attacks & decide on the attack
-	uChoice = showAttacks();
+	uChoice = Battle::showAttacks();
 //use the attack on the pokemon
 //display the battle
   cout << myPlayer->getCurrentPokemon()->getName() << " will use " << myPlayer->getCurrentPokemon()->getAttack(uChoice)->getName() << "." << endl;
@@ -187,12 +179,12 @@ void Fight::enemyTurn(){
 //set a new pokemon
     if(myPlayer->isDefeated()==0){
 	cout << myPlayer->getCurrentPokemon()->getName()<< " has fainted!" << endl ;
-	choosePoke();
+	Battle::choosePoke();
      }
   }
 }
 
-
+/*
 void Fight::choosePoke(){
 //this function allows the user to choose which pokemon to use
   int size;
@@ -247,6 +239,7 @@ int Fight::showAttacks(){
   }
   return uChoice;
 }
+*/ // all of these functions in inheritance class now
 //calculate the damage a pokemon does
 int Fight::Damage(string turn,int choice){
 //int Fight::Damage(int baseSpeed,int a_level, int a_attack, int d_defense, int attack_power, string attack_type, string a_type, string d_type, int acc_attack){
@@ -323,7 +316,7 @@ int Fight::Damage(string turn,int choice){
   if(attack_type == a_type) STAB = 1.5;
   else STAB = 1; //the pokemon and it's attack are different
 //adjust the type variable based on the attack type and the type of defensive pokemon
-  type = typeCalc(attack_type, d_type);
+  type = Battle::typeCalc(attack_type, d_type);
 //display appropriate message
   if(type==2) cout << "It's super effective!" << endl;
   else if(type==0.5) cout << "It's not very effective." << endl;
@@ -337,7 +330,7 @@ int Fight::Damage(string turn,int choice){
 
   return damage;
 }
-
+/* in top level class now
 float Fight::typeCalc(string attack_type,string d_type){
 //calculate the type modification variable for the damage calculation
 //float typeBonus(string attack_type,string  d_type){
@@ -367,6 +360,7 @@ float Fight::typeCalc(string attack_type,string d_type){
   } 
   return type;
 }
+*/
 
 int Fight::isWinner(){
 //if there is a winner
