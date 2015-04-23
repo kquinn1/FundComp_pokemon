@@ -21,7 +21,7 @@ class Battle{
 	virtual int isWinner() {return 1;};
 	int showAttacks(); // choose the attack
 	float typeCalc(std::string, std::string); 
-  protected: // I need the derived class to have access to this pointer
+  protected: // I need the derived class to have access to this pointer, ideally this should be hidden data
 	Player* myPlayer; // player pointer
 };
 
