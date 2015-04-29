@@ -56,7 +56,7 @@ const int X_GYM = 710;
 const int Y_GYM = 150;
 const int X_HOME = 680;// the intial x, and y positions for the character
 const int Y_HOME = 580;
-
+const int BACK_UP = 1;
 // surfaces
 SDL_Surface *ash = NULL;
 SDL_Surface *pika = NULL;
@@ -77,11 +77,16 @@ SDL_Rect PclipsDown[2];
 SDL_Rect PclipsUp[2];
 
 // to check collision on the screen
-SDL_Rect PC;
+SDL_Rect PC;//check collisions near the door
 SDL_Rect Store;
 SDL_Rect Home;
 SDL_Rect Gym;
 SDL_Rect Grass;
+SDL_Rect onWater; //check collisions to keep player off the buildings
+SDL_Rect onPC;
+SDL_Rect onStore;
+SDL_Rect onHome;
+SDL_Rect onGym;
 
 //SDL Functions : using LazyFoo tutorial on animation
 SDL_Surface *load_image( std::string filename ){
@@ -245,7 +250,7 @@ void set_clips(){ //set the sprite clips
     AclipsUp[2].h = aHeight;
 // Pikachu clips
 // Right
-    PclipsRight[0].x = pWidth;
+    PclipsRight[0].x = pWidth; 
     PclipsRight[0].y = 0;
     PclipsRight[0].w = pWidth;
     PclipsRight[0].h = pHeight;
@@ -302,7 +307,9 @@ void set_clips(){ //set the sprite clips
 }
 
 void set_Rect(){
-//set the coordinates of the rectangles
+//set the coordinates of the rectangles\
+
+//set the door dimensions
   PC.x = 80;
   PC.y = 500;
   PC.w = 50;
@@ -328,6 +335,31 @@ void set_Rect(){
   Grass.w = 310;
   Grass.h = 200; // grass dimensions roughly
 
+//set the dimensions of the buildins/water
+  onWater.x = 350;
+  onWater.y = 0;
+  onWater.w = 250;
+  onWater.h = 330; //for testing
+
+  onPC.x = 40;
+  onPC.y = 430;
+  onPC.w = 130;
+  onPC.h = 90;
+
+  onStore.x = 260;
+  onStore.y = 435;
+  onStore.w = 100;
+  onStore.h = 70;
+
+  onHome.x = 655;
+  onHome.y = 450;
+  onHome.w = 155;
+  onHome.h = 80;
+
+  onGym.x = 613;
+  onGym.y = 0;
+  onGym.w = 250;
+  onGym.h = 100;
 }
 
 bool init()
@@ -458,6 +490,16 @@ void User::handle_events(){//handle the events for the user aka sprite
 }
 int User::move(){ //move the sprite by xvel or yvel
 //move
+  if(check_collision(myBox,onWater)|| check_collision(myBox,onPC) || check_collision(myBox,onStore) || check_collision(myBox,onHome) || check_collision(myBox,onGym)){
+       if(status == ASH_LEFT) //status == ASH_RIGHT){
+     		updatePos(xOffset+BACK_UP,yOffset);
+	else if(status == ASH_RIGHT)
+		updatePos(xOffset-BACK_UP,yOffset);
+	else if (status == ASH_UP)
+		 updatePos(xOffset,yOffset+BACK_UP);
+	else updatePos(xOffset,yOffset-BACK_UP);
+ 	return STAY; 
+   }
   if(status == ASH_LEFT || status == ASH_RIGHT){
     xOffset += xvel;
   } else  yOffset += yvel;
