@@ -28,9 +28,9 @@ onGrass::onGrass(Player* m_player) : Battle(m_player){ // member initialization 
   int randLevel; // make the pokemon a random level
   myPlayer= m_player; //set player pointer
 // calculate the probability for a battle
-  pokeRand = rand()%100; //pick a number between 0 and 99
-  if(pokeRand<20 ) cout << "No Pokemon found in grass!" << endl; //do nothing
-  else if (pokeRand>20 && pokeRand<30 ){
+  pokeRand = rand()%1000; //pick a number between 0 and 99
+  //if(pokeRand<20 || pokeRand>100 ) cout << "No Pokemon found in grass!" << endl; //do nothing
+  /*else*/ if (pokeRand>20 && pokeRand<30 ){
 	randLevel = rand()%20 + 1;
 	myWild = (new Oddish(randLevel));
   } 
@@ -63,7 +63,7 @@ onGrass::onGrass(Player* m_player) : Battle(m_player){ // member initialization 
 	randLevel = rand()%20 + 1;
         myWild = (new Squirtle(randLevel));
   }
-  if(pokeRand>20){
+  if(pokeRand>20 && pokeRand<100){
 // for testing	cout << randLevel << " the level. " << endl;
 	battle(); //battle against the pokemon created
   }
@@ -126,7 +126,7 @@ int onGrass::playerTurn(){
   int switchChoice; //for while loop
   int valid = 0; //to use in while loop
 //option to change pokemon, run, or onGrass, item implemented later
-  Battle::battleMenu(); //display options on a turn
+  battleMenu(); //display options on a turn
   cin >> uChoice;
   switch(uChoice){
      case 1://onGrass 
@@ -344,3 +344,15 @@ int onGrass::isWinner(){
   if(myWild->getHP()!=0 && myPlayer->isDefeated()==0) return 0;
   return 1; //there is a  winner
 }
+
+void onGrass::battleMenu(){
+// slightly different than other battle menu
+  cout << "Choose an option: " << endl;
+  cout << "1. Fight " << endl;
+  cout << "2. Change Pokemon " << endl;
+  cout << "3. Run " << endl;
+// to do: fix items
+  cout << "4. Catch Pokemon " << endl;
+  cout << "Your choice: " ;
+}
+

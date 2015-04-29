@@ -1,13 +1,13 @@
 #Object files:
-OBJ = game.o Attack.o Bulbasaur.o Charmander.o Electric.o Enemy.o Battle.o Fight.o Fire.o Goldeen.o Grass.o Heal.o Horsea.o Pikachu.o Player.o Pokemon.o Psyduck.o Shellder.o Squirtle.o Starmie.o Water.o Staryu.o Item.o Oddish.o Jigglypuff.o Snorlax.o Eevee.o Normal.o onGrass.o Shop.o
+OBJ = walking.o Attack.o Bulbasaur.o Charmander.o Electric.o Enemy.o Battle.o Fight.o Fire.o Goldeen.o Grass.o Heal.o Horsea.o Pikachu.o Player.o Pokemon.o Psyduck.o Shellder.o Squirtle.o Starmie.o Water.o Staryu.o Item.o Oddish.o Jigglypuff.o Snorlax.o Eevee.o Normal.o onGrass.o Shop.o Timer.o
 #Header files:
-HDR =  Attack.h Bulbasaur.h Charmander.h Electric.h Enemy.h Battle.h Fight.h Fire.h Goldeen.h Grass.h Heal.h Horsea.h Pikachu.h Player.h Pokemon.h Psyduck.h Shellder.h Squirtle.h Starmie.h Water.h Staryu.h Item.h Oddish.h Jigglypuff.h Snorlax.h Eevee.h Normal.h onGrass.h Shop.h 
+HDR =  Attack.h Bulbasaur.h Charmander.h Electric.h Enemy.h Battle.h Fight.h Fire.h Goldeen.h Grass.h Heal.h Horsea.h Pikachu.h Player.h Pokemon.h Psyduck.h Shellder.h Squirtle.h Starmie.h Water.h Staryu.h Item.h Oddish.h Jigglypuff.h Snorlax.h Eevee.h Normal.h onGrass.h Shop.h Timer.h
 
 #Libraries (further on)
-#LiBS = `pkg-config -- `
+#LIBS = `pkg-config --cflags --libs SDL SDL_image `
 
 #Executable
-EXEC = game
+EXEC = walk
 
 #one rule to rule them all
 all: $(EXEC)
@@ -23,7 +23,7 @@ CXX = g++ -o $@
 
 #Executable rule
 $(EXEC) : ${OBJ}
-	${CXX} ${OBJ} #${LINK}
+	${CXX} ${OBJ} -lSDL -lSDL_image # ${LINK}
 #clean
 clean:
 	rm *.o $(EXEC)
