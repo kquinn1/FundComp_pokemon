@@ -7,7 +7,7 @@ HDR =  Attack.h Shop.h Bulbasaur.h Charmander.h Electric.h Enemy.h Battle.h Figh
 #LIBS = `pkg-config --cflags --libs SDL SDL_image `
 
 #Executable
-EXEC = walk
+EXEC = Pokemon
 
 #one rule to rule them all
 all: $(EXEC)
