@@ -12,7 +12,7 @@
 
 Player::Player(int myX, int myY){
 //ask the user for their name
-  cout << "Enter in your name: " ;
+  cout << "Enter your name: " ;
   cin >> name;
 
  cout << "Hello " << name << endl << "Welcome to the Pokemon Simulator!" << endl;
