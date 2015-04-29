@@ -2,9 +2,6 @@
 //Fight.cpp
 // Fight inherits from Battle 
 //Fight implementation file
-//To do:
-// Exception handling
-// The first pokemon a player uses should be the first one in their lineup
 
 //#include "Battle.h"
 #include "Fight.h"
@@ -12,6 +9,7 @@
 #include <stdlib.h> //srand, rand
 #include <time.h> // time
 #include <iostream>
+#include <limits> //dealing with incorrect input
 using namespace std;
 
 Fight::Fight(Player* m_player, Enemy* m_enemy):Battle(m_player){ // call to the battle class constructor
@@ -79,7 +77,13 @@ void Fight::playerTurn(){
   int valid = 0; //to use in while loop
 //option to change pokemon, run, or fight, item implemented later
   Battle::battleMenu(); //display options on a turn
-  cin >> uChoice;
+//  cin >> uChoice;
+//deal with non numeric input
+  while( !(cin >> uChoice) ){
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	cout << "Invalid input. Enter a number." << endl;
+    }
   switch(uChoice){
      case 1://Fight 
 //show attacks & decide on the attack
@@ -109,7 +113,12 @@ void Fight::playerTurn(){
  		while(valid == 0){ 
 //TO DO FIX THIS
 		  cout << "Switch Pokemon? Type 1 to switch or 0 to stay with current pokemon: ";
-		  cin >> switchChoice;
+		//  cin >> switchChoice;
+  		  while( !(cin >> switchChoice) ){
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');
+			cout << "Invalid input. Enter a number." << endl;
+   		 }
 		  if(switchChoice == 1) {
 			choosePoke();
 			valid = 1;

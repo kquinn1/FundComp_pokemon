@@ -614,18 +614,27 @@ int main(){
 	   }
 // Gym: Go to the gym
 	    else if (state ==  TO_GYM){
+//Gym logic can only beat the gym leader once (hasFought variable)
+//can only encounter the next gym leader if the previous has been fought
 		if(hasFought == false){
-		 cout << "Welcome to the Cerlulean gym!" << endl;
-                  if(first->isDefeated() == 0){
+		 cout << endl << "Welcome to the Cerlulean gym!" << endl;
+                 cout << "There are three trainers you can battle against once."<< endl;
+		 cout << "If you fail to beat all three, heal at the PC," << endl<< "gain experience battling pokemon in the grass, and come back!" << endl ;
+		 if(first->isDefeated() == 0){
                         Fight myfight(myplay , first );
                   } else cout << first->getName() << " has already been defeated!" << endl;
-                  if(second->isDefeated() == 0){
+                 if(first->isDefeated() == 1){
+		    if(second->isDefeated() == 0){
                           Fight myfight2(myplay, second);
-                  } else cout << second->getName() << " has already been defeated!" << endl;
-                   if(third->isDefeated() == 0 ){
-                        Fight myfight3(myplay, third);
-                        if(third->isDefeated() == 1) hasFought = true;
-                }else cout << "Already beat gym leader! " << endl;
+                    } else cout << second->getName() << " has already been defeated!" << endl;
+                }  
+		 if(second->isDefeated() == 1){ 
+		    if(third->isDefeated() == 0 ){
+                         Fight myfight3(myplay, third);
+                         if(third->isDefeated() == 1) hasFought = true;
+                    }
+		    else cout << "Already beat gym leader! " << endl;
+		  }
 
 		}
 // move player so collision does not repeat	

@@ -488,7 +488,7 @@ void Player::show(){
    	Aframe = 0;
   }
 // loop animation
-  if((Pframe >= 4 && (status == ASH_LEFT || status == ASH_RIGHT)) || (Pframe>=2 && (status == ASH_UP || status == ASH_DOWN)) ){
+  if((Pframe >= 3 && (status == ASH_LEFT || status == ASH_RIGHT)) || (Pframe>=2 && (status == ASH_UP || status == ASH_DOWN)) ){
 	Pframe = 0;
   }
   if(Aframe >= 3) Aframe = 0;

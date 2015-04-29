@@ -18,6 +18,7 @@
 #include "Growlithe.h"
 #include "Vulpix.h"
 #include "Tauros.h"
+#include <limits> // deal with incorrect input
 using namespace std;
 
 const int CAUGHT = 1; //declare constants
@@ -95,36 +96,38 @@ void onGrass::battle(){
   int quit = 0;
   int enemy;
 //the player should choose the current pokemon to use
-  Battle::choosePoke();
+  if( myPlayer->isDefeated() ==0){
+      Battle::choosePoke();
 //simplification: usually is the first pokemon available, then has options to switch later on
 
 
-  cout << myWild->getName() << " has " << myWild->getHP() << " HP!" <<endl;
+      cout << myWild->getName() << " has " << myWild->getHP() << " HP!" <<endl;
 //determine who goes first e.g. who has the fastest speed
-  if((myPlayer->getCurrentPokemon()->getSpeed())<(myWild->getSpeed())) turn++;
-  while(isWinner()==0 && quit == 0){ // && quit == 0){
+       if((myPlayer->getCurrentPokemon()->getSpeed())<(myWild->getSpeed())) turn++;
+       while(isWinner()==0 && quit == 0){ // && quit == 0){
 // while there is not a winner
-    if((turn%2 + 1) %2){//Player's turn
+       if((turn%2 + 1) %2){//Player's turn
    	quit = playerTurn(); //should pass an int denoting a onGrass pokemon or not
       }
 
-    else{//the enemy's turn	
-        enemyTurn();
-    } 
-    turn++; //increment the turn in order to change turns 
-  }  
+       else{//the enemy's turn	
+          enemyTurn();
+       } 
+      turn++; //increment the turn in order to change turns 
+     }  
 //Todo:
 //winner logic, if player wins gains experience, gains 
-  if(myPlayer->isDefeated()==1){
-     cout << endl << "The player has been defeated!" << endl;
-  }else if(myWild->getHP()==0){
+      if(myPlayer->isDefeated()==1){
+         cout << endl << "The player has been defeated!" << endl;
+     }else if(myWild->getHP()==0){
      //set experience on last pokemon
-     setExperience();
-     cout << "The wild pokemon has fainted!" << endl; 
-  }else if(quit ==2){
-     cout << "Successfuly caught " << myWild->getName() << endl;
-  }
-  else{ cout << "You ran away!" << endl;}
+         setExperience();
+         cout << "The wild pokemon has fainted!" << endl; 
+     }else if(quit ==2){
+        cout << "Successfuly caught " << myWild->getName() << endl;
+     }
+     else{ cout << "You ran away!" << endl;}
+ } else cout << "Not well enought for battle! Go to the PC! " << endl;
 }
 
 int onGrass::playerTurn(){
@@ -136,7 +139,12 @@ int onGrass::playerTurn(){
   int valid = 0; //to use in while loop
 //option to change pokemon, run, or onGrass, item implemented later
   battleMenu(); //display options on a turn
-  cin >> uChoice;
+//  deal with non numeric input
+  while( !(cin >> uChoice) ){
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	cout << "Invalid input. Enter a number." << endl;
+    }
   switch(uChoice){
      case 1://onGrass 
 //show attacks & decide on the attack
@@ -162,7 +170,13 @@ int onGrass::playerTurn(){
  		while(valid == 0){ 
 //TO DO FIX THIS
 		  cout << "Switch Pokemon? Type 1 to switch  or 0 to stay with current pokemon: ";
-		  cin >> switchChoice;
+//		  cin >> switchChoice;
+// deal with non numeric input  		
+		while( !(cin >> switchChoice) ){
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(),'\n');
+			cout << "Invalid input. Enter a number." << endl;
+   		 }
 		  if(switchChoice == 1) {
 			Battle::choosePoke();
 			valid = 1;
@@ -374,8 +388,7 @@ void onGrass::battleMenu(){
   cout << "1. Fight " << endl;
   cout << "2. Change Pokemon " << endl;
   cout << "3. Run " << endl;
-// to do: fix items
-  cout << "4. Catch Pokemon " << endl;
+  cout << "4. Catch Pokemon Current Pokeballs: " << myPlayer->getNumItems() << endl;
   cout << "Your choice: " ;
 }
 

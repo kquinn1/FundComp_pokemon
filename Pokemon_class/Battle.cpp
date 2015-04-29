@@ -3,6 +3,7 @@
 //top level class of inheritance hierarchy 
 #include "Battle.h"
 #include <iostream>
+#include <limits>
 using namespace std;
 
 // constructor sets the pointer to the player
@@ -25,9 +26,16 @@ void Battle::choosePoke(){
       cout <<"      Current HP: "<< myPlayer->getPokemon(i)->getHP() << endl;
     }  
     cout << "I choose..." ;
-    cin >> uChoice;
+   // cin >> uChoice;
 //set the current Pokemon
-    if(myPlayer->getPokemon(uChoice)->getHP()==0){
+//deal with non numeric input
+    while( !(cin >> uChoice) ){
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	cout << "Invalid input. Enter a number." << endl;
+    }
+    if(uChoice > 3 || uChoice < 0) cout << "Invalid option!" << endl;
+    else if (myPlayer->getPokemon(uChoice)->getHP()==0){
 //can't use a fainted pokemon
       cout <<"This pokemon has fainted!" << endl;
     } else valid = 1;
@@ -59,8 +67,15 @@ int Battle::showAttacks(){
         cout << "PP: " ;
         cout << myPlayer->getCurrentPokemon()->getAttack(i)->getPP() << endl;
     }
-    cin >> uChoice;
-    if(myPlayer->getCurrentPokemon()->getAttack(uChoice)->getPP() == 0 ){
+    //cin >> uChoice;
+ // deal with non numeric input 
+   while( !(cin >> uChoice) ){
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	cout << "Invalid input. Enter a number." << endl;
+    }
+// attack is not valid if it is out of range 0 - 3 or the PP is too low
+    if(uChoice > 3 || uChoice<0 ||myPlayer->getCurrentPokemon()->getAttack(uChoice)->getPP() == 0){
       cout << "This attack is not valid! " <<endl;
     } else {valid = 1; }
   }

@@ -3,6 +3,7 @@
 
 #include "Shop.h"
 #include <iostream>
+#include <limits> // to deal with input handling
 using namespace std;
 
 const int PRICE = 20; //const price for pokeball
@@ -18,7 +19,8 @@ Shop::Shop(Player* myplay){
 	cout << "Try defeating trainers at the gym to acquire cash. " << endl;
   } else{
 	cout << "You can buy pokeballs if you wish!" << endl; //temp for testing
-  }
+ 	dispItems(); //display the items
+   }
 }
 
 void Shop::dispItems(){
@@ -34,7 +36,13 @@ void Shop::dispItems(){
     cout << "Items available: pokeballs." << endl << "Current price: $20 " << endl;
     cout << "Would you like to make a purchase?" << endl;
     cout << "Type 1 to buy, 0 to walk away: ";
-    cin >> uChoice;
+   // cin >> uChoice;
+// deal with non numeric input
+    while( !(cin >> uChoice) ){
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	cout << "Invalid input. Enter a number." << endl;
+    }
     if (uChoice == 0) {
 	valid = true;
    } else if (uChoice == 1){
@@ -42,6 +50,7 @@ void Shop::dispItems(){
 	// decrease money
 	  buyer->setMoney(-PRICE);
 	  buyer->addItem( new Item("pokeball", "catch poke", "null image", 20) ) ;
+	  cout << "Purchasing 1 pokeball: " << endl;
 	}else cout << "Cannot buy. Insufficient cash at this point." << endl;	
 	valid = true;
     } else cout << "ERROR! Enter correct input next time.";
