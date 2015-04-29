@@ -12,10 +12,12 @@
 #include "Jigglypuff.h"
 #include "Snorlax.h"
 #include "Eevee.h"
-#include "Pikachu.h"
-#include "Bulbasaur.h"
-#include "Charmander.h"
-#include "Squirtle.h"
+#include "Bellsprout.h"
+#include "Tangela.h"
+#include "Magnemite.h"
+#include "Growlithe.h"
+#include "Vulpix.h"
+#include "Tauros.h"
 using namespace std;
 
 const int CAUGHT = 1; //declare constants
@@ -28,9 +30,17 @@ onGrass::onGrass(Player* m_player) : Battle(m_player){ // member initialization 
   int randLevel; // make the pokemon a random level
   myPlayer= m_player; //set player pointer
 // calculate the probability for a battle
-  pokeRand = rand()%1000; //pick a number between 0 and 99
+  pokeRand = rand()%1500; //pick a number between 0 and 1499
   //if(pokeRand<20 || pokeRand>100 ) cout << "No Pokemon found in grass!" << endl; //do nothing
-  /*else*/ if (pokeRand>20 && pokeRand<30 ){
+  if (pokeRand >0 && pokeRand <10 ){
+	randLevel = rand()%20 + 1;
+	myWild = (new Tangela(randLevel));
+  }
+  else if (pokeRand>10 && pokeRand<20){
+	randLevel = rand()%20 + 1;
+	myWild = (new Tauros(randLevel));
+  }
+  else if (pokeRand>20 && pokeRand<30 ){
 	randLevel = rand()%20 + 1;
 	myWild = (new Oddish(randLevel));
   } 
@@ -48,22 +58,21 @@ onGrass::onGrass(Player* m_player) : Battle(m_player){ // member initialization 
   }
   else if(pokeRand>60 && pokeRand<70) {
 	randLevel = rand()%20 + 1;
-        myWild = (new Pikachu(randLevel));
+        myWild = (new Magnemite(randLevel));
   } 
   else if(pokeRand>70 && pokeRand<80){
 	randLevel = rand()%20 + 1;
-        myWild = (new Bulbasaur(randLevel));
+	myWild = (new Bellsprout(randLevel));
   }
   else if(pokeRand>80 && pokeRand<90){
 	randLevel = rand()%20 + 1;
-        myWild = (new Charmander(randLevel));
-  
+  	myWild = (new Growlithe(randLevel));
   }
   else{// if(pokeRand>90){
 	randLevel = rand()%20 + 1;
-        myWild = (new Squirtle(randLevel));
-  }
-  if(pokeRand>20 && pokeRand<100){
+	myWild = (new Vulpix(randLevel)); 
+ }
+  if( pokeRand<100){
 // for testing	cout << randLevel << " the level. " << endl;
 	battle(); //battle against the pokemon created
   }
