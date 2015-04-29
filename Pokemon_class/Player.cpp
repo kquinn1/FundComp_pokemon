@@ -21,7 +21,7 @@ Player::Player(int myX, int myY){
   Y = myY; //set the first position
  
   money = 0; //start out with 0 cash, earn money from trainer battles
-
+  numItems = 0; //zero items at first
  //initalzie the current pokemon
  setPokemon(); 
 }
@@ -79,10 +79,12 @@ void Player::deletePokemon(int i){
 
 void Player::addItem(Item* newItem){
   myItem.push_back(newItem);// should there be a number of items stored?
+  numItems++; //add to the number of items
 }
 
-void Player::deleteItem(int i){
-  myItem.erase(myItem.begin() + i); //check to see if this works
+void Player::deleteItem(){
+  numItems--; //can make this simplification right now
+//  myItem.erase(myItem.begin() + i); //check to see if this works
 }
 
 Item* Player::getItem(int i){

@@ -67,7 +67,7 @@ SDL_Rect PclipsUp[2];
 
 // to check collision on the screen
 SDL_Rect PC;
-SDL_Rect Shop;
+SDL_Rect Store;
 SDL_Rect Home;
 SDL_Rect Gym;
 SDL_Rect Grass;
@@ -309,10 +309,10 @@ void set_Rect(){
   PC.w = 50;
   PC.h = 60; //shop door dimensions roughly
 
-  Shop.x = 300;
-  Shop.y = 500;
-  Shop.w = 50;
-  Shop.h = 60; //shop door dimensions roughly
+  Store.x = 300;
+  Store.y = 500;
+  Store.w = 50;
+  Store.h = 60; //shop door dimensions roughly
 
   Home.x = 670;
   Home.y = 530;
@@ -443,8 +443,8 @@ int User::move(){
 
   updateBox(); //update the x and y coordinates of the box
 
-  if(check_collision(myBox, Shop)){
-//	cout << "Shop!" << endl; //for testing
+  if(check_collision(myBox, Store)){
+//	cout << "Store!" << endl; //for testing
 	return TO_SHOP;
   }
   else if(check_collision(myBox, PC)) {
@@ -599,9 +599,9 @@ int main(){
 //		quit = true;
 	  }
 	    else if (state ==  TO_SHOP){
+//		Store myStore(myplay);
 	//	quit = true;
-	//	Shop myshop(myplay);
-		quit = true;
+		Shop myS(myplay);
 	   }
 	    else if (state == TO_HOME){
 		quit = true;
@@ -634,5 +634,7 @@ int main(){
     }
 
     clean_up();
+
+    cout << Ash.getUserName() <<  " thank you for playing!" << endl;
     return 0;
 }

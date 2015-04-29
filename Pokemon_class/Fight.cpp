@@ -105,7 +105,7 @@ void Fight::playerTurn(){
   		cout << myEnemy->getCurrentPokemon()->getName() << " has " << myEnemy->getCurrentPokemon()->getHP() << " HP!" <<endl;
  		while(valid == 0){ 
 //TO DO FIX THIS
-		  cout << "Switch Pokemon? Type 1 or 0: ";
+		  cout << "Switch Pokemon? Type 1 to switch or 0 to stay with current pokemon: ";
 		  cin >> switchChoice;
 		  if(switchChoice == 1) {
 			choosePoke();

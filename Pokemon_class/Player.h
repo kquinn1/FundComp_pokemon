@@ -26,12 +26,13 @@ class Player{
         Pokemon* getPokemon(int i);
 	Pokemon* getCurrentPokemon();
 	Item* getItem(int);
-	void deleteItem(int);
+	void deleteItem();
 	void addItem(Item *);
 	void addPokemon(Pokemon*);
         void deletePokemon(int); //is this needed
 	int getMoney(){ return money; };
 	int getNumPoke(){return numPoke;}
+	int getNumItems(){return numItems;};
 	int isDefeated(); //determine if defeated
 	void setMoney(int i){ money+=i; };
   private:
@@ -42,6 +43,7 @@ class Player{
  	vector<Item*> myItem;
         vector<Pokemon*> myPoke;
 	int numPoke;
+	int numItems;
 	Pokemon* inAction; //set current pokemon
 };
 #endif

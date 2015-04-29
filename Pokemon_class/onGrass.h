@@ -22,6 +22,7 @@ class onGrass : public Battle {
 	void enemyTurn(); //the player turn or the enemy turn functions
 	void setExperience(); //add the stats earned to the pokemon in battle
 	int isCaught(); // function that determines whether or not pokemon is caught
+	bool hasItem(); //check to see if has a pokeball to catch pokemon with
 	void battleMenu(); // slightly different battle menu than inherited
 	// this is to accomadate catching pokemon in the grass
   private:

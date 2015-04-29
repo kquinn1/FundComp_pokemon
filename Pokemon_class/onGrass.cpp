@@ -159,7 +159,7 @@ int onGrass::playerTurn(){
 		 return 1;
  		while(valid == 0){ 
 //TO DO FIX THIS
-		  cout << "Switch Pokemon? Type 1 or 0: ";
+		  cout << "Switch Pokemon? Type 1 to switch  or 0 to stay with current pokemon: ";
 		  cin >> switchChoice;
 		  if(switchChoice == 1) {
 			Battle::choosePoke();
@@ -182,14 +182,19 @@ int onGrass::playerTurn(){
         return 1;
 	break;
      case 4:
-	if( isCaught() == CAUGHT ) {
+	if( hasItem() == true){
+	 // decrease the number of pokeballs the user has
+	  myPlayer->deleteItem(); 
+	  if( isCaught() == CAUGHT ) {
   		cout << "Catching pokemon..." << endl;
 		myPlayer->addPokemon(myWild);
 		return 2;
-	}
-	else{
-		cout << "Failed to catch pokemon!" << endl;
-	}
+	  }
+          else{
+	 	cout << "Failed to catch pokemon!" << endl;
+	  }
+        }
+	else cout << "no item to catch pokemon with!" << endl;
 	break;
      default:
         cout << "Invalid option." << endl;
@@ -213,6 +218,11 @@ int onGrass::isCaught(){
   else return ESCAPED;
 }
 
+bool onGrass::hasItem(){
+//check to see if it has an item to use
+  if (myPlayer->getNumItems() > 0 ) return true;
+  else return false;
+}
 void onGrass::setExperience(){
 //set the experience for the pokemon in battle
 //calculate the experience
