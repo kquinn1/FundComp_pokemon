@@ -1,9 +1,8 @@
 //Katie Quinn
-//File shows background- Pikachu follows ash around
-
-//to do: 
-// fix HP in battles - shouldn't inflict more damage than the pokemon has
-// fix the fact that things happen over and over, should move the pokemon out of that state and give them time to move away
+//walking.cpp
+//main program file
+// includes the graphics classes & functions and uses Pokemon/place classes
+// A combination of graphics and user input from the terminal
 
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
@@ -15,36 +14,48 @@
 #include "Heal.h"
 #include "Shop.h"
 #include <string>
-#include "Timer.h"
-#include <iostream>
-using namespace std;
+#include "Timer.h"//include all classes to be initialized
+#include <iostream> // cout, etc
+using namespace std; //std :: cout
 
-//Screen attributes for now
+//Screen attributes for the main window
 const int SCREEN_WIDTH = 860;
 const int SCREEN_HEIGHT = 654;
 const int SCREEN_BPP = 32;
 
-//Pframes per second
+//Pframes per second : how animation is implemented
 const int FRAMES_PER_SECOND = 10;
 
-//Dimensions of the sprite
+//Dimensions of the sprites Pikachu and Red(the user)
 const int PIKA_HEIGHT = 35;
 const int PIKA_WIDTH = 50;
 const int A_HEIGHT = 32;
 const int A_WIDTH = 31;
 const int IMG_OFFSET = 7;
-//direction status of sprite
+
+//direction status of sprite, determines Pikachus direction
 const int ASH_RIGHT = 0;
 const int ASH_LEFT = 1;
 const int ASH_DOWN = 2;
 const int ASH_UP = 3;
 
+//states for collision
 const int STAY = 0;
 const int TO_SHOP = 1;
 const int TO_PC = 2;
 const int TO_GYM = 3;
 const int TO_HOME = 4;
 const int TO_GRASS = 5;
+
+// to reset player positions
+const int X_PC = 95;
+const int Y_PC = 550;
+const int X_SHOP = 310;
+const int Y_SHOP = 550;
+const int X_GYM = 710;
+const int Y_GYM = 150;
+const int X_HOME = 680;// the intial x, and y positions for the character
+const int Y_HOME = 580;
 
 // surfaces
 SDL_Surface *ash = NULL;
@@ -72,25 +83,7 @@ SDL_Rect Home;
 SDL_Rect Gym;
 SDL_Rect Grass;
 
-//User
-class User{
-  public:
-	User();
-	void handle_events();
-	int move();//return whether to switch
-	void show(); //show the sprite
-	void updateBox(); //for collisions
-  private:
-	int xOffset; //x and y positions
-	int yOffset;
-	int xvel; //rate of movement in both directions
-	int yvel;
-	SDL_Rect myBox; //for collisions have a bounding box
-	int Aframe;
-	int Pframe; // the current Pframe
-	int status; // status of animation
-};
-
+//SDL Functions : using LazyFoo tutorial on animation
 SDL_Surface *load_image( std::string filename ){
     //The image that's loaded
     SDL_Surface* loadedImage = NULL;
@@ -182,6 +175,7 @@ void set_clips(){ //set the sprite clips
     pWidth = 50;
     pHeight = 35;
 
+// downward motion
     AclipsDown[0].x = 0;
     AclipsDown[0].y = 0;
     AclipsDown[0].w = aWidth;
@@ -198,7 +192,7 @@ void set_clips(){ //set the sprite clips
     AclipsDown[2].y = 0;
     AclipsDown[2].w = aWidth;
     AclipsDown[2].h = aHeight;
-
+// left
    //Clip range for the middle left
     AclipsLeft[0].x = 0;
     AclipsLeft[0].y = aHeight+2;
@@ -216,6 +210,7 @@ void set_clips(){ //set the sprite clips
     AclipsLeft[2].w = aWidth;
     AclipsLeft[2].h = aHeight;
 
+// right
     AclipsRight[0].x = 0;
     AclipsRight[0].y = aHeight*2+2;
     AclipsRight[0].w = aWidth;
@@ -232,6 +227,7 @@ void set_clips(){ //set the sprite clips
     AclipsRight[2].w = aWidth;
     AclipsRight[2].h = aHeight;
 
+// up
     AclipsUp[0].x = 0;
     AclipsUp[0].y = aHeight*3+2;
     AclipsUp[0].w = aWidth;
@@ -247,7 +243,8 @@ void set_clips(){ //set the sprite clips
     AclipsUp[2].y = aHeight*3+2;
     AclipsUp[2].w = aWidth;
     AclipsUp[2].h = aHeight;
-
+// Pikachu clips
+// Right
     PclipsRight[0].x = pWidth;
     PclipsRight[0].y = 0;
     PclipsRight[0].w = pWidth;
@@ -263,7 +260,10 @@ void set_clips(){ //set the sprite clips
     PclipsRight[2].w = pWidth;
     PclipsRight[2].h = pHeight;
 
-    PclipsLeft[0].x = pWidth*7-5;
+//Left 
+//the hard coded values that don't make much sense have to do with 
+//uneven image editing on my part
+    PclipsLeft[0].x = pWidth*7-5; 
     PclipsLeft[0].y = 0;
     PclipsLeft[0].w = pWidth-10;
     PclipsLeft[0].h = pHeight;
@@ -278,6 +278,7 @@ void set_clips(){ //set the sprite clips
     PclipsLeft[2].w = pWidth-10;
     PclipsLeft[2].h = pHeight;
 
+//Down
     PclipsDown[0].x = 0;
     PclipsDown[0].y = 0;
     PclipsDown[0].w = pWidth;
@@ -288,7 +289,7 @@ void set_clips(){ //set the sprite clips
     PclipsDown[1].w = pWidth;
     PclipsDown[1].h = pHeight;
 
-
+//Up
     PclipsUp[0].x = pWidth*5;
     PclipsUp[0].y = 0;
     PclipsUp[0].w = pWidth;
@@ -298,8 +299,6 @@ void set_clips(){ //set the sprite clips
     PclipsUp[1].y = 0;
     PclipsUp[1].w = pWidth-6;
     PclipsUp[1].h = pHeight;
-
-
 }
 
 void set_Rect(){
@@ -307,27 +306,27 @@ void set_Rect(){
   PC.x = 80;
   PC.y = 500;
   PC.w = 50;
-  PC.h = 60; //shop door dimensions roughly
+  PC.h = 40; //PC door dimensions roughly
 
   Store.x = 300;
   Store.y = 500;
   Store.w = 50;
-  Store.h = 60; //shop door dimensions roughly
+  Store.h = 40; //shop door dimensions roughly
 
   Home.x = 670;
   Home.y = 530;
   Home.w = 40;
-  Home.h = 60; //home door dimensions roughly
+  Home.h = 40; //home door dimensions roughly
 
   Gym.x = 700;
   Gym.y = 100;
   Gym.w = 50;
-  Gym.h = 70; //gym door dimensions roughly
+  Gym.h = 40; //gym door dimensions roughly
 
   Grass.x = 30;
   Grass.y = 40;
   Grass.w = 310;
-  Grass.h = 210; // grass dimensions
+  Grass.h = 200; // grass dimensions roughly
 
 }
 
@@ -383,26 +382,55 @@ void clean_up()
         SDL_Quit();
 }
 
+//User class starts here
+//Known issue: separating classes with SDL - issue with SDL_Surfaces
+class User{
+  public:
+	User();
+	void handle_events();
+	int move();//return whether to switch
+	void show(); //show the sprite
+	void updateBox(); //for collisionus
+	void updatePos(int, int); // move the player out of collision range
+  private:
+	int xOffset; //x and y positions
+	int yOffset;
+	int xvel; //rate of movement in both directions
+	int yvel;
+	SDL_Rect myBox; //for collisions have a bounding box
+	int Aframe;
+	int Pframe; // the current Pframe
+	int status; // status of animation
+};
+
+// constructor for user class
 User::User(){
-  xOffset = 500;
-  yOffset = 400;
-  xvel = 0;
+  xOffset = X_HOME;//set the initial x and y positions
+  yOffset = Y_HOME;
+  xvel = 0;//set the initial velocities
   yvel = 0;
-  Pframe = 0;
+  Pframe = 0;//set the initial frames
   Aframe = 0; 
-  status = ASH_RIGHT;
-  myBox.w = A_WIDTH;
+  status = ASH_DOWN;//set initial status
+  myBox.w = A_WIDTH;//set the box dimensions
   myBox.h = A_HEIGHT;
   updateBox();
 }
 
-void User::updateBox(){
+void User::updateBox(){//update the position of box used for collisions
   myBox.x = xOffset;
   myBox.y = yOffset;
 
 }
 
-void User::handle_events(){
+void User::updatePos(int x, int y){//update the user position
+   xOffset = x;
+   yOffset = y;
+   updateBox();
+   show(); // show the user at updated position
+}
+
+void User::handle_events(){//handle the events for the user aka sprite
     //If a key was pressed
     if( event.type == SDL_KEYDOWN )
     {
@@ -428,7 +456,7 @@ void User::handle_events(){
         }
     }
 }
-int User::move(){
+int User::move(){ //move the sprite by xvel or yvel
 //move
   if(status == ASH_LEFT || status == ASH_RIGHT){
     xOffset += xvel;
@@ -443,35 +471,31 @@ int User::move(){
 
   updateBox(); //update the x and y coordinates of the box
 
+//check collisions and return the state to main for event handling
   if(check_collision(myBox, Store)){
-//	cout << "Store!" << endl; //for testing
 	return TO_SHOP;
   }
   else if(check_collision(myBox, PC)) {
-//	cout << "PC" << endl; //for testing
 	return TO_PC;
   }
   else if(check_collision(myBox, Home)){
-//	 cout << "HOME" << endl; //for testing
  	return TO_HOME;
    }
   else if(check_collision(myBox, Gym)){
-//	 cout << "Gym! " << endl; //for testing
 	 return TO_GYM;
   }
   else if(check_collision(myBox, Grass)){
-//	cout << "On grass! " ; // for testing
 	return TO_GRASS;
   }
   else {
-//	cout << "nothing" ; // for testing
 	return STAY;
   }
 
 }
 
 
-void User::show(){
+void User::show(){//show the appropriate sprite frame on the screen
+// The frame shown is based on direction user is going
    //if moving to left
    if(xvel < 0){
 	status = ASH_LEFT; //set animation to left
@@ -498,12 +522,14 @@ void User::show(){
 	Pframe = 0;
    	Aframe = 0;
   }
-// loop animation
+// loop animation, reset the frame count if gone over
   if((Pframe >= 3 && (status == ASH_LEFT || status == ASH_RIGHT)) || (Pframe>=2 && (status == ASH_UP || status == ASH_DOWN)) ){
 	Pframe = 0;
   }
   if(Aframe >= 3) Aframe = 0;
 
+//depending on the direction, apply the appropriate sprites to the screen
+//weird hard coded values e.g. -2 due to my uneven image editing of Pikachu
   if(status == ASH_LEFT){
 	apply_surface(xOffset,yOffset, ash, screen, &AclipsLeft[Aframe]);
 	apply_surface(xOffset + A_WIDTH, yOffset, pika, screen, &PclipsLeft[Pframe]);
@@ -518,19 +544,19 @@ void User::show(){
 	apply_surface(xOffset - IMG_OFFSET,  yOffset - A_HEIGHT, pika, screen, &PclipsDown[Pframe]);
   }
 }
-
+// End of User class //
 
 
 int main(){
-
-  Player Ash(0,0);
+// declare the Player class
+  Player Ash(0,0);// originally player was designed to store x and y
   Enemy swimmer("Swimmer",80,"Shellder",16,"Horsea",16);
   //swimmer has two pokemon, cash prize of 80
   Enemy jrTrainer("Junior Trainer",380,"Goldeen",19,"",0);
   //junior trainer has one pokemon, cash prize of 380
   Enemy misty("Misty",2079,"Starmie",21,"Staryu",18);
   //Misty (gym leader) has two pokemon, higher levels. Prize of 2079
-//declare pointers to each
+//declare pointers to each enemy and the player in order to edit their pokemon
   Enemy *first;
   Enemy *second;
   Enemy *third;
@@ -539,10 +565,15 @@ int main(){
   third = &misty;
   Player *myplay;
   myplay = &Ash;
+// used to determine if the gym has already been fought
   bool hasFought = false;
- 
-   int state;
+
+// the state where the player is 
+   int state; 
+
+// to quit or not to quit
    bool quit = false;
+
 //Initialize 
    if( init() == false) return 1;
    if ( load_files() == false) return 1;
@@ -553,8 +584,8 @@ int main(){
 //Frame rate regulator
    Timer fps;
 // The player
-   User red;;
-   while( quit == false )
+   User red;
+   while( quit == false )// while the user has not quit
     {
         //Start the Pframe timer
         fps.start();
@@ -574,13 +605,14 @@ int main(){
         }
 	// Move pikachu and ash
 	state = red.move();
-
-//	switch(state){// need a way to transition from state to state
+// detection collision with state variable in order to handle events
+// PC: Heal your pokemon
 	    if (state == TO_PC){
 		Heal healing(myplay);
-// need to move pokemon
-	//	quit = true;
-	}//	break;
+// move player so collision does not repeat	
+         	red.updatePos(X_PC,Y_PC);
+	   }
+// Gym: Go to the gym
 	    else if (state ==  TO_GYM){
 		if(hasFought == false){
 		 cout << "Welcome to the Cerlulean gym!" << endl;
@@ -596,28 +628,26 @@ int main(){
                 }else cout << "Already beat gym leader! " << endl;
 
 		}
-//		quit = true;
+// move player so collision does not repeat	
+		red.updatePos(X_GYM,Y_GYM);
 	  }
+// Shop: buy pokeballs to catch pokemon if player has money
 	    else if (state ==  TO_SHOP){
-//		Store myStore(myplay);
-	//	quit = true;
 		Shop myS(myplay);
+// move player so collision does not repeat	
+		red.updatePos(X_SHOP,Y_SHOP);
 	   }
+// Home: quit the game
 	    else if (state == TO_HOME){
 		quit = true;
 	}
+// Grass: maybe battle with a wild pokemon
+// The user stays in the grass until they move out of it
 	    else if (state ==  TO_GRASS){
-		//determine if fight, then quit
-	//		quit = false;
 		onGrass m1(myplay);	
-//		quit = true;
-		//need to move the player
-	   } else quit = false; //not really necessary
-	   // case STAY:
-	//	quit = false;
-	//	break;
-//	}
-	// Fill the background screen
+	   } //else quit = false; //not really necessary
+	
+// Fill the background screen
 	apply_surface(0, 0, background, screen );
 	// show pika and ash
 	red.show(); //Update the screen
@@ -633,8 +663,11 @@ int main(){
         }
     }
 
+// Clean up SDL Surfaces
     clean_up();
 
+// Display personal message to the user
+// userName is set up in the player constructor using stdin
     cout << Ash.getUserName() <<  " thank you for playing!" << endl;
     return 0;
 }

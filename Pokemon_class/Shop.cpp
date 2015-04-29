@@ -10,7 +10,7 @@ const int PRICE = 20; //const price for pokeball
 Shop::Shop(Player* myplay){
   buyer = myplay;
 
-  cout << "Welcome to the PokeMart! " << endl;
+  cout << endl << "Welcome to the PokeMart! " << endl;
   cout << "Your current cash: " << buyer->getMoney() << endl;
 
   if( buyer->getMoney() == 0 ) {

@@ -15,6 +15,10 @@ class Battle{
 	virtual void battle() = 0; //pure virtual function - abstract class
 	virtual void enemyTurn() = 0;
 	virtual	int Damage(std::string, int) {return 1;}; // needs to be in other classes
+	int checkDamage(int, int);
+// this function checks to see if the damage is greater than HP remaining
+// returns the lowest int, which is the damage
+// for example if damage is greater than HP remaining, damage done is HP left
 	void choosePoke(); //sets the current pokemon of the player
 	void battleMenu(); //same for both clases
 	virtual void setExperience() = 0; //add the stats to pokemon in battle

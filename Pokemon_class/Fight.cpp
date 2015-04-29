@@ -22,51 +22,52 @@ Fight::Fight(Player* m_player, Enemy* m_enemy):Battle(m_player){ // call to the 
 void Fight::battle(){
 //enemy and player class battle
 //enemy greets player
-  cout << myEnemy->getName() << " wants to battle!!!!" << endl;
+  cout << endl << myEnemy->getName() << " wants to battle!!!!" << endl;
 
 //intialize turn variable
   int turn = 0;
  // int quit = 0;
   int enemy;
 //the player should choose the current pokemon to use
-  Battle::choosePoke();
+  if(myPlayer->isDefeated() == 0) {
+	Battle::choosePoke();
 //simplification: usually is the first pokemon available, then has options to switch later on
 
 //the enemy will use the last pokemon available to use in vector
 //as the pokemon when fainted will be pop_back'd
-  enemy = myEnemy->getNumPoke();
-  enemy--;
-  myEnemy->setCurrentPokemon(myEnemy->getPokemon(enemy));
+        enemy = myEnemy->getNumPoke();
+        enemy--;
+        myEnemy->setCurrentPokemon(myEnemy->getPokemon(enemy));
 
-  cout << "Enemy sent out " <<  myEnemy->getCurrentPokemon()->getName() << endl;
-  cout << "Go! " << myPlayer->getCurrentPokemon()->getName() << endl;
+       cout << "Enemy sent out " <<  myEnemy->getCurrentPokemon()->getName() << endl;
+       cout << "Go! " << myPlayer->getCurrentPokemon()->getName() << endl;
 
-  cout << myEnemy->getCurrentPokemon()->getName() << " has " << myEnemy->getCurrentPokemon()->getHP() << " HP!" <<endl;
+       cout << myEnemy->getCurrentPokemon()->getName() << " has " << myEnemy->getCurrentPokemon()->getHP() << " HP!" <<endl;
 //determine who goes first e.g. who has the fastest speed
-  if((myPlayer->getCurrentPokemon()->getSpeed())<(myEnemy->getCurrentPokemon()->getSpeed())) turn++;
-  while(isWinner()==0){ // && quit == 0){
+       if((myPlayer->getCurrentPokemon()->getSpeed())<(myEnemy->getCurrentPokemon()->getSpeed())) turn++;
+       while(isWinner()==0){ // && quit == 0){
 // while there is not a winner
-    if((turn%2 + 1) %2){//Player's turn
-   	playerTurn(); //should pass an int denoting a wild pokemon or not
-      }
-
-    else{//the enemy's turn	
-        enemyTurn();
-    } 
-    turn++; //increment the turn in order to change turns 
+           if((turn%2 + 1) %2){//Player's turn
+   	     playerTurn(); //should pass an int denoting a wild pokemon or not
+             }
+ 
+          else{//the enemy's turn	
+             enemyTurn();
+          } 
+           turn++; //increment the turn in order to change turns 
   }  
-//Todo:
 //winner logic, if player wins gains experience, gains 
-  if(myPlayer->isDefeated()==1){
-     cout << endl << "The player has been defeated!" << endl;
-  }else if(myEnemy->isDefeated()==1){
+        if(myPlayer->isDefeated()==1){
+             cout << endl << "The player has been defeated!" << endl;
+        }else if(myEnemy->isDefeated()==1){
      //set experience on last pokemon
-     setExperience();
-     cout << "The trainer has been defeated!" << endl; 
-     cout << "You receive: " << myEnemy->getMoney() << " in cash!" << endl;
-     myPlayer->setMoney(myEnemy->getMoney() );
-     cout << "Cash total: " << myPlayer->getMoney() << endl;
-  }else { cout << "ERROR!" << endl;}
+          setExperience();
+          cout << "The trainer has been defeated!" << endl; 
+          cout << "You receive: " << myEnemy->getMoney() << " in cash!" << endl;
+          myPlayer->setMoney(myEnemy->getMoney() );
+          cout << "Cash total: " << myPlayer->getMoney() << endl;
+       }else { cout << "ERROR!" << endl;}
+  }else cout << "Pokemon not healthy enough for battle." << endl;
 }
 
 void Fight::playerTurn(){
@@ -90,6 +91,8 @@ void Fight::playerTurn(){
 	damage_inflicted =Damage("Player", uChoice);
 //set the PP on the attack used
 	myPlayer->getCurrentPokemon()->getAttack(uChoice)->updatePP();
+// validate damage amount
+  damage_inflicted = Battle::checkDamage(damage_inflicted, myEnemy->getCurrentPokemon()->getHP());  
   cout << myPlayer->getCurrentPokemon()->getName() << " has inflicted " << damage_inflicted << " on " << myEnemy->getCurrentPokemon()->getName() << "!" << endl;
 //check to see if enemy pokemon fainted: set new pokemon
   result = myEnemy->getCurrentPokemon()->updateHP(damage_inflicted);
@@ -168,6 +171,8 @@ void Fight::enemyTurn(){
   damage_inflicted = Damage("Enemy", randChoice);
 //set the PP on the attack used
   myEnemy->getCurrentPokemon()->getAttack(randChoice)->updatePP();
+// validate damage amount
+  damage_inflicted = Battle::checkDamage(damage_inflicted, myPlayer->getCurrentPokemon()->getHP());  
   cout << myEnemy->getCurrentPokemon()->getName()<< " has inflicted " << damage_inflicted << " on " << myPlayer->getCurrentPokemon()->getName() << "!" << endl;
 //check to see if enemy pokemon fainted: set new pokemon
   result = myPlayer->getCurrentPokemon()->updateHP(damage_inflicted);

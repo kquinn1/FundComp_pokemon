@@ -102,3 +102,9 @@ float Battle::typeCalc(string attack_type,string d_type){
   } 
   return type;
 }
+
+//used to check to see if more damage done than HP available
+int Battle::checkDamage(int damage, int HP){
+  if (damage > HP) return HP;
+  else return damage;
+}

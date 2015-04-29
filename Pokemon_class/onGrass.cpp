@@ -30,7 +30,7 @@ onGrass::onGrass(Player* m_player) : Battle(m_player){ // member initialization 
   int randLevel; // make the pokemon a random level
   myPlayer= m_player; //set player pointer
 // calculate the probability for a battle
-  pokeRand = rand()%1500; //pick a number between 0 and 1499
+  pokeRand = rand()%1000; //pick a number between 0 and 999
   //if(pokeRand<20 || pokeRand>100 ) cout << "No Pokemon found in grass!" << endl; //do nothing
   if (pokeRand >0 && pokeRand <10 ){
 	randLevel = rand()%20 + 1;
@@ -88,7 +88,7 @@ onGrass::onGrass(Player* m_player) : Battle(m_player){ // member initialization 
 
 void onGrass::battle(){
 //wild pokemon and player class battle
-  cout << "A level " << myWild->getLevel() <<" " << myWild->getName() << " wants to battle!!!!" << endl;
+  cout << endl << "A level " << myWild->getLevel() <<" " << myWild->getName() << " wants to battle!!!!" << endl;
 // only one pokemon to battle
 //intialize turn variable
   int turn = 0;
@@ -148,6 +148,8 @@ int onGrass::playerTurn(){
 	damage_inflicted =Damage("Player", uChoice);
 //set the PP on the attack used
 	myPlayer->getCurrentPokemon()->getAttack(uChoice)->updatePP();
+// validate damage amount
+  damage_inflicted = Battle::checkDamage(damage_inflicted, myWild->getHP());  
   cout << myPlayer->getCurrentPokemon()->getName() << " has inflicted " << damage_inflicted << " on " << myWild->getName() << "!" << endl;
 //check to see if enemy pokemon fainted: set new pokemon
   result = myWild->updateHP(damage_inflicted);
@@ -259,6 +261,8 @@ void onGrass::enemyTurn(){
   damage_inflicted = Damage("Enemy", randChoice);
 //set the PP on the attack used
   myWild->getAttack(randChoice)->updatePP();
+// validate damage amount
+  damage_inflicted = Battle::checkDamage(damage_inflicted, myPlayer->getCurrentPokemon()->getHP());  
   cout << myWild->getName()<< " has inflicted " << damage_inflicted << " on " << myPlayer->getCurrentPokemon()->getName() << "!" << endl;
 //check to see if enemy pokemon fainted: set new pokemon
   result = myPlayer->getCurrentPokemon()->updateHP(damage_inflicted);
