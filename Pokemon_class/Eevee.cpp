@@ -9,8 +9,9 @@ const int B_BASE_A = 49;
 const int B_BASE_D = 49;
 const int B_BASE_SPEED= 45;
 const int B_BASE_SPEC = 65;
-const int B_BASE_HP = 45; //base stats for bulbasaur
+const int B_BASE_HP = 45; //base stats for eevee
 const int CATCH = 45;
+
 Eevee::Eevee(int level) : Normal(level){
 //set base stats to calculate stats
   Pokemon::setBaseA(B_BASE_A);

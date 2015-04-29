@@ -14,7 +14,5 @@ class Squirtle : public Water {
 	Squirtle(int); //need to set up constructor to call Pokemon constructor
 	void print();
 	void setAttacks();
-  private:
-//should a private member contain the sprite?
 };
 #endif

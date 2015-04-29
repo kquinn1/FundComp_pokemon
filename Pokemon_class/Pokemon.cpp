@@ -1,4 +1,5 @@
-// Katie Quinn55
+// Katie Quinn
+// Pokemon.cpp
 // Implementation for Pokemon Class
 
 #include "Pokemon.h"
@@ -12,13 +13,10 @@ using namespace std;
 // updated constructor
 Pokemon::Pokemon(int myLevel){
   level = myLevel;
-  
   //call to intialize EVs to 0
   initEVs();
-
   //set IVs
   setIVs();
-
   //initialize EXP to 0
   EXP = 0; 
   //set other dependent stats in species and type classes
@@ -101,9 +99,7 @@ void Pokemon::setIV_HP(){
 //set the IV_HP using the other IV values
 // IV_HP takes the last binary digit from IV Attack, Defense, Speed, and 
 // Special. Arranges it in that order
-// need a function to convert decimal IVs to binary
-// take last digit, set to IV_HP
-// EDIT FUNCTION
+// this function is in case IV_Hp is altered in its calculation
   IV_HP = rand() % 16; // set as a random number for now
 }
 void Pokemon::setAttack(){

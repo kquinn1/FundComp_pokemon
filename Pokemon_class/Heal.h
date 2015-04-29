@@ -1,6 +1,5 @@
 //Katie Quinn
 //Heal.h
-//
 //This class heals a player's pokemon and resets their attacks
 #include "Player.h"
 

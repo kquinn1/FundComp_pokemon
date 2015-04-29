@@ -12,9 +12,7 @@
 class Bulbasaur : public Grass {
   public:
 	Bulbasaur(int); //need to set up constructor to call Pokemon constructor
-	void print();
-	void setAttacks();
-//should a private member contain the sprite?
-  private:
+	void print(); //prints the name
+	void setAttacks();//sets the attacks for a pokemon
 };
 #endif

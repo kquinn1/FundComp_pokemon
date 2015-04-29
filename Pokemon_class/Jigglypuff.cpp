@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-const int B_BASE_HP = 115; //base stats for bulbasaur
+const int B_BASE_HP = 115; //base stats for jigglypuff
 const int B_BASE_A = 45;
 const int B_BASE_D = 20;
 const int B_BASE_SPEED= 20;

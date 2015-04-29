@@ -18,10 +18,10 @@
 #include "Eevee.h"
 //will need to include all the pokemon classes
 
-Enemy::Enemy(string myName, int myX, int myY, int prize, string poke1,int poke1Level, string poke2, int poke2Level){
+Enemy::Enemy(string myName, int prize, string poke1,int poke1Level, string poke2, int poke2Level){
   name = myName;
-  X = myX;
-  Y = myY; //set the first position
+//  X = myX;
+ // Y = myY; //set the first position
   prizeMoney = prize; //money that the enemy gives to player if defeated
 
   numPoke = 0; 
@@ -34,7 +34,9 @@ void Enemy::setPokemon(string poke, int myLevel){
 //start with 2 pokemon, the function is called twice in main
 //add the ability to push_back more pokemon
 //use if statements to decide what pokemon to instantiate
-//very ugly function
+//hard coded function
+//allows any pokemon to be instantiated in a trainer though the gym is
+//limited at the moment
   if(poke == "Bulbasaur"){
     myPoke.push_back(new Bulbasaur(myLevel) ); 
     numPoke++;
@@ -96,7 +98,6 @@ void Enemy::setPokemon(string poke, int myLevel){
 void Enemy::setCurrentPokemon(Pokemon* poke){
   inAction = poke;
 //set the current pokemon, e.g. the one that is in battle
-//is this necessary?
 }
 
 Pokemon* Enemy::getPokemon(int i){
@@ -117,11 +118,6 @@ void Enemy::deletePokemon(){
 int Enemy::isDefeated(){
 //returns a 1 if defeated
 //returns a 0 if not
-//Ask/check what this is doing
-/*  vector<Pokemon*>::const_iterator it;
-  for(it=myPoke.begin(); it != myPoke.end(); ++it){
-    if(*it->getHP > 0){return 0;};  
-  }*/
   for(int i = 0; i<numPoke; i++){
       if(getPokemon(i)->getHP() > 0) return 0;
    }

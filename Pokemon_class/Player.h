@@ -14,9 +14,10 @@
 using namespace std;
 class Player{
   public:
+//	Player();
 	Player(int, int); // need a way to set the pokemon the player has 
-	int getX(){ return X; }; // return x coordinate
-	int getY(){ return Y; }; //return y coordinate 
+//	int getX(){ return X; }; // return x coordinate
+//	int getY(){ return Y; }; //return y coordinate 
 	string getUserName(){ return name; };
 	void updateX(int);;
 	void updateY(int); // update the coordinates

@@ -25,7 +25,7 @@ Player::Player(int myX, int myY){
  //initalzie the current pokemon
  setPokemon(); 
 }
-
+/*
 void Player::updateX(int i){
 //update the X position
 //function will be more complex
@@ -37,6 +37,7 @@ void Player::updateY(int i){
 //function will be more complex
   Y+=i;
 }
+*/
 
 void Player::setPokemon(){
 //start with 4 pokemon, add the ability to push_back more pokemon

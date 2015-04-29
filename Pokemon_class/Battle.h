@@ -6,7 +6,7 @@
 // Fight - battle against a trainer that might have multiple pokemon
 #ifndef BATTLE_H
 #define BATTLE_H
-#include "Player.h"
+#include "Player.h" // The battle references a player pointer
 #include <string>
 
 class Battle{
@@ -22,7 +22,9 @@ class Battle{
 	int showAttacks(); // choose the attack
 	float typeCalc(std::string, std::string); 
   protected: // I need the derived class to have access to this pointer, ideally this should be hidden data
-	Player* myPlayer; // player pointer
+	Player* myPlayer; 
+// player pointer allows its pokemon and their attacks to be changed
+// provides flexibility for the program
 };
 
 #endif

@@ -5,7 +5,8 @@
 #define FIRE_H
 #include <string>
 #include "Pokemon.h"
-using namespace std; //needed?
+using namespace std;
+
 class Fire: public Pokemon{
   public:
 	Fire(int); // constructor

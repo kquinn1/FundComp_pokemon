@@ -1,5 +1,8 @@
 // Katie Quinn
+// Timer.h
 // interface for simple timer class
+// taken from lazy foo tutorial
+
 #ifndef TIMER_H
 #define TIMER_H
 

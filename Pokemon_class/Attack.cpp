@@ -7,15 +7,18 @@
 #include <string>
 using namespace std;
 
+// Attack constructor
 Attack::Attack(string& myName, string& myType, int& myPower, int& myPP, int& myAcc){
 // constructor for Attack
   name = myName;
-  type = myType;
-  power = myPower;
-  pp = myPP;
+  type = myType; // electric, fire, etc. for type bonus
+  power = myPower; // the power an attack has
+  pp = myPP; // the amount of times an attack can be used
   maxPP = pp; // set the max var to be used for healing
-  accuracy = myAcc;
+  accuracy = myAcc; 
 }
+
+// get functions will be used in battle classes
 string Attack::getName(){ return name; }
 string Attack::getType(){ return type; }
 
@@ -32,5 +35,6 @@ void Attack::updatePP(){
 
 void Attack::resetPP(){
 //set PP to max PP
+//this function is called when a pokemon is healed
   pp = maxPP; 
 }

@@ -1,5 +1,6 @@
 //Katie Quinn
-//Item class used for game eventually
+//Item.h 
+//Item class used for game 
 //Implementation
 #ifndef ITEM_H
 #define ITEM_H

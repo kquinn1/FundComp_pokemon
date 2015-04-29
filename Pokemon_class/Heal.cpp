@@ -1,13 +1,16 @@
+//Katie Quinn
+//Heal.cpp
+//Simple script heals pokemon
 #include "Heal.h"
 #include <iostream>
 using namespace std;
 
 Heal::Heal(Player* myPlay){
-   int numPoke;
+   int numPoke;// the number of pokemon to heal
 
-   toHeal = myPlay;
+   toHeal = myPlay; // the player to heal
    
-   cout << endl << "Healing pokemon" << endl;
+   cout << endl << "Healing pokemon" << endl; // display message to user
 
    numPoke = toHeal->getNumPoke();
 
@@ -15,6 +18,7 @@ Heal::Heal(Player* myPlay){
       //heal pokemon
 	toHeal->getPokemon(i)->restoreHP();
 	for(int j = 0; j<4; j++){
+	// reset the PP on the attacks
 		toHeal->getPokemon(i)->getAttack(j)->resetPP();
 	}
    }

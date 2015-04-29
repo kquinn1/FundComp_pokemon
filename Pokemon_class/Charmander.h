@@ -13,9 +13,7 @@ class Charmander : public Fire {
   public:
 	Charmander(int); //need to set up constructor to call Pokemon constructor
 	void print(); // for concrete class
-	void setAttacks();
-  private:
-//should a private member contain the sprite?
+	void setAttacks();//set the attacks in derived class
 
 };
 

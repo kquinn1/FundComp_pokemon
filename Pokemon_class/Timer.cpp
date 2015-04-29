@@ -1,6 +1,7 @@
 //Katie Quinn
+// Timer.cpp
 //Implementation file for timer
-
+// based from a LazyFoo tutorial 
 #include "Timer.h"
 #include "SDL/SDL.h"
 
@@ -19,10 +20,8 @@ void Timer::start()
 {
     //Start the timer
     started = true;
-
     //Unpause the timer
     paused = false;
-
     //Get the current clock time
     startTicks = SDL_GetTicks();
 }
@@ -31,7 +30,6 @@ void Timer::stop()
 {
     //Stop the timer
     started = false;
-
     //Unpause the timer
     paused = false;
 }
@@ -42,7 +40,6 @@ void Timer::pause()
     {
         //Pause the timer
         paused = true;
-
         //Calculate the paused ticks
         pausedTicks = SDL_GetTicks() - startTicks;
     }
@@ -55,10 +52,8 @@ void Timer::unpause()
     {
         //Unpause the timer
         paused = false;
-
         //Reset the starting ticks
         startTicks = SDL_GetTicks() - pausedTicks;
-
         //Reset the paused ticks
         pausedTicks = 0;
    }

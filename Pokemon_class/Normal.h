@@ -1,4 +1,5 @@
 //Katie Quinn
+//Normal.h
 //Represents the normal type class
 //class will set type to Normal 
 #ifndef NORMAL_H

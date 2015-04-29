@@ -5,6 +5,7 @@
 #include <iostream>
 using namespace std;
 
+// constructor sets the pointer to the player
 Battle::Battle(Player* myplay){
   myPlayer = myplay;
 }
@@ -18,6 +19,7 @@ void Battle::choosePoke(){
     cout << "Pick the pokemon you will use: " << endl;  
   //declare iterator
     size = myPlayer->getNumPoke();
+// display the pokemon and there current HP
     for(int i=0; i<size; i++){
       cout << "Choice " << i << ": "<<myPlayer->getPokemon(i)->getName();
       cout <<"      Current HP: "<< myPlayer->getPokemon(i)->getHP() << endl;
@@ -35,16 +37,16 @@ void Battle::choosePoke(){
 }
 
 void Battle::battleMenu(){
+// display the options to the user
   cout << "Choose an option: " << endl;
   cout << "1. Fight " << endl;
   cout << "2. Change Pokemon " << endl;
   cout << "3. Run " << endl;
-// to do: fix items
-//cout << "4. Item " << endl;
   cout << "Your choice: " ;
 }
 
 int Battle::showAttacks(){
+// show a pokemon's attacks to the user  
   int valid = 0; //in order to check for a valid attack
   int uChoice;
   while(valid == 0){
@@ -65,9 +67,15 @@ int Battle::showAttacks(){
   return uChoice;
 }
 
+// this function is called when the damage formula function is called
+// it is instantiated in each class as whether it is an enemy pokemon or
+// the single wild pokemon changes the actions performed
 float Battle::typeCalc(string attack_type,string d_type){
 //calculate the type modification variable for the damage calculation
-//float typeBonus(string attack_type,string  d_type){
+// this has to be "hard coded" in a sense
+
+// depending on the type of the attack and the type of the defensive pokemon,
+// a special multiplier is used
   float type;
   if(attack_type == "normal") type = 1;
   else if(d_type == "normal") type = 1;

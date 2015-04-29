@@ -524,11 +524,11 @@ void User::show(){
 int main(){
 
   Player Ash(0,0);
-  Enemy swimmer("Swimmer",0,0,80,"Shellder",16,"Horsea",16);
+  Enemy swimmer("Swimmer",80,"Shellder",16,"Horsea",16);
   //swimmer has two pokemon, cash prize of 80
-  Enemy jrTrainer("Junior Trainer",0,0,380,"Goldeen",19,"",0);
+  Enemy jrTrainer("Junior Trainer",380,"Goldeen",19,"",0);
   //junior trainer has one pokemon, cash prize of 380
-  Enemy misty("Misty",0,0,2079,"Starmie",21,"Staryu",18);
+  Enemy misty("Misty",2079,"Starmie",21,"Staryu",18);
   //Misty (gym leader) has two pokemon, higher levels. Prize of 2079
 //declare pointers to each
   Enemy *first;

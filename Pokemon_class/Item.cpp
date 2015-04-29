@@ -2,6 +2,8 @@
 //Item implementation file
 // Item class stores a name, a description, the image (stored as a string)
 // as well as an integer representing the price
+// This intended to include multiple items
+// simplified to only include pokeballs
 #include "Item.h"
 #include <string>
 
