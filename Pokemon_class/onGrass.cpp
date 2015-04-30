@@ -127,7 +127,7 @@ void onGrass::battle(){
         cout << "Successfuly caught " << myWild->getName() << endl;
      }
      else{ cout << "You ran away!" << endl;}
- } else cout << "Not well enought for battle! Go to the PC! " << endl;
+ } else cout << "Not well enough for battle! Go to the PC! " << endl;
 }
 
 int onGrass::playerTurn(){
