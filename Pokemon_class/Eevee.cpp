@@ -45,7 +45,7 @@ void Eevee::print() {
 void Eevee::setAttacks(){
 //simplification of attacks, starts out with four attacks
   setMove( "tackle", "normal", 35,35, 95);
-  setMove("quick attack", "nromal", 40, 30,100);
+  setMove("quick attack", "normal", 40, 30,100);
   setMove("bite", "normal", 60, 25 , 100);
   setMove("take down","normal", 90, 20,85);
 }
